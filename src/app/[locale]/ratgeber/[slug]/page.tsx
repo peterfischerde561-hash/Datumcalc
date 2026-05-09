@@ -17,7 +17,6 @@ export function generateStaticParams() {
         const localeArticles = getArticles(locale);
         return localeArticles.map(a => ({ 
             locale,
-            intent: INTENT_TRANSLATIONS[locale]['ratgeber'] || 'ratgeber',
             slug: a.slug 
         }));
     });
@@ -28,38 +27,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     setRequestLocale(locale);
     const article = getArticleBySlug(slug, locale);
     const siteUrl = SITE_URL;
-    
+
     if (!article) return {};
 
-    const correctPath = getCanonicalPath(locale, 'ratgeber', article.slug);
-    const fullUrl = `${SITE_URL}${correctPath}`;
-
-    // Normalize: Redirect if accessed via mismatched slug (e.g. mixed locale URL)
-    if (slug !== article.slug) {
-        permanentRedirect(correctPath);
-    }
-    
-    // Build hreflang alternates (prefix-aware)
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        const locPath = getCanonicalPath(loc, 'ratgeber', slug);
-        languages[loc] = `${SITE_URL}${locPath}`;
+        const locPath = `/ratgeber/${slug}`;
+        languages[loc] = `${siteUrl}${loc === 'de' ? '' : `/${loc}`}${locPath}`;
     });
-    languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', 'ratgeber', slug)}`;
 
     return {
         title: article.title,
         description: article.description,
         alternates: {
-            canonical: fullUrl,
+            canonical: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}/ratgeber/${slug}`,
             languages
-        },
-        openGraph: {
-            title: article.title,
-            description: article.description,
-            url: fullUrl,
-            type: 'article',
-            locale: locale,
         }
     };
 }
@@ -69,14 +51,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     setRequestLocale(locale);
     const article = getArticleBySlug(slug, locale);
 
-    if (!article) notFound();
-
-    // Normalize: Redirect if accessed via mismatched slug (e.g. mixed locale URL)
-    const correctPath = getCanonicalPath(locale, 'ratgeber', article.slug);
-    if (slug !== article.slug) {
-        permanentRedirect(correctPath);
+    if (!article) {
+        notFound();
     }
 
+    const correctPath = `/ratgeber/${slug}`;
     const t = await getTranslations({ locale, namespace: 'Article' });
     const fullUrl = `${SITE_URL}${correctPath}`;
     const isDe = locale === 'de';
@@ -108,35 +87,35 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
                     {article.title}
                 </h1>
-                <p className="text-xl md:text-2xl text-white/60 max-w-3xl mx-auto mt-6 leading-relaxed font-light">
+                
+                <p className="text-xl md:text-2xl text-white/50 max-w-3xl mx-auto font-medium leading-relaxed">
                     {article.description}
                 </p>
 
-                {/* E-E-A-T Author & Verification Banner */}
-                <aside aria-label="Autoreninformation und Verifizierung" className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-12 bg-white/[0.02] border border-white/10 rounded-2xl p-4 w-fit mx-auto backdrop-blur-md">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-neon to-neon-blue p-[2px]">
-                            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix" alt="Felix Schmidt" className="w-full h-full rounded-full bg-background" />
-                        </div>
-                        <div className="text-left">
-                            <p className="text-sm font-bold text-white">Felix Schmidt</p>
-                            <p className="text-xs text-white/50">{t('authorTitle')}</p>
-                        </div>
+                <div className="flex items-center justify-center gap-4 pt-4">
+                    <div className="w-12 h-12 rounded-full border-2 border-neon/30 p-0.5">
+                        <img 
+                            src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix" 
+                            alt="Felix Schmidt" 
+                            className="w-full h-full rounded-full object-cover"
+                        />
                     </div>
-                    <div className="hidden sm:block w-px h-8 bg-white/10"></div>
-                    <div className="flex items-center gap-2 text-sm text-green-400">
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        {t('factCheck')}
+                    <div className="text-left">
+                        <div className="text-white font-bold">Felix Schmidt</div>
+                        <div className="text-white/40 text-sm tracking-wide uppercase font-bold text-[10px]">{t('author')}</div>
                     </div>
-                </aside>
+                </div>
             </header>
 
             {/* Key Takeaways */}
-            <section aria-label="Wichtigste Erkenntnisse" className="mb-16 bg-[#0a0a0a]/80 backdrop-blur-xl border-l-4 border-neon rounded-r-3xl p-8 shadow-2xl animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-                <h3 className="text-2xl font-bold mb-4 text-white">{t('takeaways')}</h3>
-                <ul className="list-disc pl-5 space-y-3 text-lg text-white/70">
-                    <li>{t('takeawaysItem1')}</li>
-                    <li>{t('takeawaysItem2')}</li>
+            <section className="mb-16 bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-lg bg-neon/20 flex items-center justify-center text-neon text-sm">✓</span>
+                    {t('keyTakeaways')}
+                </h2>
+                <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 text-white/70">
+                     <li>{t('takeawaysItem1')}</li>
+                     <li>{t('takeawaysItem2')}</li>
                      <li>{t('takeawaysItem3')}</li>
                 </ul>
             </section>
