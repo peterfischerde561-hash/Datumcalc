@@ -49,15 +49,15 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     const t = await getTranslations({ locale, namespace: 'Header' });
 
     return (
-        <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-24 lg:pt-56 lg:pb-32">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
+        <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24 lg:pt-40 lg:pb-32">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-24">
                 {/* Left Column: Hero Content */}
-                <header className="space-y-8 animate-slide-up-fade">
+                <header className="lg:col-span-7 space-y-8 animate-slide-up-fade">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-neon-blue mb-2">
                         <span className="w-2 h-2 rounded-full bg-neon-blue animate-pulse" aria-hidden="true"></span>
                         {t('Hero.eyebrow')}
                     </div>
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1]">
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] max-w-2xl">
                         {t('Hero.title')}
                     </h1>
                     <p className="text-lg md:text-xl text-white/50 max-w-xl font-medium leading-relaxed">
@@ -73,7 +73,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 </header>
 
                 {/* Right Column: Visual Element */}
-                <div className="hidden lg:block animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
+                <div className="hidden lg:block lg:col-span-5 animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
                     <LiveDatePreview locale={locale} />
                 </div>
             </div>
