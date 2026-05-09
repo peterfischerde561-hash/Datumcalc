@@ -13,7 +13,7 @@
         }
     },
     "Header": {
-        "title": "Date Calculator",
+        "title": "Date Calculator Online – Calculate difference, business days & date",
         "logoTagline": "Free Online Date Calculator",
         "skipToContent": "Skip to content",
         "Nav": {
@@ -26,7 +26,7 @@
             "arbeitstageDesc": "Calculate net business days between dates",
             "ratgeber": "Guide",
             "ratgeberDesc": "Knowledge base about dates and time",
-            "cta": "Calculate Now",
+            "cta": "Explore Tools",
             "languageLabel": "Select Language",
             "openMenu": "Open Menu",
             "closeMenu": "Close Menu",
@@ -54,8 +54,9 @@
         "authorTitle": "Mathematician & Author"
     },
     "SmartInput": {
-        "placeholder": "What would you like to calculate? (e.g., 100 days from today)",
+        "placeholder": "e.g., '30 days from today' or enter a date...",
         "button": "Calculate",
+        "helper": "Or choose a tool directly:",
         "popular": "Popular searches:",
         "example1": "100 days from today",
         "example2": "Days until Christmas",

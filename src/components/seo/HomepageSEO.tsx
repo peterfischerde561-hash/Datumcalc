@@ -36,7 +36,6 @@ const CONTENT: Record<string, any> = {
             { icon: CalendarCheck2, label: 'Schaltjahre berechnet', color: 'text-neon-blue' },
             { icon: Clock4, label: 'Sekundenschnell', color: 'text-neon' },
             { icon: ShieldCheck, label: '100% kostenlos', color: 'text-white/70' },
-            { icon: Users, label: 'Seit 2024 online', color: 'text-purple-400' },
         ],
         hero: {
             title: 'Entdecke den Datumsrechner',
@@ -101,7 +100,6 @@ const CONTENT: Record<string, any> = {
             { icon: CalendarCheck2, label: 'Leap years calculated', color: 'text-neon-blue' },
             { icon: Clock4, label: 'Lightning fast', color: 'text-neon' },
             { icon: ShieldCheck, label: '100% free', color: 'text-white/70' },
-            { icon: Users, label: 'Online since 2024', color: 'text-purple-400' },
         ],
         hero: {
             title: 'Explore the Date Calculator',

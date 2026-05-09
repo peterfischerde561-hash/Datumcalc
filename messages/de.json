@@ -13,7 +13,7 @@
         }
     },
     "Header": {
-        "title": "Datumsrechner",
+        "title": "Datumsrechner online – Differenz, Arbeitstage & Datum berechnen",
         "logoTagline": "Kostenloser Online-Datumsrechner",
         "skipToContent": "Zum Inhalt springen",
         "Nav": {
@@ -26,7 +26,7 @@
             "arbeitstageDesc": "Netto-Arbeitstage zwischen Daten berechnen",
             "ratgeber": "Ratgeber",
             "ratgeberDesc": "Wissensbeiträge rund um Datum und Zeit",
-            "cta": "Jetzt berechnen",
+            "cta": "Tools entdecken",
             "languageLabel": "Sprache auswählen",
             "openMenu": "Menü öffnen",
             "closeMenu": "Menü schließen",
@@ -54,8 +54,9 @@
         "authorTitle": "Mathematiker & Autor"
     },
     "SmartInput": {
-        "placeholder": "Was möchten Sie berechnen? (z. B. 100 Tage ab heute)",
+        "placeholder": "z. B. '30 Tage ab heute' oder ein Datum eingeben...",
         "button": "Berechnen",
+        "helper": "Oder wählen Sie direkt ein Tool:",
         "popular": "Beliebte Suchanfragen:",
         "example1": "100 Tage ab heute",
         "example2": "Tage bis Weihnachten",

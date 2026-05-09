@@ -52,8 +52,8 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
                 </h1>
                 <p className="text-lg text-white/60 max-w-2xl mx-auto">
                     {isDe 
-                        ? 'Bauen Sie Fachwissen rund um Zeit, Fristen und Kalendersysteme auf.'
-                        : 'Build expert knowledge about time, deadlines, and calendar systems.'}
+                        ? 'Alles Wissenswerte rund um Datum, Zeit und Fristen – verständlich erklärt.'
+                        : 'Everything you need to know about dates, time, and deadlines – explained clearly.'}
                 </p>
             </div>
 

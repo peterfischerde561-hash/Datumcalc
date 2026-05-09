@@ -6,6 +6,7 @@ import { locales, Link } from '@/i18n/routing';
 import { SITE_URL } from "@/lib/constants";
 import { ROUTES } from '@/lib/routes';
 import { SplitSquareHorizontal, PlusSquare, Briefcase, User } from 'lucide-react';
+import { LiveDatePreview } from '@/components/hero/LiveDatePreview';
 
 export const dynamic = 'force-static';
 
@@ -48,25 +49,37 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     const t = await getTranslations({ locale, namespace: 'Header' });
 
     return (
-        <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-            {/* Semantic Hero Header */}
-            <header className="text-center mb-16 space-y-6 animate-slide-up-fade">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-neon-blue mb-4">
-                    <span className="w-2 h-2 rounded-full bg-neon-blue animate-pulse" aria-hidden="true"></span>
-                    {locale === 'de' ? 'Exakte Datumsberechnung für Profis' : 'Exact Date Calculation for Professionals'}
-                </div>
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight">
-                    {t('title')}
-                </h1>
-                <p className="text-xl md:text-2xl text-white/50 max-w-3xl mx-auto font-light leading-relaxed">
-                    {locale === 'de' 
-                        ? 'Berechnen Sie exakte Zeitspannen, addieren Sie Tage oder ermitteln Sie Netto-Arbeitstage. Schnell, präzise und 100% kostenlos.'
-                        : 'Calculate exact time spans, add days or determine net business days. Fast, precise and 100% free.'}
-                </p>
-            </header>
+        <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-24">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
+                {/* Left Column: Hero Content */}
+                <header className="space-y-8 animate-slide-up-fade">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-neon-blue mb-2">
+                        <span className="w-2 h-2 rounded-full bg-neon-blue animate-pulse" aria-hidden="true"></span>
+                        {locale === 'de' ? 'Kostenlos & ohne Anmeldung' : 'Free & No Registration'}
+                    </div>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1]">
+                        {t('title')}
+                    </h1>
+                    <p className="text-lg md:text-xl text-white/50 max-w-xl font-medium leading-relaxed">
+                        {locale === 'de' 
+                            ? 'Berechnen Sie exakte Zeitspannen, addieren Sie Tage oder ermitteln Sie Netto-Arbeitstage. Schnell, präzise und 100% kostenlos.'
+                            : 'Calculate exact time spans, add days or determine net business days. Fast, precise and 100% free.'}
+                    </p>
 
-            {/* Smart Hero CTA Selector */}
-            <section aria-label={locale === 'de' ? "Tools" : "Tools"} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16 animate-slide-up-fade" style={{ animationDelay: '0.05s' }}>
+                    {/* Smart Input Search integrated in Hero */}
+                    <div className="w-full max-w-2xl">
+                        <SmartInputBar />
+                    </div>
+                </header>
+
+                {/* Right Column: Visual Element */}
+                <div className="hidden lg:block animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
+                    <LiveDatePreview locale={locale} />
+                </div>
+            </div>
+
+            {/* Smart Hero CTA Selector - Now below Search */}
+            <section id="tools" aria-label={locale === 'de' ? "Tools" : "Tools"} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-24 animate-slide-up-fade" style={{ animationDelay: '0.3s' }}>
                 <Link href={ROUTES.differenz} className="group p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.06] hover:border-white/20 transition-all shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] text-left flex flex-col gap-3">
                     <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
                         <SplitSquareHorizontal className="w-5 h-5" />
@@ -105,10 +118,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 </Link>
             </section>
 
-            {/* Smart Input Search */}
-            <section aria-label={locale === 'de' ? "Schnellsuche" : "Quick Search"} className="mb-12 animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-                <SmartInputBar />
-            </section>
+
 
             {/* Core Calculator Hub */}
             <section aria-label={locale === 'de' ? "Hauptrechner" : "Main Calculator"} className="w-full max-w-5xl mx-auto rounded-[2.5rem] border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-3xl p-6 md:p-10 min-h-[400px] shadow-[0_0_50px_rgba(0,0,0,0.5)] mb-24 animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>

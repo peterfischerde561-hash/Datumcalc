@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { locales } from '@/i18n/routing';
 import { setRequestLocale } from 'next-intl/server';
+import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 
 export const revalidate = 604800; // 7 days ISR revalidation
 export const dynamicParams = true;
@@ -97,20 +98,83 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     const informational = activeQueries.filter((def) => def.intentType === 'Informational');
     const transactional = activeQueries.filter((def) => def.intentType === 'Transactional');
 
+    const textMapping: Record<string, { de: { h1: string, sub: string, intro?: string }, en: { h1: string, sub: string, intro?: string } }> = {
+        'differenz': {
+            de: {
+                h1: "Datumsdifferenz berechnen",
+                sub: "Berechnen Sie exakt wie viele Tage, Wochen oder Monate zwischen zwei Daten liegen.",
+                intro: "Mit unserem Rechner zur Datumsdifferenz können Sie Zeitspannen mühelos ermitteln. Egal ob Sie Projektfristen planen oder Countdowns für Events erstellen, Sie erhalten stets präzise Ergebnisse unter Berücksichtigung von Schaltjahren."
+            },
+            en: {
+                h1: "Calculate Date Difference",
+                sub: "Calculate exactly how many days, weeks or months lie between two dates.",
+                intro: "With our date difference calculator, you can easily determine time spans. Whether you are planning project deadlines or creating countdowns for events, you always get precise results taking leap years into account."
+            }
+        },
+        'addieren': {
+            de: {
+                h1: "Datum addieren & subtrahieren",
+                sub: "Ermitteln Sie das genaue Datum nach einer bestimmten Anzahl von Tagen, Wochen oder Monaten.",
+                intro: "Fügen Sie einem Startdatum ganz einfach Tage, Wochen oder Monate hinzu – oder ziehen Sie diese ab. Dieses Tool ist ideal für die exakte Bestimmung von Lieferterminen, Projektmeilensteinen oder rechtlichen Kündigungsfristen."
+            },
+            en: {
+                h1: "Add & Subtract Dates",
+                sub: "Determine the exact date after a certain number of days, weeks or months.",
+                intro: "Easily add or subtract days, weeks or months from a start date. This tool is ideal for accurately determining delivery dates, project milestones, or legal notice periods."
+            }
+        },
+        'arbeitstage': {
+            de: {
+                h1: "Netto-Arbeitstage berechnen",
+                sub: "Berechnen Sie Werktage zwischen zwei Daten – ohne Wochenenden, optional ohne Feiertage."
+            },
+            en: {
+                h1: "Calculate Net Business Days",
+                sub: "Calculate business days between two dates – without weekends, optionally without public holidays."
+            }
+        },
+        'alter': {
+            de: {
+                h1: "Alter berechnen – Altersrechner",
+                sub: "Berechnen Sie Ihr genaues Alter in Jahren, Monaten, Wochen und Tagen."
+            },
+            en: {
+                h1: "Calculate Age – Age Calculator",
+                sub: "Calculate your exact age in years, months, weeks and days."
+            }
+        }
+    };
+
+    const currentText = textMapping[internalIntent.toLowerCase()] || {
+        de: { h1: correctIntent, sub: `Alle Berechnungen rund um das Thema ${correctIntent}.` },
+        en: { h1: correctIntent, sub: `All calculations related to ${correctIntent}.` }
+    };
+    
+    const isDe = locale === 'de';
+    const localizedText = isDe ? currentText.de : currentText.en;
+
     return (
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="text-center mb-16 space-y-4">
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight capitalize py-2">
-                    {locale === 'de' ? 'Kategorie' : 'Category'}: {correctIntent}
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight py-2">
+                    {localizedText.h1}
                 </h1>
                 <p className="text-lg text-white/60 max-w-2xl mx-auto">
-                    {locale === 'de' 
-                        ? `Alle Berechnungen rund um das Thema ${correctIntent}. Wählen Sie Ihr gewünschtes Szenario für exakte Ergebnisse.`
-                        : `All calculations related to ${correctIntent}. Choose your desired scenario for exact results.`}
+                    {localizedText.sub}
                 </p>
+                {localizedText.intro && (
+                    <p className="text-md text-white/50 max-w-3xl mx-auto mt-4 leading-relaxed">
+                        {localizedText.intro}
+                    </p>
+                )}
             </div>
 
-            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+            <section aria-label={isDe ? "Rechner" : "Calculator"} className="w-full max-w-5xl mx-auto rounded-[2.5rem] border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-3xl p-6 md:p-10 mb-16 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
+                <CalculatorCore />
+            </section>
+
+            {(transactional.length > 0 || informational.length > 0) && (
+                <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
                 {/* Generic Numbers - Transactional */}
                 {transactional.length > 0 && (
                     <div className="bg-white/5 border border-white/10 p-8 rounded-[2rem]">
@@ -161,6 +225,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                     </div>
                 )}
             </div>
+            )}
         </main>
     );
 }

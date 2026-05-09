@@ -61,7 +61,16 @@ export function SmartInputBar() {
                     <span className="hidden sm:inline">{t('popular')}</span>
                     <button type="button" onClick={() => setQuery(t('example1'))} className="hover:text-neon transition-colors">{t('example1')}</button>
                     <button type="button" onClick={() => setQuery(t('example2'))} className="hover:text-neon transition-colors">{t('example2')}</button>
-                    <button type="button" onClick={() => setQuery(t('example3'))} className="hover:text-neon transition-colors">{t('example3')}</button>
+                    <button type="button" onClick={() => setQuery(t('example3').replace('2024', new Date().getFullYear().toString()))} className="hover:text-neon transition-colors">
+                        {t('example3').replace('2024', new Date().getFullYear().toString())}
+                    </button>
+                </div>
+                
+                {/* Helper text for tool cards below */}
+                <div className="text-center mt-12 mb-6">
+                    <p className="text-white/40 font-bold text-sm uppercase tracking-widest animate-pulse">
+                        {t('helper')}
+                    </p>
                 </div>
             </form>
         </div>
