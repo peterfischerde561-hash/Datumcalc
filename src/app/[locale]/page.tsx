@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
     return {
         title: locale === 'de' 
-            ? "Datumsrechner online | Differenz berechnen & Tage addieren ✓" 
+            ? "Datumsrechner – Differenz, Arbeitstage & Alter online berechnen" 
             : "Date Calculator Online | Count Days & Add Dates Precisely ✓",
         description: locale === 'de' 
             ? "Exakte Zeitberechnung online: Ermitteln Sie Datumsdifferenzen, addieren Sie Fristen oder berechnen Sie Arbeitstage nach ISO 8601 Standard."

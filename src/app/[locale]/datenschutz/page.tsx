@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/datenschutz`;
 
     return {
-        title: locale === 'de' ? `Datenschutzerklärung | Sicherheit & Transparenz ✓` : `Privacy Policy | Security & Transparency ✓`,
+        title: locale === 'de' ? `Datenschutzerklärung – Datumsrechner` : `Privacy Policy | Security & Transparency ✓`,
         description: locale === 'de' 
             ? `Informationen zum Datenschutz bei ${DOMAIN}. Wie wir Ihre Daten gemäß DSGVO schützen und warum wir auf Tracking verzichten.`
             : `Information on data protection at ${DOMAIN}. How we protect your data according to GDPR and why we refrain from tracking.`,

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/agb`;
 
     return {
-        title: locale === 'de' ? `AGB & Nutzungsbedingungen | Datumsrechner ✓` : `Terms of Service & Usage | Date Calculator ✓`,
+        title: locale === 'de' ? `Nutzungsbedingungen – Datumsrechner` : `Terms of Service & Usage | Date Calculator ✓`,
         description: locale === 'de' 
             ? `Allgemeine Geschäftsbedingungen für ${DOMAIN}. Informationen zur Nutzung unserer Tools, Haftung und mathematischen Genauigkeit.`
             : `General terms and conditions for ${DOMAIN}. Information on using our tools, liability and mathematical accuracy.`,

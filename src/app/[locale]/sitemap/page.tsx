@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/sitemap`;
 
     return {
-        title: `${t('sitemap')} - Datumsrechner`,
+        title: locale === 'de' ? `Sitemap – Alle Seiten – Datumsrechner` : `${t('sitemap')} - Datumsrechner`,
         description: `Übersicht aller Tools, Ratgeber und rechtlichen Informationen von ${DOMAIN}.`,
         alternates: {
             canonical: fullUrl,

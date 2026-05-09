@@ -11,7 +11,7 @@ export const articles: Record<string, Article[]> = {
     de: [
         {
             slug: 'schaltjahre-erklaert',
-            title: 'Schaltjahre erklärt: Warum es den 29. Februar gibt',
+            title: 'Schaltjahre erklärt – Warum gibt es den 29. Februar?',
             description: 'Alles was man über Schaltjahre wissen muss. Erfahre warum unser Kalender alle vier Jahre einen extra Tag braucht und wie man ihn berechnet.',
             publishedAt: '24. März 2024',
             readTime: '3 min',
@@ -34,7 +34,7 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'was-ist-ein-arbeitstag',
-            title: 'Was ist ein Arbeitstag? Definition und gesetzliche Regelungen',
+            title: 'Was ist ein Arbeitstag? – Definition, Werktage & gesetzliche Fristen',
             description: 'Erfahre alles über den Begriff des Arbeitstags, wie er sich vom Werktag unterscheidet und was bei der Fristenberechnung zu beachten ist.',
             publishedAt: '25. März 2024',
             readTime: '3 min',
@@ -51,7 +51,7 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'wochen-im-jahr',
-            title: 'Wie viele Wochen hat ein Jahr?',
+            title: 'Wie viele Wochen hat ein Jahr? – 52 oder 53 Wochen?',
             description: 'Hat ein Jahr immer 52 Wochen? Erfahre mehr über ISO-Wochen, Schaltjahre und warum manche Jahre 53 Wochen haben.',
             publishedAt: '20. März 2024',
             readTime: '2 min',
@@ -72,7 +72,7 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'iso-8601-erklaert',
-            title: 'ISO 8601 erklärt: Der internationale Standard für Datum und Zeit',
+            title: 'ISO 8601 einfach erklärt – Datum & Zeit international formatieren',
             description: 'Warum ISO 8601 der wichtigste Standard für die digitale Zeitmessung ist und wie man ihn richtig anwendet.',
             publishedAt: '26. März 2024',
             readTime: '4 min',

@@ -179,16 +179,25 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         if (match) {
             const num = match[1];
             const unit = match[2];
+            const displayUnit = unit === 'tage' ? 'Tage' : unit === 'monate' ? 'Monate' : 'Jahr';
             title = isDe 
-                ? `${num} ${unit} ab heute → Welches Datum ist das? ✓`
+                ? `${num} ${displayUnit} ab heute – Welches Datum ist das? (Sofort-Ergebnis)`
                 : `${num} ${unit} from today → What date is that? ✓`;
             description = isDe
                 ? `Berechnen Sie sofort das exakte Datum in ${num} ${unit} ab heute. Unser Rechner berücksichtigt Schaltjahre und unregelmäßige Monatslängen für 100% Genauigkeit.`
                 : `Instantly calculate the exact date in ${num} ${unit} from today. Our calculator accounts for leap years and irregular month lengths for 100% accuracy.`;
         }
     } else if (isDiff) {
+        const eventMapping: Record<string, string> = {
+            'tage-bis-weihnachten': 'Wie viele Tage bis Weihnachten 2026? – Jetzt berechnen',
+            'tage-bis-silvester': 'Wie viele Tage bis Silvester 2026? – Countdown heute',
+            'tage-bis-neujahr': 'Wie viele Tage bis Neujahr 2027? – Countdown berechnen',
+            'tage-bis-ostern': 'Wie viele Tage bis Ostern 2026? – Datum & Countdown',
+            'tage-bis-sommeranfang': 'Wie viele Tage bis Sommeranfang 2026? – Countdown',
+            'tage-bis-urlaub': 'Tage bis zum Urlaub berechnen – Countdown ab heute'
+        };
         title = isDe
-            ? `Tage bis ${displaySlug} → Jetzt exakt berechnen ✓`
+            ? (eventMapping[canonicalSlug || canonicalSlugStr] || `Tage bis ${displaySlug} – Jetzt exakt berechnen`)
             : `Days until ${displaySlug} → Calculate exactly now ✓`;
         description = isDe
             ? `Wie viele Tage sind es noch bis ${displaySlug}? Erhalten Sie ein präzises Ergebnis inklusive Berücksichtigung von Schaltjahren und Zeitspannen.`

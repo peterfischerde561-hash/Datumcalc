@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/impressum`;
 
     return {
-        title: locale === 'de' ? `Impressum & Rechtliche Hinweise | Datumsrechner ✓` : `Imprint & Legal Notice | Date Calculator ✓`,
+        title: locale === 'de' ? `Impressum – Datumsrechner` : `Imprint & Legal Notice | Date Calculator ✓`,
         description: locale === 'de' 
             ? `Impressum und Anbieterkennzeichnung für ${DOMAIN}. Erfahren Sie mehr über unsere Transparenz und rechtliche Sicherheit.`
             : `Imprint and provider identification for ${DOMAIN}. Learn more about our transparency and legal security.`,

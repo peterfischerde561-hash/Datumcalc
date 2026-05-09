@@ -34,8 +34,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     });
     languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', finalIntent)}`;
 
+    const deTitles: Record<string, string> = {
+        'differenz': 'Datumsdifferenz berechnen – Tage zwischen zwei Daten',
+        'addieren': 'Datum addieren & subtrahieren – Tage, Wochen, Monate ab heute',
+        'arbeitstage': 'Arbeitstage berechnen – Werktage zwischen zwei Daten',
+        'alter': 'Altersrechner – Alter in Jahren, Monaten & Tagen berechnen'
+    };
+
     const title = locale === 'de' 
-        ? `${intent.charAt(0).toUpperCase() + intent.slice(1)} - Datumsrechner Hub ✓`
+        ? (deTitles[finalIntent.toLowerCase()] || `${intent.charAt(0).toUpperCase() + intent.slice(1)} - Datumsrechner`)
         : `${intent.charAt(0).toUpperCase() + intent.slice(1)} - Date Calculator Hub ✓`;
 
     return {

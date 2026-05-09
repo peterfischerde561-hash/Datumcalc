@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     
     // SEO Optimized Titles (55-60 chars)
     const title = isDe 
-        ? "Ratgeber & Guides zur Datumsberechnung | Experten-Wissen ✓" 
+        ? "Ratgeber Datumsberechnung – Fristen, Kalender & Zeitrechnung" 
         : "Date Calculation Guides & Expert Knowledge | Tutorials ✓";
         
     const description = isDe
