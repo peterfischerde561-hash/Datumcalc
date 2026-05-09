@@ -91,9 +91,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     </div>
 
                     <div className="flex flex-wrap items-center gap-6 pt-4">
-                        <Link href="#tools" className="px-8 py-4 rounded-2xl bg-white text-black font-bold hover:bg-neon transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                        <a href="#tools" className="px-8 py-4 rounded-2xl bg-white text-black font-bold hover:bg-neon transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                             {locale === 'de' ? 'Rechner starten' : 'Start Calculator'}
-                        </Link>
+                        </a>
                         <div className="flex -space-x-2">
                             {[1, 2, 3].map((i) => (
                                 <div key={i} className="w-10 h-10 rounded-full border-2 border-[#050505] bg-white/10 flex items-center justify-center text-[10px] font-bold overflow-hidden">
