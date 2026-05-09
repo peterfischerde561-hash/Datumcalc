@@ -13,8 +13,12 @@
         }
     },
     "Header": {
-        "title": "Date Calculator Online – Calculate difference, business days & date",
+        "title": "Date Calculator",
         "logoTagline": "Free Online Date Calculator",
+        "Hero": {
+            "title": "Date Calculator Online – Calculate difference, business days & date",
+            "eyebrow": "Free & No Registration"
+        },
         "skipToContent": "Skip to content",
         "Nav": {
             "ariaLabel": "Main Navigation",

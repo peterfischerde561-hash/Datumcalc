@@ -145,7 +145,7 @@ export function Header() {
                                 className="w-10 h-10 rounded-xl border border-white/20 shadow-[0_0_16px_rgba(0,210,255,0.25)] group-hover:shadow-[0_0_24px_rgba(255,0,85,0.45)] group-hover:scale-105 transition-all duration-300 object-cover"
                             />
                             <strong
-                                className="font-black text-xl sm:text-2xl tracking-tighter text-white leading-none select-none"
+                                className="font-black text-lg sm:text-xl tracking-tighter text-white leading-none select-none"
                             >
                                 {t('title')}
                             </strong>

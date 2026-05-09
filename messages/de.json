@@ -13,8 +13,12 @@
         }
     },
     "Header": {
-        "title": "Datumsrechner online – Differenz, Arbeitstage & Datum berechnen",
+        "title": "Datumsrechner",
         "logoTagline": "Kostenloser Online-Datumsrechner",
+        "Hero": {
+            "title": "Datumsrechner online – Differenz, Arbeitstage & Datum berechnen",
+            "eyebrow": "Kostenlos & ohne Anmeldung"
+        },
         "skipToContent": "Zum Inhalt springen",
         "Nav": {
             "ariaLabel": "Hauptnavigation",

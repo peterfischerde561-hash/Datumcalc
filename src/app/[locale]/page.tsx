@@ -49,16 +49,16 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     const t = await getTranslations({ locale, namespace: 'Header' });
 
     return (
-        <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-24">
+        <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-24 lg:pt-56 lg:pb-32">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
                 {/* Left Column: Hero Content */}
                 <header className="space-y-8 animate-slide-up-fade">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-neon-blue mb-2">
                         <span className="w-2 h-2 rounded-full bg-neon-blue animate-pulse" aria-hidden="true"></span>
-                        {locale === 'de' ? 'Kostenlos & ohne Anmeldung' : 'Free & No Registration'}
+                        {t('Hero.eyebrow')}
                     </div>
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1]">
-                        {t('title')}
+                        {t('Hero.title')}
                     </h1>
                     <p className="text-lg md:text-xl text-white/50 max-w-xl font-medium leading-relaxed">
                         {locale === 'de' 
