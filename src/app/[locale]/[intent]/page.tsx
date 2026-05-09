@@ -4,9 +4,11 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { locales } from '@/i18n/routing';
 import { setRequestLocale } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
+import { ToolSchema } from '@/components/seo/ToolSchema';
+import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 
-export const revalidate = 604800; // 7 days ISR revalidation
-export const dynamicParams = true;
+export const revalidate = 86400; // 24 hours
+export const dynamicParams = false;
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import { SITE_URL } from '@/lib/constants';
 
@@ -34,31 +36,73 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     });
     languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', finalIntent)}`;
 
-    const deTitles: Record<string, string> = {
-        'differenz': 'Datumsdifferenz berechnen – Tage zwischen zwei Daten',
-        'addieren': 'Datum addieren & subtrahieren – Tage, Wochen, Monate ab heute',
-        'arbeitstage': 'Arbeitstage berechnen – Werktage zwischen zwei Daten',
-        'alter': 'Altersrechner – Alter in Jahren, Monaten & Tagen berechnen'
+    const metaData: Record<string, { title: string; description: string }> = {
+        'differenz': {
+            de: {
+                title: 'Datumsdifferenz berechnen – Tage zwischen zwei Daten',
+                description: 'Berechnen Sie exakt wie viele Tage, Wochen oder Monate zwischen zwei Daten liegen. Kostenlos, präzise & sofort – ISO 8601 konform.'
+            },
+            en: {
+                title: 'Calculate Date Difference – Days Between Two Dates',
+                description: 'Calculate exactly how many days, weeks or months lie between two dates. Free, precise & instant – ISO 8601 compliant.'
+            }
+        },
+        'addieren': {
+            de: {
+                title: 'Datum addieren & subtrahieren – Tage, Wochen, Monate ab heute',
+                description: 'Datum addieren oder subtrahieren: Welches Datum ist in X Tagen, Wochen oder Monaten? Sofortige Berechnung – kostenlos & ohne Anmeldung.'
+            },
+            en: {
+                title: 'Add & Subtract Dates – Days, Weeks, Months from Today',
+                description: 'Add or subtract dates: which date is in X days, weeks or months? Instant calculation – free & no registration.'
+            }
+        },
+        'arbeitstage': {
+            de: {
+                title: 'Arbeitstage berechnen – Werktage zwischen zwei Daten',
+                description: 'Netto-Arbeitstage zwischen zwei Daten berechnen – ohne Wochenenden. Kostenlos, präzise und sofort verfügbar.'
+            },
+            en: {
+                title: 'Calculate Business Days – Working Days Between Two Dates',
+                description: 'Calculate net business days between two dates – without weekends. Free, precise and instantly available.'
+            }
+        },
+        'alter': {
+            de: {
+                title: 'Altersrechner – Alter in Jahren, Monaten & Tagen berechnen',
+                description: 'Berechnen Sie Ihr genaues Alter in Jahren, Monaten, Wochen und Tagen. Kostenloser Altersrechner – ohne Anmeldung.'
+            },
+            en: {
+                title: 'Age Calculator – Calculate Age in Years, Months & Days',
+                description: 'Calculate your exact age in years, months, weeks and days. Free age calculator – no registration.'
+            }
+        }
+    }[finalIntent.toLowerCase()] || {
+        de: { title: `${intent} - Datumsrechner`, description: `Alle Tools für ${intent}.` },
+        en: { title: `${intent} - Date Calculator`, description: `All tools for ${intent}.` }
     };
 
-    const title = locale === 'de' 
-        ? (deTitles[finalIntent.toLowerCase()] || `${intent.charAt(0).toUpperCase() + intent.slice(1)} - Datumsrechner`)
-        : `${intent.charAt(0).toUpperCase() + intent.slice(1)} - Date Calculator Hub ✓`;
+    const title = locale === 'de' ? metaData.de.title : metaData.en.title;
+    const description = locale === 'de' ? metaData.de.description : metaData.en.description;
 
     return {
         title,
-        description: locale === 'de'
-            ? `Nutzen Sie unsere Sammlung an präzisen Rechnern für ${intent}. Schnelle Antworten für alle Datums-Szenarien.`
-            : `Use our collection of precise calculators for ${intent}. Fast answers for all date scenarios.`,
+        description,
         alternates: {
             canonical: fullUrl,
             languages
         },
         openGraph: {
             title,
+            description,
             url: fullUrl,
             type: 'website',
             locale: locale,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
         }
     };
 }
@@ -132,21 +176,21 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
         },
         'arbeitstage': {
             de: {
-                h1: "Netto-Arbeitstage berechnen",
-                sub: "Berechnen Sie Werktage zwischen zwei Daten – ohne Wochenenden, optional ohne Feiertage."
+                h1: "Arbeitstage berechnen – Netto-Werktage zwischen zwei Daten",
+                sub: "Berechnen Sie exakt wie viele Werktage zwischen zwei Daten liegen – ohne Wochenenden."
             },
             en: {
-                h1: "Calculate Net Business Days",
-                sub: "Calculate business days between two dates – without weekends, optionally without public holidays."
+                h1: "Calculate Business Days",
+                sub: "Calculate net business days between two dates – excluding weekends."
             }
         },
         'alter': {
             de: {
-                h1: "Alter berechnen – Altersrechner",
-                sub: "Berechnen Sie Ihr genaues Alter in Jahren, Monaten, Wochen und Tagen."
+                h1: "Altersrechner – Alter in Jahren, Monaten & Tagen berechnen",
+                sub: "Berechnen Sie Ihr genaues Alter oder das Alter einer anderen Person – auf den Tag genau."
             },
             en: {
-                h1: "Calculate Age – Age Calculator",
+                h1: "Age Calculator – Calculate Age Precisely",
                 sub: "Calculate your exact age in years, months, weeks and days."
             }
         }
@@ -159,9 +203,21 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     
     const isDe = locale === 'de';
     const localizedText = isDe ? currentText.de : currentText.en;
+    
+    // Breadcrumbs
+    const breadcrumbItems = [
+        { name: isDe ? 'Startseite' : 'Home', item: `/${locale === 'de' ? '' : locale}` },
+        { name: localizedText.h1, item: correctPath }
+    ];
 
     return (
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <BreadcrumbSchema items={breadcrumbItems} />
+            <ToolSchema 
+                name={localizedText.h1} 
+                description={isDe ? "Präziser Datumsrechner für verschiedene kalendarische Szenarien." : "Precise date calculator for various calendar scenarios."} 
+                url={`${SITE_URL}${correctPath}`} 
+            />
             <div className="text-center mb-16 space-y-4">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight py-2">
                     {localizedText.h1}
@@ -180,58 +236,96 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                 <CalculatorCore />
             </section>
 
-            {(transactional.length > 0 || informational.length > 0) && (
-                <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-                {/* Generic Numbers - Transactional */}
-                {transactional.length > 0 && (
-                    <div className="bg-white/5 border border-white/10 p-8 rounded-[2rem]">
-                        <h2 className="text-2xl font-bold mb-6 text-neon-blue">
-                            {locale === 'de' ? 'Häufige Berechnungen' : 'Popular Calculations'}
-                        </h2>
-                        <ul className="space-y-3">
-                            {transactional.map((def) => {
-                                const locSlug = translateSlug(def.canonicalSlug, locale);
-                                const href = getCanonicalPath(locale, internalIntent!, locSlug);
-                                return (
-                                    <li key={def.canonicalSlug}>
-                                        <NextLink href={href} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
-                                            <span>{locSlug.replace(/-/g, ' ')}</span>
-                                            <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                            </svg>
-                                        </NextLink>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </div>
-                )}
+            {(transactional.length > 0 || informational.length > 0 || internalIntent.toLowerCase() === 'arbeitstage' || internalIntent.toLowerCase() === 'alter') && (
+                <div className="max-w-5xl mx-auto space-y-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        {/* Popular / Transactional */}
+                        <div className="bg-white/5 border border-white/10 p-8 rounded-[2rem]">
+                            <h2 className="text-2xl font-bold mb-6 text-neon-blue">
+                                {locale === 'de' ? 'Häufige Berechnungen' : 'Popular Calculations'}
+                            </h2>
+                            <ul className="space-y-3">
+                                {internalIntent.toLowerCase() === 'arbeitstage' && isDe && (
+                                    <>
+                                        {['Januar 2026', 'Februar 2026', 'Q1 2026', 'Q2 2026', 'Mai 2026', 'Juni 2026'].map(label => (
+                                            <li key={label}>
+                                                <div className="text-white flex items-center justify-between p-3 rounded-lg border border-white/5 opacity-80 cursor-default">
+                                                    <span>Arbeitstage im {label}</span>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </>
+                                )}
+                                {internalIntent.toLowerCase() === 'alter' && isDe && (
+                                    <>
+                                        {[1990, 2000, 1985, 2005].map(year => (
+                                            <li key={year}>
+                                                <div className="text-white flex items-center justify-between p-3 rounded-lg border border-white/5 opacity-80 cursor-default">
+                                                    <span>Wie alt bin ich wenn ich {year} geboren wurde?</span>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </>
+                                )}
+                                {transactional.map((def) => {
+                                    const locSlug = translateSlug(def.canonicalSlug, locale);
+                                    const href = getCanonicalPath(locale, internalIntent!, locSlug);
+                                    return (
+                                        <li key={def.canonicalSlug}>
+                                            <NextLink href={href} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                                <span>{locSlug.replace(/-/g, ' ')}</span>
+                                                <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                </svg>
+                                            </NextLink>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
 
-                {/* Events - Informational */}
-                {informational.length > 0 && (
-                    <div className="bg-white/5 border border-white/10 p-8 rounded-[2rem]">
-                        <h2 className="text-2xl font-bold mb-6 text-neon-blue">
-                            {locale === 'de' ? 'Meilensteine & Events' : 'Milestones & Events'}
-                        </h2>
-                        <ul className="space-y-3">
-                            {informational.map((def) => {
-                                const locSlug = translateSlug(def.canonicalSlug, locale);
-                                const href = getCanonicalPath(locale, internalIntent!, locSlug);
-                                return (
-                                    <li key={def.canonicalSlug}>
-                                        <NextLink href={href} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
-                                            <span className="capitalize">{locSlug.replace(/-/g, ' ')}</span>
-                                            <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                            </svg>
-                                        </NextLink>
-                                    </li>
-                                );
-                            })}
-                        </ul>
+                        {/* Events / Informational */}
+                        {informational.length > 0 && (
+                            <div className="bg-white/5 border border-white/10 p-8 rounded-[2rem]">
+                                <h2 className="text-2xl font-bold mb-6 text-neon-blue">
+                                    {locale === 'de' ? 'Meilensteine & Events' : 'Milestones & Events'}
+                                </h2>
+                                <ul className="space-y-3">
+                                    {informational.map((def) => {
+                                        const locSlug = translateSlug(def.canonicalSlug, locale);
+                                        const href = getCanonicalPath(locale, internalIntent!, locSlug);
+                                        return (
+                                            <li key={def.canonicalSlug}>
+                                                <NextLink href={href} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                                    <span className="capitalize">{locSlug.replace(/-/g, ' ')}</span>
+                                                    <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                    </svg>
+                                                </NextLink>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
+
+                    {/* Explanation for Arbeitstage */}
+                    {internalIntent.toLowerCase() === 'arbeitstage' && isDe && (
+                        <div className="max-w-4xl mx-auto bg-white/5 border border-white/10 p-8 md:p-12 rounded-[3rem] text-white/70 space-y-6 leading-relaxed">
+                            <h2 className="text-2xl font-bold text-white mb-6">Was sind Arbeitstage?</h2>
+                            <p>
+                                Der Begriff Arbeitstage (oft auch Werktage genannt) beschreibt jene Tage, an denen üblicherweise gearbeitet wird. 
+                                In der Regel sind dies die Tage von Montag bis Freitag. Samstage und Sonntage werden bei der Berechnung von Netto-Arbeitstagen 
+                                ausgeklammert, um den realen Zeitaufwand für berufliche Projekte oder Fristen zu ermitteln.
+                            </p>
+                            <p>
+                                Unser Rechner hilft Ihnen dabei, genau diese Spanne zwischen zwei Daten zu bestimmen. Dies ist besonders nützlich für die 
+                                Personalplanung, das Projektmanagement oder die Berechnung von Kündigungsfristen, die sich oft auf Arbeitstage beziehen.
+                            </p>
+                        </div>
+                    )}
+                </div>
             )}
         </main>
     );

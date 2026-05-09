@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 
+export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/impressum`;
 
     return {
-        title: locale === 'de' ? `Impressum – Datumsrechner` : `Imprint & Legal Notice | Date Calculator ✓`,
+        title: locale === 'de' ? 'Impressum' : 'Imprint & Legal Notice',
         description: locale === 'de' 
             ? `Impressum und Anbieterkennzeichnung für ${DOMAIN}. Erfahren Sie mehr über unsere Transparenz und rechtliche Sicherheit.`
             : `Imprint and provider identification for ${DOMAIN}. Learn more about our transparency and legal security.`,
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             languages
         },
         openGraph: {
-            title: locale === 'de' ? `Impressum | Datumsrechner` : `Imprint | Date Calculator`,
+            title: locale === 'de' ? 'Impressum' : 'Imprint & Legal Notice',
             description: `Rechtliche Informationen von ${DOMAIN}.`,
             url: fullUrl,
             type: 'website',

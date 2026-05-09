@@ -7,38 +7,52 @@ import { SITE_URL } from "@/lib/constants";
 import { ROUTES } from '@/lib/routes';
 import { SplitSquareHorizontal, PlusSquare, Briefcase, User } from 'lucide-react';
 import { LiveDatePreview } from '@/components/hero/LiveDatePreview';
+import { QuickShortcuts } from '@/components/hero/QuickShortcuts';
 
-export const dynamic = 'force-static';
+export const revalidate = 86400; // 24 hours
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     setRequestLocale(locale);
-    const t = await getTranslations({ locale, namespace: 'Header' });
     const siteUrl = SITE_URL;
     
-    // Build hreflang alternates
-    const languages: Record<string, string> = {};
-    locales.forEach(loc => {
-        languages[loc] = `${siteUrl}${loc === 'de' ? '' : `/${loc}`}`;
-    });
-    languages['x-default'] = `${siteUrl}`;
+    const title = locale === 'de' 
+        ? 'Datumsrechner – Differenz, Arbeitstage & Alter online berechnen' 
+        : 'Date Calculator – Count Days, Add Dates & Business Days';
+    
+    const description = locale === 'de' 
+        ? 'Datumsrechner online: Datumsdifferenz, Arbeitstage & Alter kostenlos berechnen. ISO 8601 konform, mit Schaltjahren. Ohne Anmeldung.'
+        : 'Online date calculator: calculate date differences, business days & age for free. ISO 8601 compliant, with leap years. No registration.';
 
     return {
-        title: locale === 'de' 
-            ? "Datumsrechner – Differenz, Arbeitstage & Alter online berechnen" 
-            : "Date Calculator Online | Count Days & Add Dates Precisely ✓",
-        description: locale === 'de' 
-            ? "Exakte Zeitberechnung online: Ermitteln Sie Datumsdifferenzen, addieren Sie Fristen oder berechnen Sie Arbeitstage nach ISO 8601 Standard."
-            : "Exact time calculation online: determine date differences, add deadlines or calculate business days and working days per ISO 8601.",
+        title,
+        description,
         alternates: {
             canonical: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
-            languages
+            languages: locales.reduce((acc, loc) => ({
+                ...acc,
+                [loc]: `${siteUrl}${loc === 'de' ? '' : `/${loc}`}`
+            }), { 'x-default': siteUrl })
         },
         openGraph: {
-            title: locale === 'de' ? "Der präzise Datumsrechner online" : "The precise date calculator online",
-            description: locale === 'de' ? "Kostenlose Tools für Zeitspannen und Fristen." : "Free tools for time spans and deadlines.",
+            title,
+            description,
             url: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
             type: 'website',
+            images: [
+                {
+                    url: '/og-image.png',
+                    width: 1200,
+                    height: 630,
+                    alt: 'Datumsrechner – Differenz, Arbeitstage & Alter online berechnen',
+                }
+            ]
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: ['/og-image.png']
         }
     };
 }
@@ -55,20 +69,42 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 <header className="lg:col-span-7 space-y-8 animate-slide-up-fade">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-neon-blue mb-2">
                         <span className="w-2 h-2 rounded-full bg-neon-blue animate-pulse" aria-hidden="true"></span>
-                        {t('Hero.eyebrow')}
+                        {locale === 'de' ? 'Mathematisch Präzise' : 'Mathematically Precise'}
                     </div>
-                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] max-w-2xl">
-                        {t('Hero.title')}
+                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight leading-[0.95] max-w-2xl bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent">
+                        {locale === 'de' ? (
+                            <>Präziser <span className="text-white">Datumsrechner</span> für alle Fristen.</>
+                        ) : (
+                            <>Precise <span className="text-white">Date Calculator</span> for every deadline.</>
+                        )}
                     </h1>
                     <p className="text-lg md:text-xl text-white/50 max-w-xl font-medium leading-relaxed">
                         {locale === 'de' 
-                            ? 'Berechnen Sie exakte Zeitspannen, addieren Sie Tage oder ermitteln Sie Netto-Arbeitstage. Schnell, präzise und 100% kostenlos.'
-                            : 'Calculate exact time spans, add days or determine net business days. Fast, precise and 100% free.'}
+                            ? 'Berechnen Sie exakte Zeitspannen, addieren Sie Tage oder ermitteln Sie Netto-Arbeitstage nach ISO-8601 Standard.'
+                            : 'Calculate exact time spans, add days or determine net business days according to ISO-8601 standards.'}
                     </p>
 
                     {/* Smart Input Search integrated in Hero */}
-                    <div className="w-full max-w-2xl">
+                    <div className="w-full max-w-2xl space-y-6">
                         <SmartInputBar />
+                        <QuickShortcuts locale={locale} />
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-6 pt-4">
+                        <Link href="#tools" className="px-8 py-4 rounded-2xl bg-white text-black font-bold hover:bg-neon transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                            {locale === 'de' ? 'Rechner starten' : 'Start Calculator'}
+                        </Link>
+                        <div className="flex -space-x-2">
+                            {[1, 2, 3].map((i) => (
+                                <div key={i} className="w-10 h-10 rounded-full border-2 border-[#050505] bg-white/10 flex items-center justify-center text-[10px] font-bold overflow-hidden">
+                                    <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${i * 123}`} alt="User" />
+                                </div>
+                            ))}
+                            <div className="pl-4 flex flex-col justify-center">
+                                <span className="text-xs font-bold text-white leading-none">2.4k+</span>
+                                <span className="text-[10px] text-white/40 uppercase tracking-tighter">{locale === 'de' ? 'Nutzer täglich' : 'Users daily'}</span>
+                            </div>
+                        </div>
                     </div>
                 </header>
 

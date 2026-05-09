@@ -10,13 +10,30 @@ export function SEOContentBlock({ intent, slug, locale }: { intent: string; slug
             <h2 className="text-2xl font-bold mb-6 capitalize text-white">
                 Warum {intent} für {slug.replace(/-/g, ' ')} wichtig ist
             </h2>
-            <div className="space-y-4 text-white/70 leading-relaxed text-lg">
-                {content.paragraphs.map((p, i) => (
-                    <p key={i}>
-                        {i === 0 && <strong>{intent} {slug.replace(/-/g, ' ')}: </strong>}
-                        {p}
-                    </p>
-                ))}
+            <div className="space-y-6 text-white/70 leading-relaxed text-lg">
+                {content.paragraphs.map((p, i) => {
+                    const isH3 = p.startsWith('[H3] ');
+                    const text = isH3 ? p.replace('[H3] ', '') : p;
+                    
+                    const renderText = (t: string) => {
+                        const parts = t.split(/(\*\*.*?\*\*)/g);
+                        return parts.map((part, index) => {
+                            if (part.startsWith('**') && part.endsWith('**')) {
+                                return <strong key={index} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+                            }
+                            return part;
+                        });
+                    };
+
+                    if (isH3) {
+                        return <h3 key={i} className="text-xl font-bold text-white mt-8 mb-4">{renderText(text)}</h3>;
+                    }
+                    return (
+                        <p key={i}>
+                            {renderText(text)}
+                        </p>
+                    );
+                })}
             </div>
 
             <div className="mt-8 pt-8 border-t border-white/10">

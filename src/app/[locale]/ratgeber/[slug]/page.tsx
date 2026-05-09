@@ -4,10 +4,13 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
+import { ArticleSchema } from '@/components/seo/ArticleSchema';
+import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 
-export const revalidate = 604800; // 7 days ISR revalidation
-export const dynamicParams = true; // Allow on-demand rendering for localized guides
+export const dynamic = 'force-static';
+export const revalidate = false; 
+export const dynamicParams = false; 
 
 export function generateStaticParams() {
     return locales.flatMap(locale => {
@@ -45,7 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', 'ratgeber', slug)}`;
 
     return {
-        title: `${article.title} | ${locale === 'de' ? 'Ratgeber' : 'Guide'}`,
+        title: article.title,
         description: article.description,
         alternates: {
             canonical: fullUrl,
@@ -75,9 +78,27 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     }
 
     const t = await getTranslations({ locale, namespace: 'Article' });
+    const fullUrl = `${SITE_URL}${correctPath}`;
+    const isDe = locale === 'de';
+
+    // Breadcrumbs
+    const breadcrumbItems = [
+        { name: isDe ? 'Startseite' : 'Home', item: `/${locale === 'de' ? '' : locale}` },
+        { name: isDe ? 'Ratgeber' : 'Guides', item: `/${locale}/ratgeber` },
+        { name: article.title, item: correctPath }
+    ];
 
     return (
-        <article className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <BreadcrumbSchema items={breadcrumbItems} />
+            <ArticleSchema 
+                title={article.title} 
+                description={article.description} 
+                url={fullUrl} 
+                publishedAt="2024-03-24T00:00:00Z" 
+            />
+            
+            <article className="w-full max-w-4xl mx-auto lg:py-24">
             
             <header className="mb-12 space-y-8 text-center animate-slide-up-fade">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neon/10 border border-neon/20 text-xs font-bold tracking-widest uppercase text-neon">

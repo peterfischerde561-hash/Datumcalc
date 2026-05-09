@@ -52,17 +52,15 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
         });
     });
 
-    const workSlug = INTENT_TRANSLATIONS[locale]['arbeitstage'];
     links.push({ 
         label: t('arbeitstage'), 
-        href: `/${locale === 'de' ? '' : locale}/${workSlug}`, 
+        href: '/arbeitstage', 
         type: isDe ? 'Ratgeber' : 'Guide' 
     });
 
-    const guideSlug = INTENT_TRANSLATIONS[locale]['ratgeber'];
     links.push({ 
         label: t('ratgeber'), 
-        href: `/${locale === 'de' ? '' : locale}/${guideSlug}`, 
+        href: '/ratgeber', 
         type: isDe ? 'Ratgeber' : 'Guide' 
     });
 

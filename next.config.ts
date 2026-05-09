@@ -5,6 +5,22 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   trailingSlash: false,
+  generateBuildId: async () => {
+    return 'datumsrechner-' + new Date().toISOString().slice(0, 10)
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, stale-while-revalidate=86400',
+          },
+        ],
+      },
+    ]
+  },
   async redirects() {
     return [
       // Spanish SEO Fallbacks

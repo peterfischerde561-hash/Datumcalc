@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 
+export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/datenschutz`;
 
     return {
-        title: locale === 'de' ? `Datenschutzerklärung – Datumsrechner` : `Privacy Policy | Security & Transparency ✓`,
+        title: locale === 'de' ? 'Datenschutzerklärung' : 'Privacy Policy',
         description: locale === 'de' 
             ? `Informationen zum Datenschutz bei ${DOMAIN}. Wie wir Ihre Daten gemäß DSGVO schützen und warum wir auf Tracking verzichten.`
             : `Information on data protection at ${DOMAIN}. How we protect your data according to GDPR and why we refrain from tracking.`,
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             languages
         },
         openGraph: {
-            title: locale === 'de' ? `Datenschutz | Datumsrechner` : `Privacy | Date Calculator`,
+            title: locale === 'de' ? 'Datenschutz' : 'Privacy Policy',
             description: `Datenschutz-Informationen von ${DOMAIN}.`,
             url: fullUrl,
             type: 'website',

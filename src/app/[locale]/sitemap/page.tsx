@@ -6,6 +6,9 @@ import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { getArticles } from '@/lib/articles';
 import { Link } from '@/i18n/routing';
 
+export const revalidate = 86400; // 24 hours
+export const dynamic = 'force-static';
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     setRequestLocale(locale);
@@ -24,7 +27,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/sitemap`;
 
     return {
-        title: locale === 'de' ? `Sitemap – Alle Seiten – Datumsrechner` : `${t('sitemap')} - Datumsrechner`,
+    return {
+        title: locale === 'de' ? 'Sitemap – Alle Seiten' : 'Sitemap',
         description: `Übersicht aller Tools, Ratgeber und rechtlichen Informationen von ${DOMAIN}.`,
         alternates: {
             canonical: fullUrl,

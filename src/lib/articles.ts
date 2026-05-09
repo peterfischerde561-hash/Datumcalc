@@ -12,7 +12,7 @@ export const articles: Record<string, Article[]> = {
         {
             slug: 'schaltjahre-erklaert',
             title: 'Schaltjahre erklärt – Warum gibt es den 29. Februar?',
-            description: 'Alles was man über Schaltjahre wissen muss. Erfahre warum unser Kalender alle vier Jahre einen extra Tag braucht und wie man ihn berechnet.',
+            description: 'Was ist ein Schaltjahr und warum gibt es den 29. Februar? Alle Regeln, Beispiele und die Berechnung einfach erklärt.',
             publishedAt: '24. März 2024',
             readTime: '3 min',
             content: `
@@ -34,8 +34,8 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'was-ist-ein-arbeitstag',
-            title: 'Was ist ein Arbeitstag? – Definition, Werktage & gesetzliche Fristen',
-            description: 'Erfahre alles über den Begriff des Arbeitstags, wie er sich vom Werktag unterscheidet und was bei der Fristenberechnung zu beachten ist.',
+            title: 'Was ist ein Arbeitstag? – Definition, Werktage & Fristen',
+            description: 'Was ist ein Arbeitstag? Definition, Unterschied zu Werktagen und was bei gesetzlichen Fristen zu beachten ist – einfach erklärt.',
             publishedAt: '25. März 2024',
             readTime: '3 min',
             content: `
@@ -52,7 +52,7 @@ export const articles: Record<string, Article[]> = {
         {
             slug: 'wochen-im-jahr',
             title: 'Wie viele Wochen hat ein Jahr? – 52 oder 53 Wochen?',
-            description: 'Hat ein Jahr immer 52 Wochen? Erfahre mehr über ISO-Wochen, Schaltjahre und warum manche Jahre 53 Wochen haben.',
+            description: 'Hat ein Jahr immer 52 Wochen? Erfahre alles über ISO-Kalenderwochen und warum manche Jahre 53 Wochen haben.',
             publishedAt: '20. März 2024',
             readTime: '2 min',
             content: `
@@ -72,8 +72,8 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'iso-8601-erklaert',
-            title: 'ISO 8601 einfach erklärt – Datum & Zeit international formatieren',
-            description: 'Warum ISO 8601 der wichtigste Standard für die digitale Zeitmessung ist und wie man ihn richtig anwendet.',
+            title: 'ISO 8601 einfach erklärt – Datum & Zeit richtig formatieren',
+            description: 'ISO 8601 einfach erklärt: Der internationale Standard für Datum und Zeit – Aufbau, Beispiele und warum er wichtig ist.',
             publishedAt: '26. März 2024',
             readTime: '4 min',
             content: `

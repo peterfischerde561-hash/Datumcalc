@@ -28,25 +28,30 @@ export async function generateMetadata(
     const { locale } = await params;
     setRequestLocale(locale);
     
-    // Build language alternates
+    // Build language alternates (Hreflang)
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        languages[loc] = `${siteUrl}${loc === 'de' ? '' : `/${loc}`}`;
+        languages[loc] = `${SITE_URL}${loc === 'de' ? '' : `/${loc}`}`;
     });
-    // Add x-default pointing to root (German)
-    languages['x-default'] = `${siteUrl}`;
+    languages['x-default'] = `${SITE_URL}`;
+
+    const defaultTitle = locale === 'de' 
+        ? 'Datumsrechner – Differenz, Arbeitstage & Alter online berechnen'
+        : 'Date Calculator – Count Days, Add Dates & Business Days';
+
+    const defaultDescription = locale === 'de'
+        ? 'Datumsrechner online: Datumsdifferenz, Arbeitstage & Alter kostenlos berechnen. ISO 8601 konform, mit Schaltjahren. Ohne Anmeldung.'
+        : 'Online date calculator: calculate date differences, business days & age for free. ISO 8601 compliant, with leap years. No registration.';
 
     return {
         title: {
-            default: locale === 'de' ? "Datumsrechner | Exakte Zeitberechnung online" : "Date Calculator | Exact time calculation online",
-            template: `%s | Datumsrechner`
+            default: defaultTitle,
+            template: `%s – Datumsrechner`
         },
-        description: locale === 'de' 
-            ? "Berechnen Sie exakte Datumsdifferenzen, addieren Sie Tage oder ermitteln Sie Arbeitstage. Kostenlos, präzise und ISO 8601 konform."
-            : "Calculate exact date differences, add days or determine business days. Free, precise and ISO 8601 compliant.",
-        metadataBase: new URL(siteUrl),
+        description: defaultDescription,
+        metadataBase: new URL(SITE_URL),
         alternates: {
-            canonical: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
+            canonical: `${SITE_URL}${locale === 'de' ? '' : `/${locale}`}`,
             languages: languages,
         },
         icons: {
@@ -60,25 +65,23 @@ export async function generateMetadata(
         openGraph: {
             type: 'website',
             locale: locale,
-            url: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
+            url: `${SITE_URL}${locale === 'de' ? '' : `/${locale}`}`,
             siteName: 'Datumsrechner',
-            title: locale === 'de' ? "Datumsrechner | Exakte Zeitberechnung" : "Date Calculator | Exact time calculation",
-            description: locale === 'de' 
-                ? "Der fortschrittliche Rechner für Zeitpannen, Fristen und Arbeitstage."
-                : "The advanced calculator for time spans, deadlines and business days.",
+            title: defaultTitle,
+            description: defaultDescription,
             images: [
                 {
                     url: '/og-image.png',
                     width: 1200,
                     height: 630,
-                    alt: locale === 'de' ? 'Datumsrechner Vorschau' : 'Date Calculator Preview',
+                    alt: 'Datumsrechner – Differenz, Arbeitstage & Alter online berechnen',
                 },
             ],
         },
         twitter: {
             card: 'summary_large_image',
-            title: 'Datumsrechner',
-            description: 'Advanced Date and Time Calculator (ISO-8601)',
+            title: defaultTitle,
+            description: defaultDescription,
             images: ['/og-image.png'],
             creator: '@datumsrechner',
         },

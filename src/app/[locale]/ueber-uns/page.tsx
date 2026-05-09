@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 
+export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/ueber-uns`;
 
     return {
-        title: locale === 'de' ? `Über uns – Datumsrechner` : `About us | Mission & Mathematical Precision ✓`,
+        title: locale === 'de' ? 'Über uns' : 'About us',
         description: locale === 'de' 
             ? `Erfahren Sie mehr über die Mission von ${DOMAIN}. Wie wir Kalenderlogik vereinfachen und höchste Präzision nach ISO-8601 bieten.`
             : `Learn more about the mission of ${DOMAIN}. How we simplify calendar logic and offer maximum precision according to ISO-8601.`,
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             languages
         },
         openGraph: {
-            title: locale === 'de' ? `Über uns | Datumsrechner` : `About Us | Date Calculator`,
+            title: locale === 'de' ? 'Über uns' : 'About us',
             description: `Die Geschichte und Mission hinter ${DOMAIN}.`,
             url: fullUrl,
             type: 'website',

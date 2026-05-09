@@ -27,97 +27,14 @@ const intentToModeMap: Record<string, string> = {
     'alter': 'age',
     'age': 'age'
 };
-export const revalidate = 86400; // 24 hours ISR revalidation
-export const dynamicParams = true; // Allow on-demand rendering for long-tail SEO URLs
-
-async function computeInstantResult(intent: string, slugStr: string, localeStr: string) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const loc = dateLocales[localeStr] || de;
-    const tSlug = await getTranslations({ locale: localeStr, namespace: 'SlugPage' });
-    const tEvents = await getTranslations({ locale: localeStr, namespace: 'Events' });
-    const tCalc = await getTranslations({ locale: localeStr, namespace: 'Calculator' });
-
-    try {
-        if (intent === 'addieren' || intent === 'add') {
-            const match = slugStr.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
-            if (match) {
-                const amount = parseInt(match[1], 10);
-                const unit = match[2];
-                let resultDate;
-                if (unit === 'tage') resultDate = addDays(today, amount);
-                else if (unit === 'monate') resultDate = addMonths(today, amount);
-                else if (unit === 'jahre') resultDate = addYears(today, amount);
-
-                if (resultDate) {
-                    const unitLabel = tCalc(unit === 'tage' ? 'days' : unit === 'monate' ? 'months' : 'years');
-                    return {
-                        headline: `${tSlug('in')} ${amount} ${unitLabel} ${tSlug('is')}`,
-                        highlight: format(resultDate, 'EEEE, dd. MMMM yyyy', { locale: loc }),
-                        subtext: `${tSlug('basedOn')} (${format(today, 'dd.MM.yyyy')})`,
-                        dateValue: resultDate
-                    };
-                }
-            }
-        }
-
-        if (intent === 'differenz' || intent === 'difference') {
-            const match = slugStr.match(/^tage-bis-(.+)$/);
-            if (match) {
-                const eventStr = match[1].toLowerCase();
-                let targetDate = new Date(today.getFullYear(), 0, 1);
-                let eventName = '';
-                let found = false;
-
-                if (eventStr === 'weihnachten') {
-                    targetDate = new Date(today.getFullYear(), 11, 25);
-                    eventName = tEvents('weihnachten');
-                    found = true;
-                } else if (eventStr === 'silvester') {
-                    targetDate = new Date(today.getFullYear(), 11, 31);
-                    eventName = tEvents('silvester');
-                    found = true;
-                } else if (eventStr === 'sommeranfang') {
-                    targetDate = new Date(today.getFullYear(), 5, 21);
-                    eventName = tEvents('sommeranfang');
-                    found = true;
-                } else if (eventStr === 'ostern') {
-                    const yr = today.getFullYear();
-                    if (yr === 2024) targetDate = new Date(2024, 2, 31);
-                    else if (yr === 2025) targetDate = new Date(2025, 3, 20);
-                    else if (yr === 2026) targetDate = new Date(2026, 3, 5);
-                    else targetDate = new Date(yr, 3, 10);
-                    eventName = tEvents('ostern');
-                    found = true;
-                } else if (eventStr === 'neujahr') {
-                    targetDate = new Date(today.getFullYear() + 1, 0, 1);
-                    eventName = tEvents('neujahr');
-                    found = true;
-                } else if (eventStr === 'urlaub') {
-                    // Fallback to a generic summer vacation start if not specified
-                    targetDate = new Date(today.getFullYear(), 6, 1);
-                    eventName = tEvents('urlaub');
-                    found = true;
-                }
-
-                if (found) {
-                    if (today > targetDate) {
-                        targetDate.setFullYear(targetDate.getFullYear() + 1);
-                    }
-                    const diff = differenceInDays(targetDate, today);
-                    return {
-                        headline: `${tSlug('until')} ${eventName} ${tSlug('areYet')}`,
-                        highlight: `${diff} ${tCalc('days')}`,
-                        subtext: `${tSlug('theDateIs')} ${format(targetDate, 'dd. MMMM yyyy', { locale: loc })}`,
-                        dateValue: targetDate
-                    };
-                }
-            }
-        }
-    } catch (e) { }
-
-    return null;
-}
+export const dynamic = 'force-static';
+export const revalidate = false; 
+export const dynamicParams = false; 
+import { InstantResultClient } from '@/components/seo/InstantResultClient';
+import { ToolSchema, FAQSchema } from '@/components/seo/ToolSchema';
+import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
+import { format, addDays, addMonths, addYears } from 'date-fns';
+import { de } from 'date-fns/locale';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string; slug: string[] }> }) {
     const { locale, intent, slug } = await params;
@@ -165,10 +82,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const displaySlug = correctSlug.replace(/-/g, ' ');
     const isAdd = internalIntent === 'addieren' || internalIntent === 'add';
     const isDiff = internalIntent === 'differenz' || internalIntent === 'difference';
+    const currentYear = new Date().getFullYear();
     
     let title = isDe 
-        ? `${displaySlug} → Exakte Berechnung online ✓`
-        : `${displaySlug} → Exact calculation online ✓`;
+        ? `${displaySlug} – Exakte Berechnung online`
+        : `${displaySlug} – Exact calculation online`;
     
     let description = isDe
         ? `Nutzen Sie den kostenlosen Datumsrechner für exakte Ergebnisse zu ${displaySlug}. ISO 8601 konform, präzise und sekundenschnell.`
@@ -177,31 +95,42 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     if (isAdd) {
         const match = (canonicalSlug || canonicalSlugStr).match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
         if (match) {
-            const num = match[1];
+            const num = parseInt(match[1], 10);
             const unit = match[2];
+            const today = new Date();
+            let resultDate = today;
+            if (unit === 'tage') resultDate = addDays(today, num);
+            else if (unit === 'monate') resultDate = addMonths(today, num);
+            else if (unit === 'jahre') resultDate = addYears(today, num);
+            
+            const dateStr = format(resultDate, 'dd.MM.yyyy');
             const displayUnit = unit === 'tage' ? 'Tage' : unit === 'monate' ? 'Monate' : 'Jahr';
+            const unitLabel = unit === 'tage' ? 'Tagen' : unit === 'monate' ? 'Monaten' : 'Jahr';
+
             title = isDe 
                 ? `${num} ${displayUnit} ab heute – Welches Datum ist das? (Sofort-Ergebnis)`
-                : `${num} ${unit} from today → What date is that? ✓`;
+                : `${num} ${unit} from today – What date is that?`;
             description = isDe
-                ? `Berechnen Sie sofort das exakte Datum in ${num} ${unit} ab heute. Unser Rechner berücksichtigt Schaltjahre und unregelmäßige Monatslängen für 100% Genauigkeit.`
-                : `Instantly calculate the exact date in ${num} ${unit} from today. Our calculator accounts for leap years and irregular month lengths for 100% accuracy.`;
+                ? `In ${num} ${unitLabel} ab heute ist es der ${dateStr}. Jetzt sofort berechnen – kostenlos, mit Schaltjahr-Genauigkeit & ohne Anmeldung.`
+                : `In ${num} ${unit} from today it is ${dateStr}. Calculate now – free and precise.`;
         }
     } else if (isDiff) {
-        const eventMapping: Record<string, string> = {
-            'tage-bis-weihnachten': 'Wie viele Tage bis Weihnachten 2026? – Jetzt berechnen',
-            'tage-bis-silvester': 'Wie viele Tage bis Silvester 2026? – Countdown heute',
-            'tage-bis-neujahr': 'Wie viele Tage bis Neujahr 2027? – Countdown berechnen',
-            'tage-bis-ostern': 'Wie viele Tage bis Ostern 2026? – Datum & Countdown',
-            'tage-bis-sommeranfang': 'Wie viele Tage bis Sommeranfang 2026? – Countdown',
-            'tage-bis-urlaub': 'Tage bis zum Urlaub berechnen – Countdown ab heute'
+        const eventLabels: Record<string, string> = {
+            'tage-bis-weihnachten': 'Weihnachten',
+            'tage-bis-silvester': 'Silvester',
+            'tage-bis-neujahr': 'Neujahr',
+            'tage-bis-ostern': 'Ostern',
+            'tage-bis-sommeranfang': 'Sommeranfang',
+            'tage-bis-urlaub': 'den Urlaub'
         };
+        const label = eventLabels[canonicalSlug || canonicalSlugStr] || displaySlug;
+        
         title = isDe
-            ? (eventMapping[canonicalSlug || canonicalSlugStr] || `Tage bis ${displaySlug} – Jetzt exakt berechnen`)
-            : `Days until ${displaySlug} → Calculate exactly now ✓`;
+            ? `Wie viele Tage bis ${label} ${currentYear}? – Countdown berechnen`
+            : `How many days until ${label} ${currentYear}? – Countdown`;
         description = isDe
-            ? `Wie viele Tage sind es noch bis ${displaySlug}? Erhalten Sie ein präzises Ergebnis inklusive Berücksichtigung von Schaltjahren und Zeitspannen.`
-            : `How many days until ${displaySlug}? Get a precise result including leap year considerations and time spans.`;
+            ? `Wie viele Tage sind es noch bis ${label} ${currentYear}? Jetzt den genauen Countdown berechnen – kostenlos und sofort.`
+            : `How many days until ${label} ${currentYear}? Calculate the exact countdown now – free and instant.`;
     }
 
     // robots: prevent index bloat for non-canonical number variations
@@ -219,8 +148,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             title,
             description,
             url: correctUrl,
-            siteName: 'Datumsrechner',
-            type: 'article',
+            type: 'website',
             locale: locale,
             images: [
                 {
@@ -286,32 +214,73 @@ export default async function ProgrammaticPage({
         redirect(targetPath);
     } 
 
-    const instantResult = await computeInstantResult(internalIntent.toLowerCase(), canonicalSlugStr, locale);
+    const tSlug = await getTranslations({ locale, namespace: 'SlugPage' });
+    const tEvents = await getTranslations({ locale, namespace: 'Events' });
+    const tCalc = await getTranslations({ locale, namespace: 'Calculator' });
+
+    const translations = {
+        in: tSlug('in'),
+        is: tSlug('is'),
+        basedOn: tSlug('basedOn'),
+        until: tSlug('until'),
+        areYet: tSlug('areYet'),
+        theDateIs: tSlug('theDateIs'),
+        days: tCalc('days'),
+        months: tCalc('months'),
+        years: tCalc('years'),
+        events: {
+            weihnachten: tEvents('weihnachten'),
+            silvester: tEvents('silvester'),
+            neujahr: tEvents('neujahr'),
+            sommeranfang: tEvents('sommeranfang'),
+            ostern: tEvents('ostern'),
+            urlaub: tEvents('urlaub')
+        }
+    };
 
     const isDe = locale === 'de';
-    const breadcrumbSchema = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": isDe ? "Startseite" : "Home", "item": `${SITE_URL}${locale === 'de' ? '' : `/${locale}`}` },
-            { "@type": "ListItem", "position": 2, "name": isDe ? (mode === 'add_subtract' ? 'Datumsrechner' : 'Tage Zählen') : (mode === 'add_subtract' ? 'Date Calculator' : 'Days Counter'), "item": `${SITE_URL}${getCanonicalPath(locale, internalIntent)}` },
-            { "@type": "ListItem", "position": 3, "name": correctSlug.replace(/-/g, ' '), "item": `${SITE_URL}${correctPath}` }
-        ]
-    };
 
-    const articleSchema = {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": instantResult ? `${instantResult.headline} ${instantResult.highlight}` : `${intent} ${slugStr.replace(/-/g, ' ')}`,
-        "author": { "@type": "Person", "name": "Felix Schmidt", "url": `${SITE_URL}${locale === 'de' ? '' : `/${locale}`}/ueber-uns` },
-        "datePublished": "2024-01-01T00:00:00Z",
-        "dateModified": new Date().toISOString()
-    };
+    // Breadcrumbs
+    const breadcrumbItems = [
+        { name: isDe ? 'Startseite' : 'Home', item: `${SITE_URL}/${locale === 'de' ? '' : locale}` },
+        { name: intent.charAt(0).toUpperCase() + intent.slice(1), item: `${SITE_URL}${getCanonicalPath(locale, internalIntent)}` },
+        { name: displaySlug, item: `${SITE_URL}${correctPath}` }
+    ];
+
+    // FAQ Generation
+    const faqItems = [];
+    if (internalIntent === 'addieren' || internalIntent === 'add') {
+        const match = canonicalSlugStr.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
+        if (match) {
+            const num = match[1];
+            const unit = match[2];
+            const unitLabel = isDe ? (unit === 'tage' ? 'Tagen' : unit === 'monate' ? 'Monaten' : 'Jahr') : unit;
+            faqItems.push({
+                question: isDe ? `Welches Datum ist in ${num} ${unitLabel} ab heute?` : `What date is ${num} ${unit} from today?`,
+                answer: isDe 
+                    ? `In exakt ${num} ${unitLabel} ab heute erreichen wir das berechnete Zieldatum. Unser Rechner berücksichtigt dabei alle Schaltjahre.`
+                    : `In exactly ${num} ${unit} from today, we reach the calculated target date. Our calculator accounts for all leap years.`
+            });
+        }
+    } else {
+        faqItems.push({
+            question: isDe ? `Wie viele Tage sind es bis ${displaySlug.replace('tage bis ', '')} ${new Date().getFullYear()}?` : `How many days until ${displaySlug}?`,
+            answer: isDe
+                ? `Mit unserem kostenlosen Online-Rechner ermitteln Sie sofort die verbleibenden Tage bis ${displaySlug.replace('tage bis ', '')}.`
+                : `Use our free online calculator to instantly determine the remaining days until ${displaySlug}.`
+        });
+    }
 
     return (
-        <article className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 space-y-16">
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+        <main className="flex-1 w-full relative">
+            <BreadcrumbSchema items={breadcrumbItems} />
+            <ToolSchema 
+                name={displaySlug} 
+                description={isDe ? `Präziser Datumsrechner für ${displaySlug}.` : `Precise date calculator for ${displaySlug}.`} 
+                url={`${SITE_URL}${correctPath}`} 
+            />
+            <FAQSchema items={faqItems} />
+            <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 space-y-16">
 
             <nav aria-label="Breadcrumb" className="mb-8 hidden sm:flex text-sm text-white/50 items-center justify-center space-x-2 animate-slide-up-fade">
                 <NextLink href={`${locale === 'de' ? '/' : `/${locale}`}`} className="hover:text-neon transition-colors">
@@ -326,28 +295,12 @@ export default async function ProgrammaticPage({
             </nav>
 
             <header className="w-full text-center space-y-8 animate-slide-up-fade">
-                {instantResult ? (
-                    <>
-                        <p className="text-xl md:text-2xl font-bold text-white/50 tracking-[0.2em] uppercase">
-                            {instantResult.headline}
-                        </p>
-                        <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/30 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)] py-4">
-                            {instantResult.highlight}
-                        </h1>
-                        <p className="text-xl text-white/70 font-medium">
-                            {instantResult.subtext}
-                        </p>
-                    </>
-                ) : (
-                    <>
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight capitalize">
-                            {intent} {slugStr.replace(/-/g, ' ')}
-                        </h1>
-                        <p className="text-xl text-white/60 max-w-2xl mx-auto">
-                            {t('description', { slug: slugStr.replace(/-/g, ' ') })}
-                        </p>
-                    </>
-                )}
+                <InstantResultClient 
+                    intent={internalIntent.toLowerCase()} 
+                    slugStr={canonicalSlugStr} 
+                    locale={locale} 
+                    translations={translations}
+                />
 
                 <div className="flex justify-center mt-6">
                     <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-bold text-green-400 uppercase tracking-widest backdrop-blur-md">

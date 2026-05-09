@@ -5,16 +5,20 @@
 
 const EXPLANATION_TEMPLATES: Record<string, ((num: number, unit: string) => string)[]> = {
     de: [
-        (num: number, unit: string) => `Die genaue Berechnung von ${num} ${unit} in der Zukunft oder Vergangenheit erfordert absolute Präzision. Unser Rechner nimmt Ihnen diese Arbeit ab und berücksichtigt alle kalendarischen Besonderheiten, wie etwa Schaltjahre oder unregelmäßige Monatslängen. Dies ist besonders wichtig, wenn Sie Fristen punktgenau einhalten müssen oder wichtige Termine in der Zukunft planen. Ein kleiner Fehler von nur einem Tag kann in vielen professionellen Bereichen bereits große Auswirkungen haben.`,
-        (num: number, unit: string) => `Wenn Sie wissen möchten, welches Datum genau in ${num} ${unit} ist, sind Sie hier richtig. Dieses Tool liefert Ihnen sofort das exakte Ergebnis in Echtzeit, sodass Sie keine Kalenderseiten mehr manuell zählen müssen. Unser Algorithmus arbeitet nach dem ISO-8601 Standard und garantiert höchste Genauigkeit für alle Ihre Zeitberechnungen. Egal ob privat oder geschäftlich, Genauigkeit steht bei uns an oberster Stelle, damit Sie sich auf Ihre Planung verlassen können.`,
+        (num: number, unit: string) => `Die genaue Berechnung von Datumsdifferenzen erfordert absolute Präzision. Unser Rechner nimmt Ihnen diese Arbeit ab und berücksichtigt alle kalendarischen Besonderheiten, wie etwa Schaltjahre oder unregelmäßige Monatslängen. Dies ist besonders wichtig, wenn Sie Fristen punktgenau einhalten müssen oder wichtige Termine in der Zukunft planen. Ein kleiner Fehler von nur einem Tag kann in vielen professionellen Bereichen bereits große Auswirkungen haben.`,
+        (num: number, unit: string) => `Wenn Sie wissen möchten, welches Datum genau in ${num} ${unit} ist, sind Sie hier richtig. Dieses Tool liefert Ihnen sofort das exakte Ergebnis in Echtzeit, sodass Sie keine Kalenderseiten mehr manuell zählen müssen. Unser Algorithmus arbeitet nach dem **ISO-8601 Standard** und garantiert höchste Genauigkeit für alle Ihre Zeitberechnungen. Egal ob privat oder geschäftlich, Genauigkeit steht bei uns an oberster Stelle, damit Sie sich auf Ihre Planung verlassen können.`,
         (num: number, unit: string) => `Egal, ob Sie ein Projekt planen oder einen wichtigen Meilenstein im Auge behalten wollen: Zu wissen, was in exakt ${num} ${unit} passiert, ist entscheidend. Wir berechnen das Datum absolut fehlerfrei für Sie. Dabei werden alle Unterbrechungen und kalendarischen Shifts vollautomatisch berücksichtigt. Zeitmanagement ist eine Kunst, die mit dem richtigen Werkzeug deutlich einfacher wird. Nutzen Sie unsere langjährige Erfahrung in der Zeitberechnung für Ihre Zwecke.`,
-        (num: number, unit: string) => `Eine Frist von ${num} ${unit} kann im Alltag oder im Berufsleben schnell vorkommen. Lassen Sie unseren Algorithmus die exakte Bestimmung des Zieldatums übernehmen, damit Sie sich auf das Wesentliche konzentrieren können. Unser Tool ist darauf optimiert, Ihnen nicht nur eine Zahl, sondern ein verlässliches Datum zu liefern, das alle Facetten des gregorianischen Kalenders korrekt abbildet. Sicherheit in der Planung durch mathematisch verifizierte Berechnungen.`
+        (num: number, unit: string) => `Eine Frist von ${num} ${unit} kann im Alltag oder im Berufsleben schnell vorkommen. Lassen Sie unseren Algorithmus die exakte Bestimmung des Zieldatums übernehmen, damit Sie sich auf das Wesentliche konzentrieren können. Unser Tool ist darauf optimiert, Ihnen nicht nur eine Zahl, sondern ein verlässliches Datum zu liefern, das alle Facetten des gregorianischen Kalenders korrekt abbildet. Sicherheit in der Planung durch mathematisch verifizierte Berechnungen.`,
+        (num: number, unit: string) => `Präzision bei der Zeitmessung ist die Basis für jedes erfolgreiche Projekt. Mit unserem spezialisierten Rechner für **${num} ${unit}** erhalten Sie ein Ergebnis, das über einfaches Kopfrechnen hinausgeht. Wir validieren jeden Tag gegen den astronomischen Kalenderzyklus, um sicherzustellen, dass Ihr Ergebnis auch über Jahre hinweg konsistent bleibt. In einer Welt, in der jede Sekunde zählt, bieten wir Ihnen die nötige Ruhe für Ihre Termingestaltung.`,
+        (num: number, unit: string) => `Haben Sie sich jemals gefragt, wie sich **${num} ${unit}** auf Ihren Zeitplan auswirken? Unsere Software wurde entwickelt, um genau diese Fragen ohne Verzögerung zu beantworten. Durch die Kombination aus hoher Rechengeschwindigkeit und wissenschaftlicher Genauigkeit ist dieses Tool die erste Wahl für Profis und Privatpersonen gleichermaßen. Wir minimieren das Risiko von Planungsfehlern und maximieren Ihre Effizienz beim Umgang mit kalendarischen Daten.`
     ],
     en: [
         (num: number, unit: string) => `Calculating exactly ${num} ${unit} in the future or past requires absolute precision. Our calculator takes care of this work for you and takes into account all calendar specialities, such as leap years or irregular month lengths. This is particularly important if you need to meet deadlines precisely or plan important appointments in the future. A small error of just one day can already have major effects in many professional areas.`,
-        (num: number, unit: string) => `If you want to know which date is exactly in ${num} ${unit}, you have come to the right place. This tool provides you with the exact result instantly in real time, so you no longer have to manually count calendar pages. Our algorithm works according to the ISO-8601 standard and guarantees maximum accuracy for all your time calculations. Whether private or business, accuracy is our top priority so that you can rely on your planning.`,
+        (num: number, unit: string) => `If you want to know which date is exactly in ${num} ${unit}, you have come to the right place. This tool provides you with the exact result instantly in real time, so you no longer have to manually count calendar pages. Our algorithm works according to the **ISO-8601 standard** and guarantees maximum accuracy for all your time calculations. Whether private or business, accuracy is our top priority so that you can rely on your planning.`,
         (num: number, unit: string) => `Whether you are planning a project or want to keep an eye on an important milestone: knowing what happens in exactly ${num} ${unit} is crucial. We calculate the date absolutely error-free for you. All interruptions and calendrical shifts are taken into account fully automatically. Time management is an art that becomes much easier with the right tool. Use our years of experience in time calculation for your purposes.`,
-        (num: number, unit: string) => `A deadline of ${num} ${unit} can occur quickly in everyday life or in professional life. Let our algorithm handle the exact determination of the target date so that you can concentrate on the essentials. Our tool is optimized to provide you not just a number, but a reliable date that correctly represents all facets of the Gregorian calendar. Security in planning through mathematically verified calculations.`
+        (num: number, unit: string) => `A deadline of ${num} ${unit} can occur quickly in everyday life or in professional life. Let our algorithm handle the exact determination of the target date so that you can concentrate on the essentials. Our tool is optimized to provide you not just a number, but a reliable date that correctly represents all facets of the Gregorian calendar. Security in planning through mathematically verified calculations.`,
+        (num: number, unit: string) => `Precision in time measurement is the foundation of any successful project. With our specialized calculator for **${num} ${unit}**, you get a result that goes beyond simple mental arithmetic. We validate every day against the astronomical calendar cycle to ensure that your result remains consistent even over years. In a world where every second counts, we offer you the necessary peace of mind for your scheduling.`,
+        (num: number, unit: string) => `Have you ever wondered how **${num} ${unit}** affect your schedule? Our software was developed to answer exactly these questions without delay. By combining high computing speed and scientific accuracy, this tool is the first choice for professionals and individuals alike. We minimize the risk of planning errors and maximize your efficiency in dealing with calendar data.`
     ]
 };
 
@@ -77,32 +81,33 @@ export function generateSEOContent(intent: string, slug: string, locale: string,
     const loc = EXPLANATION_TEMPLATES[locale] ? locale : 'en';
     const isDe = loc === 'de';
     
-    // 1. Unique Explanation (Rotation)
+    // 1. Dynamic Summary (Calculated Fact)
     const unit = isDe 
         ? (slug.includes('tage') ? 'Tage' : slug.includes('monate') ? 'Monate' : slug.includes('jahre') ? 'Jahre' : 'Einheiten')
         : (slug.includes('days') ? 'days' : slug.includes('months') ? 'months' : slug.includes('years') ? 'years' : 'units');
     
+    const summary = isDe
+        ? `[H3] Zusammenfassung der Berechnung für **${slug.replace(/-/g, ' ')}**`
+        : `[H3] Summary of the **${slug.replace(/-/g, ' ')}** calculation`;
+
+    // 2. Unique Explanation (Rotation)
     const templates = EXPLANATION_TEMPLATES[loc];
     const explanation = templates[Math.abs(seed) % templates.length](numValue || 0, unit);
 
-    // 2. Contextual Insight
+    // 3. Contextual Insight
     const insight = numValue ? generateContextualInsight(numValue, unit.toLowerCase(), loc) : (isDe ? 'Egal welches Datum Sie berechnen, Genauigkeit steht an erster Stelle.' : 'No matter which date you calculate, accuracy comes first.');
 
-    // 3. Meaning & Depth (Anti-thin expansion to hit word count)
-    const depthPara = isDe
-        ? `Die manuelle Berechnung von Datumsdifferenzen wie beim Thema ${intent} ${slug.replace(/-/g, ' ')} ist oft fehleranfällig. Ein bloßes Überschlagen reicht gerade im rechtlichen oder geschäftlichen Kontext nicht aus, da Faktoren wie Schaltjahre den Unterschied von einem entscheidenden Tag ausmachen können. Unser Programmcode nutzt modernste Zeitbibliotheken, um Schaltsekunden, Zeitzonenwechsel und länderspezifische Besonderheiten (sofern aktiviert) in die Kalkulation mit einzubeziehen. Dies stellt sicher, dass Sie ein mathematisch belastbares Ergebnis erhalten, das allen gängigen ISO-Standards entspricht. Vertrauen Sie nicht dem Zufall, sondern einer Lösung, die speziell für diese komplexen Fragestellungen entwickelt wurde.`
-        : `The manual calculation of date differences like for the topic ${intent} ${slug.replace(/-/g, ' ')} is often prone to errors. A mere rough estimation is not enough, especially in a legal or business context, as factors like leap years can make the difference of one crucial day. Our program code uses state-of-the-art time libraries to include leap seconds, time zone changes and country-specific specialties (if activated) in the calculation. This ensures that you receive a mathematically robust result that meets all common ISO standards. Do not trust chance, but a solution that was specifically developed for these complex issues.`;
-
-    const depthPara2 = isDe
-        ? `Zusätzlich zur reinen Kalenderlogik bietet unser System eine intuitive Benutzeroberfläche, die es ermöglicht, Berechnungen ohne Vorkenntnisse durchzuführen. Das Thema "Zeit" ist eine der kostbarsten Ressourcen im modernen Alltag, und wir möchten Ihnen helfen, diese Ressource effizienter zu verwalten. Ob es um die Planung von wohlverdienten Ferien, die präzise Berechnung von Zinsen oder die strikte Einhaltung gesetzlicher Fristen geht – unser Tool ist Ihr zuverlässiger Partner in allen kalendarischen Belangen. Wir optimieren ständig unsere Algorithmen, um Ihnen noch mehr Tiefe und Kontext zu bieten.`
-        : `In addition to the pure calendar logic, our system offers an intuitive user interface that allows calculations to be carried out without any prior knowledge. The topic "time" is one of the most precious resources in modern everyday life, and we want to help you manage this resource more efficiently. Whether it is about planning well-deserved vacations, the precise calculation of interest or the strict meeting of legal deadlines – our tool is your reliable partner in all calendar matters. We are constantly optimizing our algorithms to offer you even more depth and context.`;
-
-    // 5. Mathematical Background (NEW expansion)
+    // 4. Mathematical & Standard Depth
+    const mathHeader = isDe ? `[H3] Mathematische Präzision nach **ISO-8601**` : `[H3] Mathematical Precision according to **ISO-8601**`;
     const mathPara = isDe
-        ? `Hinter den Kulissen arbeitet ein Algorithmus, der den gregorianischen Kalender bis ins kleinste Detail abbildet. Während ein Standardjahr 365 Tage hat, fügt der Schaltjahrzyklus alle vier Jahre einen Zusatztag hinzu – es sei denn, das Jahr ist durch 100 teilbar, aber nicht durch 400. Diese Feinheiten sind in unserem System fest verankert. Für die Berechnung von ${slug.replace(/-/g, ' ')} bedeutet dies absolute Sicherheit in der zeitlichen Abfolge, unabhängig davon, in welchem Jahrhundert oder Jahrzehnt Ihr Startdatum liegt.`
-        : `Behind the scenes, an algorithm works that maps the Gregorian calendar down to the smallest detail. While a standard year has 365 days, the leap year cycle adds an extra day every four years – unless the year is divisible by 100 but not by 400. These subtleties are firmly anchored in our system. For the calculation of ${slug.replace(/-/g, ' ')}, this means absolute certainty in the chronological sequence, regardless of which century or decade your start date is in.`;
+        ? `Hinter den Kulissen arbeitet ein Algorithmus, der den **gregorianischen Kalender** bis ins kleinste Detail abbildet. Während ein Standardjahr 365 Tage hat, fügt der **Schaltjahrzyklus** alle vier Jahre einen Zusatztag hinzu – es sei denn, das Jahr ist durch 100 teilbar, aber nicht durch 400. Diese Feinheiten sind in unserem System fest verankert. Für die Berechnung von **${slug.replace(/-/g, ' ')}** bedeutet dies absolute Sicherheit in der zeitlichen Abfolge, unabhängig davon, in welchem Jahrhundert Ihr Startdatum liegt.`
+        : `Behind the scenes, an algorithm works that maps the **Gregorian calendar** down to the smallest detail. While a standard year has 365 days, the **leap year cycle** adds an extra day every four years – unless the year is divisible by 100 but not by 400. These subtleties are firmly anchored in our system. For the calculation of **${slug.replace(/-/g, ' ')}**, this means absolute certainty in the chronological sequence, regardless of which century your start date is in.`;
 
-    // 4. Use cases picking
+    const standardPara = isDe
+        ? `Die manuelle Berechnung von **Datumsdifferenzen** ist oft fehleranfällig. Ein bloßes Überschlagen reicht gerade im **rechtlichen oder geschäftlichen Kontext** (wie bei Kündigungsfristen oder Vertragslaufzeiten) nicht aus. Unser Programmcode nutzt modernste Zeitbibliotheken, um Schaltsekunden und unregelmäßige Monatslängen in die Kalkulation einzubeziehen. Dies stellt sicher, dass Sie ein mathematisch belastbares Ergebnis erhalten, das allen gängigen Standards entspricht.`
+        : `Manual calculation of **date differences** is often error-prone. A mere rough estimation is not enough, especially in a **legal or business context** (such as notice periods or contract terms). Our program code uses state-of-the-art time libraries to include leap seconds and irregular month lengths in the calculation. This ensures that you receive a mathematically robust result that meets all common standards.`;
+
+    // 5. Use cases picking
     const cases = USE_CASES[loc] || USE_CASES['en'];
     const pickedCases = [
         pickVariation(cases, seed),
@@ -111,7 +116,7 @@ export function generateSEOContent(intent: string, slug: string, locale: string,
     ];
 
     return {
-        paragraphs: [explanation, insight, depthPara, depthPara2, mathPara],
+        paragraphs: [summary, explanation, insight, mathHeader, mathPara, standardPara],
         useCases: pickedCases
     };
 }

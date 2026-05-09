@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link, locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 
+export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
@@ -13,14 +14,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['ratgeber'];
     
-    // SEO Optimized Titles (55-60 chars)
+    // SEO Optimized Titles
     const title = isDe 
         ? "Ratgeber Datumsberechnung – Fristen, Kalender & Zeitrechnung" 
-        : "Date Calculation Guides & Expert Knowledge | Tutorials ✓";
+        : "Date Calculation Guides – Deadlines, Calendars & Time spans";
         
     const description = isDe
-        ? "Vertiefende Guides und Erklärungen rund um Datumsberechnung, Fristen, Werktage und Schaltjahre. Präzise nach ISO-8601 Standard."
-        : "In-depth guides and explanations about date calculation, deadlines, business days, and leap years. Precise according to ISO-8601.";
+        ? "Ratgeber zur Datumsberechnung: Schaltjahre, Arbeitstage, ISO 8601 und Kalenderwochen verständlich erklärt."
+        : "Expert guides on date calculation: leap years, business days, ISO 8601, and calendar weeks explained clearly.";
 
     const languages: Record<string, string> = {};
     locales.forEach(loc => {

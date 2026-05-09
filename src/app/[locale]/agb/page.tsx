@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 
+export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/agb`;
 
     return {
-        title: locale === 'de' ? `Nutzungsbedingungen – Datumsrechner` : `Terms of Service & Usage | Date Calculator ✓`,
+        title: locale === 'de' ? 'Nutzungsbedingungen' : 'Terms of Service',
         description: locale === 'de' 
             ? `Allgemeine Geschäftsbedingungen für ${DOMAIN}. Informationen zur Nutzung unserer Tools, Haftung und mathematischen Genauigkeit.`
             : `General terms and conditions for ${DOMAIN}. Information on using our tools, liability and mathematical accuracy.`,
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             languages
         },
         openGraph: {
-            title: locale === 'de' ? `AGB | Datumsrechner` : `Terms | Date Calculator`,
+            title: locale === 'de' ? 'AGB' : 'Terms of Service',
             description: `Nutzungsbestimmungen von ${DOMAIN}.`,
             url: fullUrl,
             type: 'website',
