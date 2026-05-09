@@ -189,6 +189,7 @@ export default async function ProgrammaticPage({
     const canonicalSlugStr = reverseTranslateSlug(slugStr, locale);
     
     const correctSlug = translateSlug(canonicalSlugStr, locale);
+    const displaySlug = correctSlug.replace(/-/g, ' ');
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
     
     // STRICT ENFORCEMENT: Redirect only if the SLUG part is non-canonical.
