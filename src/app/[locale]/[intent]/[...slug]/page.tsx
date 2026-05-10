@@ -347,7 +347,7 @@ export function generateStaticParams() {
                 params.push({
                     locale,
                     intent: locIntent,
-                    slug: locSlug.split('-')
+                    slug: [locSlug]
                 });
             }
         });
