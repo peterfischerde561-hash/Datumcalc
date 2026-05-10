@@ -8,7 +8,7 @@ import { ToolSchema } from '@/components/seo/ToolSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 
 export const revalidate = 86400; // 24 hours
-export const dynamicParams = true;
+export const dynamicParams = false;
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import { SITE_URL } from '@/lib/constants';
 
