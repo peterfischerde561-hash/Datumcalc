@@ -1,4 +1,4 @@
-import { getArticleBySlug, articles, getArticles } from '@/lib/articles';
+import { getArticleBySlug, articles, getArticles, getLocalizedArticleSlug } from '@/lib/articles';
 import { notFound, redirect, permanentRedirect } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
@@ -32,15 +32,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        const locPath = `/ratgeber/${slug}`;
-        languages[loc] = `${siteUrl}${loc === 'de' ? '' : `/${loc}`}${locPath}`;
+        const locSlug = getLocalizedArticleSlug(slug, locale, loc);
+        languages[loc] = `${siteUrl}${getCanonicalPath(loc, 'ratgeber', locSlug)}`;
     });
 
     return {
         title: article.title,
         description: article.description,
         alternates: {
-            canonical: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}/ratgeber/${slug}`,
+            canonical: `${siteUrl}${getCanonicalPath(locale, 'ratgeber', slug)}`,
             languages
         }
     };
@@ -55,16 +55,17 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         notFound();
     }
 
-    const correctPath = `/ratgeber/${slug}`;
+    const correctPath = getCanonicalPath(locale, 'ratgeber', slug);
+    const parentPath = getCanonicalPath(locale, 'ratgeber');
     const t = await getTranslations({ locale, namespace: 'Article' });
     const fullUrl = `${SITE_URL}${correctPath}`;
     const isDe = locale === 'de';
 
     // Breadcrumbs
     const breadcrumbItems = [
-        { name: isDe ? 'Startseite' : 'Home', item: `/${locale === 'de' ? '' : locale}` },
-        { name: isDe ? 'Ratgeber' : 'Guides', item: `/${locale}/ratgeber` },
-        { name: article.title, item: correctPath }
+        { name: isDe ? 'Startseite' : 'Home', item: `${SITE_URL}${locale === 'de' ? '/' : `/${locale}`}` },
+        { name: isDe ? 'Ratgeber' : 'Guides', item: `${SITE_URL}${parentPath}` },
+        { name: article.title, item: `${SITE_URL}${correctPath}` }
     ];
 
     return (
@@ -102,7 +103,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     </div>
                     <div className="text-left">
                         <div className="text-white font-bold">Felix Schmidt</div>
-                        <div className="text-white/40 text-sm tracking-wide uppercase font-bold text-[10px]">{t('author')}</div>
+                        <div className="text-white/40 text-sm tracking-wide uppercase font-bold text-[10px]">{t('authorTitle')}</div>
                     </div>
                 </div>
             </header>
@@ -111,7 +112,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <section className="mb-16 bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
                     <span className="w-8 h-8 rounded-lg bg-neon/20 flex items-center justify-center text-neon text-sm">✓</span>
-                    {t('keyTakeaways')}
+                    {t('takeaways')}
                 </h2>
                 <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 text-white/70">
                      <li>{t('takeawaysItem1')}</li>

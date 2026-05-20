@@ -174,3 +174,23 @@ export function getArticles(locale: string): Article[] {
 export function getArticleBySlug(slug: string, locale: string = 'de') {
     return (articles[locale] || articles['de'])?.find(a => a.slug === slug);
 }
+
+export const ARTICLE_SLUG_MAP: Record<string, Record<string, string>> = {
+    de: {
+        'schaltjahre-erklaert': 'leap-years-explained',
+        'was-ist-ein-arbeitstag': 'what-is-a-business-day',
+        'wochen-im-jahr': 'weeks-in-a-year',
+        'iso-8601-erklaert': 'iso-8601-explained'
+    },
+    en: {
+        'leap-years-explained': 'schaltjahre-erklaert',
+        'what-is-a-business-day': 'was-ist-ein-arbeitstag',
+        'weeks-in-a-year': 'wochen-im-jahr',
+        'iso-8601-explained': 'iso-8601-erklaert'
+    }
+};
+
+export function getLocalizedArticleSlug(slug: string, currentLocale: string, targetLocale: string): string {
+    if (currentLocale === targetLocale) return slug;
+    return ARTICLE_SLUG_MAP[currentLocale]?.[slug] || slug;
+}

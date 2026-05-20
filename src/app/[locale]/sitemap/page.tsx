@@ -147,7 +147,12 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                         {[30, 45, 60, 90, 100, 120, 150, 180, 200, 365, 500, 730, 1000].map(days => {
-                            const canonicalSlug = `${days}-tage-ab-heute`;
+                            let canonicalSlug = `${days}-tage-ab-heute`;
+                            if (days === 180) {
+                                canonicalSlug = '6-monate-ab-heute';
+                            } else if (days === 365) {
+                                canonicalSlug = '1-jahr-ab-heute';
+                            }
                             const locSlug = translateSlug(canonicalSlug, locale);
                             return (
                                 <Link 

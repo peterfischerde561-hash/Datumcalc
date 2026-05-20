@@ -29,7 +29,7 @@ const intentToModeMap: Record<string, string> = {
 };
 export const dynamic = 'force-static';
 export const revalidate = false; 
-export const dynamicParams = false; 
+export const dynamicParams = true; 
 import { InstantResultClient } from '@/components/seo/InstantResultClient';
 import { ToolSchema, FAQSchema } from '@/components/seo/ToolSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';

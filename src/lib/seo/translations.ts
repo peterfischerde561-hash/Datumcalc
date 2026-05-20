@@ -16,37 +16,37 @@ export const INTENT_TRANSLATIONS: Record<string, Record<string, string>> = {
 
 export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
     de: { 
-        'tage': 'tage', 'monate': 'monate', 'jahre': 'jahre', 
+        'tage': 'tage', 'monate': 'monate', 'jahr': 'jahr', 'jahre': 'jahre', 
         'ab-heute': 'ab-heute', 'tage-bis': 'tage-bis',
         'weihnachten': 'weihnachten', 'silvester': 'silvester', 'neujahr': 'neujahr',
         'ostern': 'ostern', 'sommeranfang': 'sommeranfang', 'urlaub': 'urlaub'
     },
     en: { 
-        'tage': 'days', 'monate': 'months', 'jahre': 'years', 
+        'tage': 'days', 'monate': 'months', 'jahr': 'year', 'jahre': 'years', 
         'ab-heute': 'from-today', 'tage-bis': 'days-until',
         'weihnachten': 'christmas', 'silvester': 'new-year', 'neujahr': 'new-year',
         'ostern': 'easter', 'sommeranfang': 'summer-solstice', 'urlaub': 'vacation'
     },
     es: { 
-        'tage': 'dias', 'monate': 'meses', 'jahre': 'anos', 
+        'tage': 'dias', 'monate': 'meses', 'jahr': 'ano', 'jahre': 'anos', 
         'ab-heute': 'desde-hoy', 'tage-bis': 'dias-hasta',
         'weihnachten': 'navidad', 'silvester': 'nochevieja', 'neujahr': 'ano-nuevo',
         'ostern': 'pascua', 'sommeranfang': 'solsticio-de-verano', 'urlaub': 'vacaciones'
     },
     fr: { 
-        'tage': 'jours', 'monate': 'mois', 'jahre': 'annees', 
+        'tage': 'jours', 'monate': 'mois', 'jahr': 'an', 'jahre': 'annees', 
         'ab-heute': 'a-partir-d-aujourd-hui', 'tage-bis': 'jours-jusqu-a',
         'weihnachten': 'noel', 'silvester': 'nouvel-an', 'neujahr': 'nouvel-an',
         'ostern': 'paques', 'sommeranfang': 'solstice-d-ete', 'urlaub': 'vacances'
     },
     it: { 
-        'tage': 'giorni', 'monate': 'mesi', 'jahre': 'anni', 
+        'tage': 'giorni', 'monate': 'mesi', 'jahr': 'anno', 'jahre': 'anni', 
         'ab-heute': 'da-oggi', 'tage-bis': 'giorni-fino-a',
         'weihnachten': 'natale', 'silvester': 'capodanno', 'neujahr': 'capodanno',
         'ostern': 'pasqua', 'sommeranfang': 'solstizio-d-estate', 'urlaub': 'vacanze'
     },
     pt: { 
-        'tage': 'dias', 'monate': 'meses', 'jahre': 'anos', 
+        'tage': 'dias', 'monate': 'meses', 'jahr': 'ano', 'jahre': 'anos', 
         'ab-heute': 'a-partir-de-hoje', 'tage-bis': 'dias-ate',
         'weihnachten': 'natal', 'silvester': 'ano-novo', 'neujahr': 'ano-novo',
         'ostern': 'pascoa', 'sommeranfang': 'solsticio-de-verao', 'urlaub': 'ferias'

@@ -16,9 +16,16 @@ export interface QueryDefinition {
 export const CANONICAL_QUERIES: Record<string, QueryDefinition> = {
     // Top volume days (Requested)
     '30-tage-ab-heute': { canonicalSlug: '30-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
+    '45-tage-ab-heute': { canonicalSlug: '45-tage-ab-heute', intentType: 'Transactional', priority: 'Low', calcMode: 'add_subtract', isIndexable: true },
     '60-tage-ab-heute': { canonicalSlug: '60-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
     '90-tage-ab-heute': { canonicalSlug: '90-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
     '100-tage-ab-heute': { canonicalSlug: '100-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
+    '120-tage-ab-heute': { canonicalSlug: '120-tage-ab-heute', intentType: 'Transactional', priority: 'Low', calcMode: 'add_subtract', isIndexable: true },
+    '150-tage-ab-heute': { canonicalSlug: '150-tage-ab-heute', intentType: 'Transactional', priority: 'Low', calcMode: 'add_subtract', isIndexable: true },
+    '200-tage-ab-heute': { canonicalSlug: '200-tage-ab-heute', intentType: 'Transactional', priority: 'Low', calcMode: 'add_subtract', isIndexable: true },
+    '500-tage-ab-heute': { canonicalSlug: '500-tage-ab-heute', intentType: 'Transactional', priority: 'Low', calcMode: 'add_subtract', isIndexable: true },
+    '730-tage-ab-heute': { canonicalSlug: '730-tage-ab-heute', intentType: 'Transactional', priority: 'Low', calcMode: 'add_subtract', isIndexable: true },
+    '1000-tage-ab-heute': { canonicalSlug: '1000-tage-ab-heute', intentType: 'Transactional', priority: 'Low', calcMode: 'add_subtract', isIndexable: true },
 
     // Top volume months (Requested)
     '6-monate-ab-heute': { canonicalSlug: '6-monate-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
@@ -40,7 +47,9 @@ export const QUERY_ALIASES: Record<string, string> = {
     '100-tage-von-heute': '100-tage-ab-heute',
     'datum-nach-100-tagen': '100-tage-ab-heute',
     'wie-viele-tage-bis-weihnachten': 'tage-bis-weihnachten',
-    'arbeitstage-in-diesem-jahr': 'arbeitstage-jahr'
+    'arbeitstage-in-diesem-jahr': 'arbeitstage-jahr',
+    '180-tage-ab-heute': '6-monate-ab-heute',
+    '365-tage-ab-heute': '1-jahr-ab-heute'
 };
 
 /**
