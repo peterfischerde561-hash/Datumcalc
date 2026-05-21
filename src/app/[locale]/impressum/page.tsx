@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: locale === 'de' ? 'Impressum' : 'Imprint & Legal Notice',
         description: locale === 'de' 
-            ? `Impressum und Anbieterkennzeichnung für ${DOMAIN}. Erfahren Sie mehr über unsere Transparenz und rechtliche Sicherheit.`
-            : `Imprint and provider identification for ${DOMAIN}. Learn more about our transparency and legal security.`,
+            ? `Impressum und gesetzliche Anbieterkennzeichnung für ${DOMAIN}. Erfahren Sie mehr über unsere Transparenz, Kontaktmöglichkeiten und Rechtssicherheit.`
+            : `Imprint and legal provider identification for ${DOMAIN}. Find all contact details, legal notice, and regulatory information about our website.`,
         alternates: {
             canonical: fullUrl,
             languages

@@ -116,8 +116,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
                 ? `${num} ${displayUnit} ab heute – Welches Datum?`
                 : `${num} ${displayUnit} from today – What date?`;
             description = isDe
-                ? `In ${num} ${unitLabel} ab heute ist es der ${dateStr}. Jetzt sofort berechnen – kostenlos, mit Schaltjahr-Genauigkeit & ohne Anmeldung.`
-                : `In ${num} ${unitLabel} from today it is ${dateStr}. Calculate now – free and precise.`;
+                ? `In ${num} ${unitLabel} ab heute ist es der ${dateStr}. Nutzen Sie unseren kostenlosen Datumsrechner für präzise Ergebnisse mit Schaltjahr-Genauigkeit.`
+                : `In ${num} ${unitLabel} from today it will be ${dateStr}. Use our free date calculator to find the exact date with leap year accuracy and no registration required.`;
         }
     } else if (isDiff) {
         const eventKey = (canonicalSlug || canonicalSlugStr).replace('tage-bis-', '');
@@ -137,8 +137,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             ? `Wie viele Tage bis ${label} ${currentYear}?`
             : `How many days until ${label} ${currentYear}?`;
         description = isDe
-            ? `Wie viele Tage sind es noch bis ${label} ${currentYear}? Jetzt den genauen Countdown berechnen – kostenlos und sofort.`
-            : `How many days until ${label} ${currentYear}? Calculate the exact countdown now – free and instant.`;
+            ? `Wie viele Tage sind es noch bis ${label} ${currentYear}? Berechnen Sie den exakten Countdown und die verbleibende Zeit online – kostenlos und sofort.`
+            : `How many days until ${label} ${currentYear}? Calculate the exact countdown and remaining time to ${label} online – free, fast, and highly precise.`;
     }
 
     // robots: prevent index bloat for non-canonical number variations

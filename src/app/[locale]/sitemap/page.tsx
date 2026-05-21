@@ -25,7 +25,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
     return {
         title: locale === 'de' ? 'Sitemap – Alle Seiten' : 'Sitemap',
-        description: `Übersicht aller Tools, Ratgeber und rechtlichen Informationen von ${DOMAIN}.`,
+        description: locale === 'de'
+            ? `Inhaltsverzeichnis und Übersicht aller Tools, Ratgeber und rechtlichen Informationen von ${DOMAIN}. Finden Sie schnell den passenden Datumsrechner.`
+            : `Sitemap of all calculators, expert guides, and legal information on ${DOMAIN}. Find the perfect date difference or business day tool instantly.`,
         alternates: {
             canonical: fullUrl,
             languages
