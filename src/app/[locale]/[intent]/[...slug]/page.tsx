@@ -81,6 +81,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const isAdd = internalIntent === 'addieren' || internalIntent === 'add';
     const isDiff = internalIntent === 'differenz' || internalIntent === 'difference';
     const currentYear = new Date().getFullYear();
+    const tEvents = await getTranslations({ locale, namespace: 'Events' });
     
     let title = isDe 
         ? `${displaySlug} – Exakte Berechnung online`
@@ -91,7 +92,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         : `Use the free date calculator for exact results on ${displaySlug}. ISO 8601 compliant, precise and lightning fast.`;
 
     if (isAdd) {
-        const match = (canonicalSlug || canonicalSlugStr).match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
+        const match = (canonicalSlug || canonicalSlugStr).match(/^(\d+)-(tage|monate|jahre|jahr)-ab-heute$/);
         if (match) {
             const num = parseInt(match[1], 10);
             const unit = match[2];
@@ -99,29 +100,38 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             let resultDate = today;
             if (unit === 'tage') resultDate = addDays(today, num);
             else if (unit === 'monate') resultDate = addMonths(today, num);
-            else if (unit === 'jahre') resultDate = addYears(today, num);
+            else if (unit === 'jahre' || unit === 'jahr') resultDate = addYears(today, num);
             
             const dateStr = format(resultDate, 'dd.MM.yyyy');
-            const displayUnit = unit === 'tage' ? 'Tage' : unit === 'monate' ? 'Monate' : 'Jahr';
-            const unitLabel = unit === 'tage' ? 'Tagen' : unit === 'monate' ? 'Monaten' : 'Jahr';
+            
+            const displayUnit = isDe 
+                ? (unit === 'tage' ? 'Tage' : unit === 'monate' ? 'Monate' : 'Jahr')
+                : (unit === 'tage' ? 'days' : unit === 'monate' ? 'months' : (num === 1 ? 'year' : 'years'));
+            
+            const unitLabel = isDe
+                ? (unit === 'tage' ? 'Tagen' : unit === 'monate' ? 'Monaten' : 'Jahr')
+                : (unit === 'tage' ? 'days' : unit === 'monate' ? 'months' : (num === 1 ? 'year' : 'years'));
 
             title = isDe 
                 ? `${num} ${displayUnit} ab heute – Welches Datum ist das? (Sofort-Ergebnis)`
-                : `${num} ${unit} from today – What date is that?`;
+                : `${num} ${displayUnit} from today – What date is that?`;
             description = isDe
                 ? `In ${num} ${unitLabel} ab heute ist es der ${dateStr}. Jetzt sofort berechnen – kostenlos, mit Schaltjahr-Genauigkeit & ohne Anmeldung.`
-                : `In ${num} ${unit} from today it is ${dateStr}. Calculate now – free and precise.`;
+                : `In ${num} ${unitLabel} from today it is ${dateStr}. Calculate now – free and precise.`;
         }
     } else if (isDiff) {
-        const eventLabels: Record<string, string> = {
-            'tage-bis-weihnachten': 'Weihnachten',
-            'tage-bis-silvester': 'Silvester',
-            'tage-bis-neujahr': 'Neujahr',
-            'tage-bis-ostern': 'Ostern',
-            'tage-bis-sommeranfang': 'Sommeranfang',
-            'tage-bis-urlaub': 'den Urlaub'
-        };
-        const label = eventLabels[canonicalSlug || canonicalSlugStr] || displaySlug;
+        const eventKey = (canonicalSlug || canonicalSlugStr).replace('tage-bis-', '');
+        let label = displaySlug;
+        try {
+            const eventName = tEvents(eventKey);
+            if (isDe) {
+                label = eventKey === 'urlaub' ? 'zum Urlaub' : eventName;
+            } else {
+                label = eventName;
+            }
+        } catch (e) {
+            // fallback
+        }
         
         title = isDe
             ? `Wie viele Tage bis ${label} ${currentYear}? – Countdown berechnen`
@@ -238,6 +248,8 @@ export default async function ProgrammaticPage({
     };
 
     const isDe = locale === 'de';
+    const isAdd = internalIntent === 'addieren' || internalIntent === 'add';
+    const isDiff = internalIntent === 'differenz' || internalIntent === 'difference';
 
     // Breadcrumbs
     const breadcrumbItems = [
@@ -249,25 +261,78 @@ export default async function ProgrammaticPage({
     // FAQ Generation
     const faqItems = [];
     if (internalIntent === 'addieren' || internalIntent === 'add') {
-        const match = canonicalSlugStr.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
+        const match = canonicalSlugStr.match(/^(\d+)-(tage|monate|jahre|jahr)-ab-heute$/);
         if (match) {
             const num = match[1];
             const unit = match[2];
-            const unitLabel = isDe ? (unit === 'tage' ? 'Tagen' : unit === 'monate' ? 'Monaten' : 'Jahr') : unit;
+            let unitLabel = '';
+            if (isDe) {
+                unitLabel = unit === 'tage' ? 'Tagen' : unit === 'monate' ? 'Monaten' : 'Jahr';
+            } else {
+                unitLabel = unit === 'tage' ? 'days' : unit === 'monate' ? 'months' : (num === '1' ? 'year' : 'years');
+            }
             faqItems.push({
-                question: isDe ? `Welches Datum ist in ${num} ${unitLabel} ab heute?` : `What date is ${num} ${unit} from today?`,
+                question: isDe ? `Welches Datum ist in ${num} ${unitLabel} ab heute?` : `What date is ${num} ${unitLabel} from today?`,
                 answer: isDe 
                     ? `In exakt ${num} ${unitLabel} ab heute erreichen wir das berechnete Zieldatum. Unser Rechner berücksichtigt dabei alle Schaltjahre.`
-                    : `In exactly ${num} ${unit} from today, we reach the calculated target date. Our calculator accounts for all leap years.`
+                    : `In exactly ${num} ${unitLabel} from today, we reach the calculated target date. Our calculator accounts for all leap years.`
             });
         }
     } else {
+        const eventKey = canonicalSlugStr.replace('tage-bis-', '');
+        let eventName = '';
+        try {
+            eventName = tEvents(eventKey);
+        } catch (e) {
+            eventName = displaySlug.replace('tage bis ', '');
+        }
+
+        const label = isDe 
+            ? (eventKey === 'urlaub' ? 'den Urlaub' : eventName)
+            : eventName;
+
         faqItems.push({
-            question: isDe ? `Wie viele Tage sind es bis ${displaySlug.replace('tage bis ', '')} ${new Date().getFullYear()}?` : `How many days until ${displaySlug}?`,
+            question: isDe ? `Wie viele Tage sind es bis ${label} ${new Date().getFullYear()}?` : `How many days until ${label}?`,
             answer: isDe
-                ? `Mit unserem kostenlosen Online-Rechner ermitteln Sie sofort die verbleibenden Tage bis ${displaySlug.replace('tage bis ', '')}.`
-                : `Use our free online calculator to instantly determine the remaining days until ${displaySlug}.`
+                ? `Mit unserem kostenlosen Online-Rechner ermitteln Sie sofort die verbleibenden Tage bis ${label}.`
+                : `Use our free online calculator to instantly determine the remaining days until ${label}.`
         });
+    }
+
+    // H1 Generation
+    let h1Text = '';
+    if (isAdd) {
+        const match = canonicalSlugStr.match(/^(\d+)-(tage|monate|jahre|jahr)-ab-heute$/);
+        if (match) {
+            const num = parseInt(match[1], 10);
+            const unit = match[2];
+            if (isDe) {
+                const displayUnit = unit === 'tage' ? 'Tage' : unit === 'monate' ? 'Monate' : 'Jahr';
+                h1Text = `${num} ${displayUnit} ab heute`;
+            } else {
+                const displayUnit = unit === 'tage' ? 'days' : unit === 'monate' ? 'months' : (num === 1 ? 'year' : 'years');
+                h1Text = `${num} ${displayUnit} from today`;
+            }
+        } else {
+            h1Text = displaySlug.charAt(0).toUpperCase() + displaySlug.slice(1);
+        }
+    } else if (isDiff) {
+        const eventKey = canonicalSlugStr.replace('tage-bis-', '');
+        let eventName = '';
+        try {
+            eventName = tEvents(eventKey);
+        } catch (e) {
+            eventName = displaySlug.replace('tage bis ', '');
+        }
+
+        if (isDe) {
+            const label = eventKey === 'urlaub' ? 'zum Urlaub' : eventName;
+            h1Text = `Wie viele Tage bis ${label}?`;
+        } else {
+            h1Text = `How many days until ${eventName}?`;
+        }
+    } else {
+        h1Text = displaySlug.charAt(0).toUpperCase() + displaySlug.slice(1);
     }
 
     return (
@@ -293,7 +358,10 @@ export default async function ProgrammaticPage({
                 <span className="text-white/80" aria-current="page">{correctSlug.replace(/-/g, ' ')}</span>
             </nav>
 
-            <header className="w-full text-center space-y-8 animate-slide-up-fade">
+            <header className="w-full text-center space-y-6 animate-slide-up-fade">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
+                    {h1Text}
+                </h1>
                 <InstantResultClient 
                     intent={internalIntent.toLowerCase()} 
                     slugStr={canonicalSlugStr} 

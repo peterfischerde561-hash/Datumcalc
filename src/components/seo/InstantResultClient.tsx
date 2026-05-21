@@ -38,17 +38,24 @@ export function InstantResultClient({ intent, slugStr, locale, translations }: I
 
         try {
             if (intent === 'addieren' || intent === 'add') {
-                const match = slugStr.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
+                const match = slugStr.match(/^(\d+)-(tage|monate|jahre|jahr)-ab-heute$/);
                 if (match) {
                     const amount = parseInt(match[1], 10);
                     const unit = match[2];
                     let resultDate;
                     if (unit === 'tage') resultDate = addDays(today, amount);
                     else if (unit === 'monate') resultDate = addMonths(today, amount);
-                    else if (unit === 'jahre') resultDate = addYears(today, amount);
+                    else if (unit === 'jahre' || unit === 'jahr') resultDate = addYears(today, amount);
 
                     if (resultDate) {
-                        const unitLabel = unit === 'tage' ? translations.days : unit === 'monate' ? translations.months : translations.years;
+                        let unitLabel = '';
+                        if (unit === 'tage') {
+                            unitLabel = translations.days;
+                        } else if (unit === 'monate') {
+                            unitLabel = translations.months;
+                        } else {
+                            unitLabel = amount === 1 ? (locale === 'de' ? 'Jahr' : 'Year') : translations.years;
+                        }
                         setResult({
                             headline: `${translations.in} ${amount} ${unitLabel} ${translations.is}`,
                             highlight: format(resultDate, 'EEEE, dd. MMMM yyyy', { locale: loc }),
@@ -131,9 +138,9 @@ export function InstantResultClient({ intent, slugStr, locale, translations }: I
             <p className="text-xl md:text-2xl font-bold text-white/50 tracking-[0.2em] uppercase">
                 {result.headline}
             </p>
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/30 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)] py-4">
+            <div className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/30 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)] py-4">
                 {result.highlight}
-            </h1>
+            </div>
             <p className="text-xl text-white/70 font-medium">
                 {result.subtext}
             </p>
