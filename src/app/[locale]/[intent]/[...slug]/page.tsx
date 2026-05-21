@@ -210,7 +210,7 @@ export default async function ProgrammaticPage({
     if (!isExact && canonicalSlug) {
         const locSlug = translateSlug(canonicalSlug, locale);
         const targetPath = getCanonicalPath(locale, internalIntent, locSlug);
-        redirect(targetPath);
+        permanentRedirect(targetPath);
     } 
 
     const tSlug = await getTranslations({ locale, namespace: 'SlugPage' });

@@ -1,5 +1,6 @@
 import { Link } from '@/i18n/routing';
 import { translateSlug } from '@/lib/seo/translations';
+import { resolveCanonicalQuery } from '@/lib/seo/queryModel';
 
 const SHORTCUTS = [
     { days: 30, color: 'hover:border-neon/50' },
@@ -19,7 +20,9 @@ export function QuickShortcuts({ locale }: { locale: string }) {
             </span>
             {SHORTCUTS.map((s) => {
                 const slug = `${s.days}-tage-ab-heute`;
-                const locSlug = translateSlug(slug, locale);
+                const { canonicalSlug } = resolveCanonicalQuery(slug);
+                const finalSlug = canonicalSlug || slug;
+                const locSlug = translateSlug(finalSlug, locale);
                 return (
                     <Link 
                         key={s.days}

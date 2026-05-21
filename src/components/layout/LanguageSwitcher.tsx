@@ -5,6 +5,7 @@ import { locales, usePathname, useRouter, routing } from '@/i18n/routing';
 import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 
 import { translateSlug, reverseTranslateSlug, getCanonicalPath, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { getLocalizedArticleSlug } from '@/lib/articles';
 
 export function LanguageSwitcher() {
     const t = useTranslations('Common.languages');
@@ -31,7 +32,8 @@ export function LanguageSwitcher() {
             if (pathname.includes('/ratgeber') || pathname.includes('/guide') || pathname.includes('/guia') || pathname.includes('/guida')) {
                 const guideIntent = INTENT_TRANSLATIONS[newLocale]['ratgeber'] || 'ratgeber';
                 const slugStr = Array.isArray(params.slug) ? params.slug.join('/') : (params.slug || '');
-                nextRouter.push(`${prefix}/${guideIntent}/${slugStr}`);
+                const locSlug = getLocalizedArticleSlug(slugStr, locale, newLocale);
+                nextRouter.push(`${prefix}/${guideIntent}/${locSlug}`);
             } else if (currentSlugStr) {
                 // Calculator deep link
                 const canonicalSlug = reverseTranslateSlug(currentSlugStr, locale);
