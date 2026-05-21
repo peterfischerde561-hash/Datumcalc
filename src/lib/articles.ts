@@ -34,7 +34,7 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'was-ist-ein-arbeitstag',
-            title: 'Was ist ein Arbeitstag? – Definition, Werktage & Fristen',
+            title: 'Was ist ein Arbeitstag? Definition & Gesetz',
             description: 'Was ist ein Arbeitstag? Definition, Unterschied zu Werktagen und was bei gesetzlichen Fristen zu beachten ist – einfach erklärt.',
             publishedAt: '25. März 2024',
             readTime: '3 min',
@@ -72,7 +72,7 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'iso-8601-erklaert',
-            title: 'ISO 8601 einfach erklärt – Datum & Zeit richtig formatieren',
+            title: 'ISO 8601 einfach erklärt (Datum & Zeit)',
             description: 'ISO 8601 einfach erklärt: Der internationale Standard für Datum und Zeit – Aufbau, Beispiele und warum er wichtig ist.',
             publishedAt: '26. März 2024',
             readTime: '4 min',
@@ -114,7 +114,7 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'what-is-a-business-day',
-            title: 'What is a Business Day? Definition and Legal Regulations',
+            title: 'What is a Business Day? Definition & Rules',
             description: 'Learn everything about the term business day, how it differs from a working day and what to consider for deadlines.',
             publishedAt: 'March 25, 2024',
             readTime: '3 min',
@@ -149,7 +149,7 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'iso-8601-explained',
-            title: 'ISO 8601 Explained: The International Standard for Date and Time',
+            title: 'ISO 8601 Standard Explained: Date & Time',
             description: 'Why ISO 8601 is the most important standard for digital time measurement and how to apply it correctly.',
             publishedAt: 'March 26, 2024',
             readTime: '4 min',

@@ -113,8 +113,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
                 : (unit === 'tage' ? 'days' : unit === 'monate' ? 'months' : (num === 1 ? 'year' : 'years'));
 
             title = isDe 
-                ? `${num} ${displayUnit} ab heute – Welches Datum ist das? (Sofort-Ergebnis)`
-                : `${num} ${displayUnit} from today – What date is that?`;
+                ? `${num} ${displayUnit} ab heute – Welches Datum?`
+                : `${num} ${displayUnit} from today – What date?`;
             description = isDe
                 ? `In ${num} ${unitLabel} ab heute ist es der ${dateStr}. Jetzt sofort berechnen – kostenlos, mit Schaltjahr-Genauigkeit & ohne Anmeldung.`
                 : `In ${num} ${unitLabel} from today it is ${dateStr}. Calculate now – free and precise.`;
@@ -134,8 +134,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         }
         
         title = isDe
-            ? `Wie viele Tage bis ${label} ${currentYear}? – Countdown berechnen`
-            : `How many days until ${label} ${currentYear}? – Countdown`;
+            ? `Wie viele Tage bis ${label} ${currentYear}?`
+            : `How many days until ${label} ${currentYear}?`;
         description = isDe
             ? `Wie viele Tage sind es noch bis ${label} ${currentYear}? Jetzt den genauen Countdown berechnen – kostenlos und sofort.`
             : `How many days until ${label} ${currentYear}? Calculate the exact countdown now – free and instant.`;

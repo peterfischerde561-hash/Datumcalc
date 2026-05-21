@@ -39,41 +39,41 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const metaData: Record<string, { title: string; description: string }> = {
         'differenz': {
             de: {
-                title: 'Datumsdifferenz berechnen – Tage zwischen zwei Daten',
+                title: 'Tage zwischen zwei Daten berechnen',
                 description: 'Berechnen Sie exakt wie viele Tage, Wochen oder Monate zwischen zwei Daten liegen. Kostenlos, präzise & sofort – ISO 8601 konform.'
             },
             en: {
-                title: 'Calculate Date Difference – Days Between Two Dates',
+                title: 'Calculate Days Between Two Dates',
                 description: 'Calculate exactly how many days, weeks or months lie between two dates. Free, precise & instant – ISO 8601 compliant.'
             }
         },
         'addieren': {
             de: {
-                title: 'Datum addieren & subtrahieren – Tage, Wochen, Monate ab heute',
+                title: 'Datum addieren & subtrahieren',
                 description: 'Datum addieren oder subtrahieren: Welches Datum ist in X Tagen, Wochen oder Monaten? Sofortige Berechnung – kostenlos & ohne Anmeldung.'
             },
             en: {
-                title: 'Add & Subtract Dates – Days, Weeks, Months from Today',
+                title: 'Add & Subtract Dates Online',
                 description: 'Add or subtract dates: which date is in X days, weeks or months? Instant calculation – free & no registration.'
             }
         },
         'arbeitstage': {
             de: {
-                title: 'Arbeitstage berechnen – Werktage zwischen zwei Daten',
+                title: 'Arbeitstage & Werktage berechnen',
                 description: 'Netto-Arbeitstage zwischen zwei Daten berechnen – ohne Wochenenden. Kostenlos, präzise und sofort verfügbar.'
             },
             en: {
-                title: 'Calculate Business Days – Working Days Between Two Dates',
+                title: 'Calculate Business & Working Days',
                 description: 'Calculate net business days between two dates – without weekends. Free, precise and instantly available.'
             }
         },
         'alter': {
             de: {
-                title: 'Altersrechner – Alter in Jahren, Monaten & Tagen berechnen',
+                title: 'Altersrechner – Alter berechnen',
                 description: 'Berechnen Sie Ihr genaues Alter in Jahren, Monaten, Wochen und Tagen. Kostenloser Altersrechner – ohne Anmeldung.'
             },
             en: {
-                title: 'Age Calculator – Calculate Age in Years, Months & Days',
+                title: 'Age Calculator – Calculate Age',
                 description: 'Calculate your exact age in years, months, weeks and days. Free age calculator – no registration.'
             }
         }

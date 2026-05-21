@@ -36,7 +36,7 @@ export async function generateMetadata(
     languages['x-default'] = `${SITE_URL}`;
 
     const defaultTitle = locale === 'de' 
-        ? 'Datumsrechner – Differenz, Arbeitstage & Alter online berechnen'
+        ? 'Datumsrechner – Tage, Arbeitstage & Alter berechnen'
         : 'Date Calculator – Count Days, Add Dates & Business Days';
 
     const defaultDescription = locale === 'de'

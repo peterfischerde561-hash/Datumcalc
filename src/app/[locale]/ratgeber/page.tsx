@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     
     // SEO Optimized Titles
     const title = isDe 
-        ? "Ratgeber Datumsberechnung – Fristen, Kalender & Zeitrechnung" 
-        : "Date Calculation Guides – Deadlines, Calendars & Time spans";
+        ? "Ratgeber zur Datumsberechnung & Fristen" 
+        : "Date Calculation Guides & Deadlines";
         
     const description = isDe
         ? "Ratgeber zur Datumsberechnung: Schaltjahre, Arbeitstage, ISO 8601 und Kalenderwochen verständlich erklärt."
