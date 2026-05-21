@@ -4,24 +4,21 @@ import { SITE_URL, DOMAIN } from '@/lib/constants';
 
 export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
-import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = SITE_URL;
-    const locSlug = INTENT_TRANSLATIONS[locale]['impressum'];
-    const prefix = locale === 'de' ? '' : `/${locale}`;
-    const fullUrl = `${siteUrl}${prefix}/${locSlug}`;
+    const fullUrl = `${siteUrl}${getCanonicalPath(locale, 'impressum')}`;
 
     // Build hreflang alternates
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        const lp = loc === 'de' ? '' : `/${loc}`;
-        languages[loc] = `${siteUrl}${lp}/${INTENT_TRANSLATIONS[loc]['impressum']}`;
+        languages[loc] = `${siteUrl}${getCanonicalPath(loc, 'impressum')}`;
     });
-    languages['x-default'] = `${siteUrl}/impressum`;
+    languages['x-default'] = `${siteUrl}${getCanonicalPath('de', 'impressum')}`;
 
     return {
         title: locale === 'de' ? 'Impressum' : 'Imprint & Legal Notice',

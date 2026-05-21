@@ -5,14 +5,13 @@ import { SITE_URL } from '@/lib/constants';
 
 export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
-import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     setRequestLocale(locale);
     const isDe = locale === 'de';
     const siteUrl = SITE_URL;
-    const locSlug = INTENT_TRANSLATIONS[locale]['ratgeber'];
     
     // SEO Optimized Titles
     const title = isDe 
@@ -25,15 +24,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['ratgeber']}`;
+        languages[loc] = `${siteUrl}${getCanonicalPath(loc, 'ratgeber')}`;
     });
-    languages['x-default'] = `${siteUrl}/de/ratgeber`;
+    languages['x-default'] = `${siteUrl}${getCanonicalPath('de', 'ratgeber')}`;
 
     return {
         title,
         description,
         alternates: {
-            canonical: `${siteUrl}/${locale}/${locSlug}`,
+            canonical: `${siteUrl}${getCanonicalPath(locale, 'ratgeber')}`,
             languages
         }
     };

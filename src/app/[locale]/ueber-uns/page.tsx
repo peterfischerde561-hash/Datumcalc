@@ -4,7 +4,7 @@ import { SITE_URL, DOMAIN } from '@/lib/constants';
 
 export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
-import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -12,17 +12,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = SITE_URL;
-    const locSlug = INTENT_TRANSLATIONS[locale]['ueber-uns'];
-    const prefix = locale === 'de' ? '' : `/${locale}`;
-    const fullUrl = `${siteUrl}${prefix}/${locSlug}`;
+    const fullUrl = `${siteUrl}${getCanonicalPath(locale, 'ueber-uns')}`;
 
     // Build hreflang alternates
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        const lp = loc === 'de' ? '' : `/${loc}`;
-        languages[loc] = `${siteUrl}${lp}/${INTENT_TRANSLATIONS[loc]['ueber-uns']}`;
+        languages[loc] = `${siteUrl}${getCanonicalPath(loc, 'ueber-uns')}`;
     });
-    languages['x-default'] = `${siteUrl}/ueber-uns`;
+    languages['x-default'] = `${siteUrl}${getCanonicalPath('de', 'ueber-uns')}`;
 
     return {
         title: locale === 'de' ? 'Über uns' : 'About us',

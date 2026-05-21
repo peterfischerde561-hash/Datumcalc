@@ -47,6 +47,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         const locSlug = getLocalizedArticleSlug(slug, locale, loc);
         languages[loc] = `${siteUrl}${getCanonicalPath(loc, 'ratgeber', locSlug)}`;
     });
+    const deSlug = getLocalizedArticleSlug(slug, locale, 'de');
+    languages['x-default'] = `${siteUrl}${getCanonicalPath('de', 'ratgeber', deSlug)}`;
 
     return {
         title: article.title,
