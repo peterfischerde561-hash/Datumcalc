@@ -46,6 +46,64 @@ const ADD_USE_CASES: Record<string, string[]> = {
     ],
 };
 
+// Bespoke, page-specific context for each indexable add/subtract interval.
+// Keyed by the canonical German slug. This is the unique, helpful paragraph
+// that differentiates one interval page from another.
+const ADD_CONTEXT: Record<string, { de: string; en: string }> = {
+    '30-tage-ab-heute': {
+        de: '30 Tage gehören zu den häufigsten Fristen im Alltag: Zahlungsziele auf Rechnungen, das gesetzliche Widerrufsrecht bei vielen Online-Käufen und kurze Kündigungsfristen werden oft in genau diesem Rahmen angegeben.',
+        en: '30 days is one of the most common everyday deadlines: invoice payment terms, the statutory right of withdrawal for many online purchases and short notice periods are frequently set within exactly this window.',
+    },
+    '45-tage-ab-heute': {
+        de: 'Eine Frist von 45 Tagen begegnet einem häufig bei verlängerten Zahlungszielen, Rückgabe- oder Reklamationsfenstern und mittelfristigen Projektabschnitten zwischen Monats- und Quartalsgrenzen.',
+        en: 'A 45-day deadline often appears with extended payment terms, return or complaint windows and medium-term project phases sitting between a month and a quarter.',
+    },
+    '60-tage-ab-heute': {
+        de: '60 Tage entsprechen rund zwei Monaten und sind ein typisches Zahlungsziel im Geschäftsverkehr (B2B) sowie eine gängige Kündigungs- oder Übergangsfrist in vielen Verträgen.',
+        en: '60 days is roughly two months and is a typical payment term in business (B2B) as well as a common notice or transition period in many contracts.',
+    },
+    '90-tage-ab-heute': {
+        de: '90 Tage decken etwa ein Quartal ab. Dieser Zeitraum wird gern für Probezeit-Etappen, 90-Tage-Pläne im neuen Job und befristete Aktions- oder Garantiezeiträume genutzt.',
+        en: '90 days covers roughly a quarter. This span is popular for probation milestones, 90-day plans in a new job and limited promotional or warranty periods.',
+    },
+    '100-tage-ab-heute': {
+        de: '100 Tage sind vor allem als symbolischer Meilenstein bekannt – etwa die „100-Tage-Bilanz“ neuer Amtsträger oder Mitarbeiter sowie für persönliche Challenges und Lernziele.',
+        en: '100 days is best known as a symbolic milestone – such as the "first 100 days" review of new officials or employees, and for personal challenges and learning goals.',
+    },
+    '120-tage-ab-heute': {
+        de: '120 Tage umfassen etwa vier Monate und tauchen häufig bei längeren Projektphasen, Förder- oder Antragsfristen und saisonalen Planungen auf.',
+        en: '120 days spans about four months and often comes up with longer project phases, grant or application deadlines and seasonal planning.',
+    },
+    '150-tage-ab-heute': {
+        de: '150 Tage liegen bei rund fünf Monaten – ein üblicher Horizont für mehrstufige Projekte, die Vorbereitung größerer Veranstaltungen oder mittelfristige Sparziele.',
+        en: '150 days is around five months – a common horizon for multi-stage projects, the run-up to larger events or medium-term savings goals.',
+    },
+    '200-tage-ab-heute': {
+        de: '200 Tage entsprechen gut einem halben Jahr und dienen oft als runde Wegmarke für langfristige Vorhaben, Trainingspläne oder Countdowns.',
+        en: '200 days is a good half-year and often serves as a round marker for long-term plans, training schedules or countdowns.',
+    },
+    '500-tage-ab-heute': {
+        de: '500 Tage sind rund 1,4 Jahre. Dieser ungewöhnliche, runde Zeitraum wird gern für langfristige Countdowns, Jubiläen oder ambitionierte Etappenziele gewählt.',
+        en: '500 days is around 1.4 years. This unusual round span is popular for long-term countdowns, anniversaries or ambitious milestone goals.',
+    },
+    '730-tage-ab-heute': {
+        de: '730 Tage entsprechen genau zwei Jahren (ohne Schaltjahr). Zwei Jahre sind unter anderem für die gesetzliche Gewährleistung bei Neuwaren und viele Verjährungs- und Garantiefristen relevant.',
+        en: '730 days equals exactly two years (without a leap year). Two years is relevant for, among other things, the statutory warranty on new goods and many limitation and guarantee periods.',
+    },
+    '1000-tage-ab-heute': {
+        de: '1000 Tage sind ungefähr 2,7 Jahre und ein beliebter „runder“ Meilenstein für Beziehungen, Projekte oder persönliche Jubiläen, der sich gut als Countdown verfolgen lässt.',
+        en: '1000 days is roughly 2.7 years and a popular "round" milestone for relationships, projects or personal anniversaries that works well as a countdown.',
+    },
+    '6-monate-ab-heute': {
+        de: 'Sechs Monate sind ein klassischer Halbjahres-Horizont: Sie entsprechen der üblichen Dauer einer Probezeit, vieler Kündigungsfristen zum Halbjahr und mittelfristiger Zielsetzungen.',
+        en: 'Six months is a classic half-year horizon: it matches the usual length of a probation period, many half-yearly notice periods and medium-term goals.',
+    },
+    '1-jahr-ab-heute': {
+        de: 'Ein Jahr ab heute ist die Bezugsgröße für zahlreiche Jahresfristen – vom Beginn vieler Verjährungsfristen über Garantie- und Abo-Laufzeiten bis hin zu persönlichen Jahrestagen.',
+        en: 'One year from today is the reference point for numerous annual deadlines – from the start of many limitation periods to warranty and subscription terms and personal anniversaries.',
+    },
+};
+
 // Known events with grammatically correct German forms. `de` is the
 // nominative form (sentence start); `bis` is the form that follows "bis ".
 const EVENT_NAMES: Record<string, {
@@ -87,6 +145,60 @@ function isDiffIntent(intent: string) {
     return intent === 'differenz' || intent === 'difference';
 }
 
+// Easter Sunday (Gregorian) via the Anonymous Gregorian / Computus algorithm.
+function computeEaster(year: number): { month: number; day: number } {
+    const a = year % 19;
+    const b = Math.floor(year / 100);
+    const c = year % 100;
+    const d = Math.floor(b / 4);
+    const e = b % 4;
+    const f = Math.floor((b + 8) / 25);
+    const g = Math.floor((b - f + 1) / 3);
+    const h = (19 * a + b - d - g + 15) % 30;
+    const i = Math.floor(c / 4);
+    const k = c % 4;
+    const l = (32 + 2 * e + 2 * i - h - k) % 7;
+    const m = Math.floor((a + 11 * h + 22 * l) / 451);
+    const month = Math.floor((h + l - 7 * m + 114) / 31); // 3 = March, 4 = April
+    const day = ((h + l - 7 * m + 114) % 31) + 1;
+    return { month: month - 1, day }; // 0-indexed month
+}
+
+// Returns the UTC date of an event in a given year, or null if the event has
+// no fixed calendar date (e.g. "vacation").
+function getEventDate(eventKey: string, year: number): Date | null {
+    switch (eventKey) {
+        case 'weihnachten': return new Date(Date.UTC(year, 11, 25));
+        case 'silvester': return new Date(Date.UTC(year, 11, 31));
+        case 'neujahr': return new Date(Date.UTC(year, 0, 1));
+        case 'sommeranfang': return new Date(Date.UTC(year, 5, 21));
+        case 'ostern': {
+            const { month, day } = computeEaster(year);
+            return new Date(Date.UTC(year, month, day));
+        }
+        default: return null;
+    }
+}
+
+// Builds a "day of the week per year" table for the next 5 years. Returns
+// undefined for events without a fixed date.
+function buildWeekdayTable(eventKey: string, locale: string): { year: number; date: string; weekday: string }[] | undefined {
+    const intlLoc = locale === 'de' ? 'de-DE' : 'en-US';
+    const currentYear = new Date().getFullYear();
+    const rows: { year: number; date: string; weekday: string }[] = [];
+    for (let i = 0; i < 5; i++) {
+        const year = currentYear + i;
+        const d = getEventDate(eventKey, year);
+        if (!d) return undefined;
+        rows.push({
+            year,
+            date: new Intl.DateTimeFormat(intlLoc, { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(d),
+            weekday: new Intl.DateTimeFormat(intlLoc, { weekday: 'long', timeZone: 'UTC' }).format(d),
+        });
+    }
+    return rows;
+}
+
 function resolveEventKey(slug: string, locale: string): string | null {
     const canonical = reverseTranslateSlug(slug, locale);
     const match = canonical.match(/^tage-bis-(.+)$/);
@@ -126,7 +238,12 @@ export function generateSEOContent(
     slug: string,
     locale: Locale,
     numValue?: number
-): { heading: string; paragraphs: string[]; useCases: string[] } {
+): {
+    heading: string;
+    paragraphs: string[];
+    useCases: string[];
+    weekdayTable?: { heading: string; rows: { year: number; date: string; weekday: string }[] };
+} {
     const loc = locale === 'de' ? 'de' : 'en';
     const isDe = loc === 'de';
 
@@ -158,7 +275,21 @@ export function generateSEOContent(
                 : `Unlike fixed holidays, Easter follows the lunar calendar: Easter Sunday is the first Sunday after the spring full moon, which is why the date shifts from year to year.`);
         }
 
-        return { heading, paragraphs, useCases: [] };
+        let weekdayTable;
+        if (eventKey) {
+            const rows = buildWeekdayTable(eventKey, locale);
+            if (rows) {
+                const headingName = isDe ? (ev ? ev.de.replace(/^Der /, 'der ') : name) : name;
+                weekdayTable = {
+                    heading: isDe
+                        ? `Auf welchen Wochentag fällt ${headingName} in den nächsten Jahren?`
+                        : `What day of the week is ${headingName} in the coming years?`,
+                    rows,
+                };
+            }
+        }
+
+        return { heading, paragraphs, useCases: [], weekdayTable };
     }
 
     // ── Add / subtract pages (and generic fallback) ──
@@ -170,6 +301,8 @@ export function generateSEOContent(
         ? (isDe ? `${num} ${nom} ab heute – so wird gerechnet` : `${num} ${nom} from today – how it is calculated`)
         : (isDe ? 'So funktioniert die Berechnung' : 'How the calculation works');
 
+    const canonical = reverseTranslateSlug(slug, locale);
+    const ctx = ADD_CONTEXT[canonical] ? ADD_CONTEXT[canonical][loc] : '';
     const explanation = pickVariation(ADD_EXPLANATIONS[loc], seed)(num, nom, dat);
     const insight = num ? generateContextualInsight(num, nom.toLowerCase(), loc) : '';
 
@@ -177,7 +310,9 @@ export function generateSEOContent(
         ? `Die Berechnung folgt dem **gregorianischen Kalender**: Ein Normaljahr hat 365 Tage, ein Schaltjahr 366. Schaltjahre treten alle vier Jahre auf – außer in vollen Jahrhunderten, die nicht durch 400 teilbar sind. Diese Regel ist im Rechner fest hinterlegt, sodass auch lange Zeiträume korrekt abgebildet werden.`
         : `The calculation follows the **Gregorian calendar**: a normal year has 365 days, a leap year 366. Leap years occur every four years – except in full centuries that are not divisible by 400. This rule is built into the calculator, so even long spans are mapped correctly.`;
 
-    const paragraphs = [explanation, insight, methodNote].filter(Boolean);
+    // Indexable intervals lead with their bespoke context (unique per page);
+    // the generic rotating explanation is reserved for non-indexed variations.
+    const paragraphs = (ctx ? [ctx, insight, methodNote] : [explanation, insight, methodNote]).filter(Boolean);
 
     const cases = ADD_USE_CASES[loc];
     const useCases = isAddIntent(intent)

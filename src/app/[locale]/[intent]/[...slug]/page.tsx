@@ -27,7 +27,7 @@ export const dynamic = 'force-static';
 export const revalidate = false; 
 export const dynamicParams = true; 
 import { InstantResultClient } from '@/components/seo/InstantResultClient';
-import { ToolSchema, FAQSchema } from '@/components/seo/ToolSchema';
+import { ToolSchema } from '@/components/seo/ToolSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string; slug: string[] }> }) {
@@ -247,47 +247,6 @@ export default async function ProgrammaticPage({
         { name: displaySlug, item: `${SITE_URL}${correctPath}` }
     ];
 
-    // FAQ Generation
-    const faqItems = [];
-    if (internalIntent === 'addieren' || internalIntent === 'add') {
-        const match = canonicalSlugStr.match(/^(\d+)-(tage|monate|jahre|jahr)-ab-heute$/);
-        if (match) {
-            const num = match[1];
-            const unit = match[2];
-            let unitLabel = '';
-            if (isDe) {
-                unitLabel = unit === 'tage' ? 'Tagen' : unit === 'monate' ? 'Monaten' : 'Jahr';
-            } else {
-                unitLabel = unit === 'tage' ? 'days' : unit === 'monate' ? 'months' : (num === '1' ? 'year' : 'years');
-            }
-            faqItems.push({
-                question: isDe ? `Welches Datum ist in ${num} ${unitLabel} ab heute?` : `What date is ${num} ${unitLabel} from today?`,
-                answer: isDe 
-                    ? `In exakt ${num} ${unitLabel} ab heute erreichen wir das berechnete Zieldatum. Unser Rechner berücksichtigt dabei alle Schaltjahre.`
-                    : `In exactly ${num} ${unitLabel} from today, we reach the calculated target date. Our calculator accounts for all leap years.`
-            });
-        }
-    } else {
-        const eventKey = canonicalSlugStr.replace('tage-bis-', '');
-        let eventName = '';
-        try {
-            eventName = tEvents(eventKey);
-        } catch (e) {
-            eventName = displaySlug.replace('tage bis ', '');
-        }
-
-        const label = isDe 
-            ? (eventKey === 'urlaub' ? 'den Urlaub' : eventName)
-            : eventName;
-
-        faqItems.push({
-            question: isDe ? `Wie viele Tage sind es bis ${label} ${new Date().getFullYear()}?` : `How many days until ${label}?`,
-            answer: isDe
-                ? `Mit unserem kostenlosen Online-Rechner ermitteln Sie sofort die verbleibenden Tage bis ${label}.`
-                : `Use our free online calculator to instantly determine the remaining days until ${label}.`
-        });
-    }
-
     // H1 Generation
     let h1Text = '';
     if (isAdd) {
@@ -332,7 +291,6 @@ export default async function ProgrammaticPage({
                 description={isDe ? `Präziser Datumsrechner für ${displaySlug}.` : `Precise date calculator for ${displaySlug}.`} 
                 url={`${SITE_URL}${correctPath}`} 
             />
-            <FAQSchema items={faqItems} />
             <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 space-y-16">
 
             <nav aria-label="Breadcrumb" className="mb-8 hidden sm:flex text-sm text-white/50 items-center justify-center space-x-2 animate-slide-up-fade">
@@ -369,7 +327,7 @@ export default async function ProgrammaticPage({
             </header>
 
             <section aria-label="Share and Convert" className="animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-                <ConversionTools />
+                <ConversionTools locale={locale} />
             </section>
 
             <section aria-label="Interaktiver Rechner" className="w-full max-w-5xl mx-auto rounded-[2.5rem] border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-3xl p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>

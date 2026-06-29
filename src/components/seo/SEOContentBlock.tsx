@@ -37,6 +37,32 @@ export function SEOContentBlock({ intent, slug, locale }: { intent: string; slug
                 })}
             </div>
 
+            {content.weekdayTable && (
+                <div className="mt-8 pt-8 border-t border-white/10">
+                    <h3 className="text-xl font-semibold mb-4 text-neon">{content.weekdayTable.heading}</h3>
+                    <div className="overflow-x-auto rounded-xl border border-white/10">
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="border-b border-white/10 bg-white/[0.03] text-white/80">
+                                    <th scope="col" className="py-3 px-4 font-semibold">{isDe ? 'Jahr' : 'Year'}</th>
+                                    <th scope="col" className="py-3 px-4 font-semibold">{isDe ? 'Datum' : 'Date'}</th>
+                                    <th scope="col" className="py-3 px-4 font-semibold">{isDe ? 'Wochentag' : 'Day of the week'}</th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-white/70 divide-y divide-white/5">
+                                {content.weekdayTable.rows.map((row) => (
+                                    <tr key={row.year} className="hover:bg-white/[0.02]">
+                                        <td className="py-3 px-4 font-medium text-white/90">{row.year}</td>
+                                        <td className="py-3 px-4">{row.date}</td>
+                                        <td className="py-3 px-4">{row.weekday}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+
             {content.useCases.length > 0 && (
                 <div className="mt-8 pt-8 border-t border-white/10">
                     <h3 className="text-xl font-semibold mb-4 text-neon">{isDe ? 'Typische Anwendungsfälle' : 'Typical use cases'}</h3>
