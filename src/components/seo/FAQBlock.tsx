@@ -20,7 +20,7 @@ export function FAQBlock({ intent, slug, locale }: { intent: string; slug: strin
 
     return (
         <section className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 mb-12">
-            <h2 className="text-2xl font-bold mb-8 text-white">Häufig gestellte Fragen (FAQ)</h2>
+            <h2 className="text-2xl font-bold mb-8 text-white">{locale === 'de' ? 'Häufig gestellte Fragen (FAQ)' : 'Frequently Asked Questions (FAQ)'}</h2>
 
             {/* Script for JSON-LD is manually injected safely */}
             <script

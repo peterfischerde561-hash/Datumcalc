@@ -20,7 +20,7 @@ const CONTENT: Record<string, any> = {
             },
             {
                 question: 'Werden Schaltjahre wie der 29. Februar korrekt berechnet?',
-                answer: 'Absolut. Unsere Core-Engine basiert auf ISO-8601-Standards und berechnet Schaltjahre, Schaltsekunden und wechselnde Monatslängen auf den Tag genau, ohne Rundungsfehler.',
+                answer: 'Ja. Der Rechner bildet den gregorianischen Kalender mit der vollständigen Schaltjahrregel ab (alle 4 Jahre, außer in vollen Jahrhunderten, die nicht durch 400 teilbar sind) und berücksichtigt die unterschiedlichen Monatslängen auf den Tag genau.',
             },
             {
                 question: 'Wie viele Tage hat ein Jahr?',
@@ -84,7 +84,7 @@ const CONTENT: Record<string, any> = {
             },
             {
                 question: 'Are leap years like February 29th calculated correctly?',
-                answer: 'Absolutely. Our core engine is based on ISO 8601 standards and calculates leap years, leap seconds and changing month lengths to the exact day, without rounding errors.',
+                answer: 'Yes. The calculator maps the Gregorian calendar with the full leap-year rule (every 4 years, except full centuries not divisible by 400) and accounts for the different month lengths down to the exact day.',
             },
             {
                 question: 'How many days does a year have?',

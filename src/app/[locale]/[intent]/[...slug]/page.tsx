@@ -8,14 +8,10 @@ import { FAQBlock } from '@/components/seo/FAQBlock';
 import { InternalLinksBlock } from '@/components/seo/InternalLinksBlock';
 import { ConversionTools } from '@/components/seo/ConversionTools';
 import { TrustSignals } from '@/components/seo/TrustSignals';
-import { addDays, addMonths, addYears, differenceInDays, format } from 'date-fns';
-import { de, enUS } from 'date-fns/locale';
 import { resolveCanonicalQuery, CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
-
-const dateLocales: Record<string, any> = { de, en: enUS };
 
 const intentToModeMap: Record<string, string> = {
     'differenz': 'difference',
@@ -96,15 +92,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         if (match) {
             const num = parseInt(match[1], 10);
             const unit = match[2];
-            const today = new Date();
-            let resultDate = today;
-            if (unit === 'tage') resultDate = addDays(today, num);
-            else if (unit === 'monate') resultDate = addMonths(today, num);
-            else if (unit === 'jahre' || unit === 'jahr') resultDate = addYears(today, num);
-            
-            const dateStr = format(resultDate, 'dd.MM.yyyy');
-            
-            const displayUnit = isDe 
+
+            const displayUnit = isDe
                 ? (unit === 'tage' ? 'Tage' : unit === 'monate' ? 'Monate' : 'Jahr')
                 : (unit === 'tage' ? 'days' : unit === 'monate' ? 'months' : (num === 1 ? 'year' : 'years'));
             
@@ -116,8 +105,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
                 ? `${num} ${displayUnit} ab heute – Welches Datum?`
                 : `${num} ${displayUnit} from today – What date?`;
             description = isDe
-                ? `In ${num} ${unitLabel} ab heute ist es der ${dateStr}. Nutzen Sie unseren kostenlosen Datumsrechner für präzise Ergebnisse mit Schaltjahr-Genauigkeit.`
-                : `In ${num} ${unitLabel} from today it will be ${dateStr}. Use our free date calculator to find the exact date with leap year accuracy and no registration required.`;
+                ? `Welches Datum ist in ${num} ${unitLabel} ab heute? Der kostenlose Datumsrechner zeigt das genaue Zieldatum samt Wochentag – live berechnet und schaltjahrgenau, ohne Anmeldung.`
+                : `What date is ${num} ${unitLabel} from today? The free date calculator shows the exact target date including the weekday – computed live and leap-year accurate, no registration required.`;
         }
     } else if (isDiff) {
         const eventKey = (canonicalSlug || canonicalSlugStr).replace('tage-bis-', '');

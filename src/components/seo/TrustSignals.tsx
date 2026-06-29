@@ -12,7 +12,7 @@ export function TrustSignals({ locale = 'de' }: { locale?: string }) {
                 <div className="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm group hover:border-neon/30 transition-all">
                     <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
                     <span className="text-white/70 text-xs font-bold uppercase tracking-widest">
-                        {isDe ? 'ISO 8601 Zertifiziert' : 'ISO 8601 Certified'}
+                        {isDe ? 'ISO 8601 konform' : 'ISO 8601 compliant'}
                     </span>
                 </div>
                 <div className="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm group hover:border-neon-blue/30 transition-all">
