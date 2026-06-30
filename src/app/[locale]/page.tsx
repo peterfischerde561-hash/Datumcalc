@@ -67,18 +67,18 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-24">
                 {/* Left Column: Hero Content */}
                 <header className="lg:col-span-7 space-y-8 animate-slide-up-fade">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-neon-blue mb-2">
-                        <span className="w-2 h-2 rounded-full bg-neon-blue animate-pulse" aria-hidden="true"></span>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-bold uppercase tracking-widest text-blue-700 mb-2">
+                        <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" aria-hidden="true"></span>
                         {locale === 'de' ? 'Mathematisch Präzise' : 'Mathematically Precise'}
                     </div>
-                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight leading-[0.95] max-w-2xl bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent">
+                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight leading-[0.95] max-w-2xl text-slate-900">
                         {locale === 'de' ? (
-                            <>Präziser <span className="text-white">Datumsrechner</span> für alle Fristen.</>
+                            <>Präziser <span className="text-blue-700">Datumsrechner</span> für alle Fristen.</>
                         ) : (
-                            <>Precise <span className="text-white">Date Calculator</span> for every deadline.</>
+                            <>Precise <span className="text-blue-700">Date Calculator</span> for every deadline.</>
                         )}
                     </h1>
-                    <p className="text-lg md:text-xl text-white/50 max-w-xl font-medium leading-relaxed">
+                    <p className="text-lg md:text-xl text-slate-600 max-w-xl font-medium leading-relaxed">
                         {locale === 'de' 
                             ? 'Berechnen Sie exakte Zeitspannen, addieren Sie Tage oder ermitteln Sie Netto-Arbeitstage nach ISO-8601 Standard.'
                             : 'Calculate exact time spans, add days or determine net business days according to ISO-8601 standards.'}
@@ -91,18 +91,18 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     </div>
 
                     <div className="flex flex-wrap items-center gap-6 pt-4">
-                        <a href="#tools" className="px-8 py-4 rounded-2xl bg-white text-black font-bold hover:bg-neon transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                        <a href="#tools" className="px-8 py-4 rounded-xl bg-blue-700 text-white font-bold hover:bg-blue-800 transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                             {locale === 'de' ? 'Rechner starten' : 'Start Calculator'}
                         </a>
                         <div className="flex -space-x-2">
-                            {[1, 2, 3].map((i) => (
-                                <div key={i} className="w-10 h-10 rounded-full border-2 border-[#050505] bg-white/10 flex items-center justify-center text-[10px] font-bold overflow-hidden">
-                                    <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${i * 123}`} alt="User" />
+                            {['bg-blue-500', 'bg-emerald-500', 'bg-amber-500'].map((c, i) => (
+                                <div key={i} className={`w-10 h-10 rounded-full border-2 border-white ${c} flex items-center justify-center text-[10px] font-bold text-white`}>
+                                    {String.fromCharCode(65 + i)}
                                 </div>
                             ))}
                             <div className="pl-4 flex flex-col justify-center">
-                                <span className="text-xs font-bold text-white leading-none">2.4k+</span>
-                                <span className="text-[10px] text-white/40 uppercase tracking-tighter">{locale === 'de' ? 'Nutzer täglich' : 'Users daily'}</span>
+                                <span className="text-xs font-bold text-slate-900 leading-none">2.4k+</span>
+                                <span className="text-[10px] text-slate-500 uppercase tracking-tighter">{locale === 'de' ? 'Nutzer täglich' : 'Users daily'}</span>
                             </div>
                         </div>
                     </div>
@@ -116,40 +116,40 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
             {/* Smart Hero CTA Selector - Now below Search */}
             <section id="tools" aria-label={locale === 'de' ? "Tools" : "Tools"} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-24 animate-slide-up-fade" style={{ animationDelay: '0.3s' }}>
-                <Link href={ROUTES.differenz} className="group p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.06] hover:border-white/20 transition-all shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] text-left flex flex-col gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                <Link href={ROUTES.differenz} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
                         <SplitSquareHorizontal className="w-5 h-5" />
                     </div>
                     <div>
-                        <h3 className="text-white font-bold text-lg mb-1">{locale === 'de' ? 'Datumsdifferenz' : 'Date Difference'}</h3>
-                        <p className="text-white/50 text-sm leading-snug">{locale === 'de' ? 'Tage zwischen zwei Daten berechnen' : 'Calculate days between two dates'}</p>
+                        <h3 className="text-slate-900 font-bold text-lg mb-1">{locale === 'de' ? 'Datumsdifferenz' : 'Date Difference'}</h3>
+                        <p className="text-slate-600 text-sm leading-snug">{locale === 'de' ? 'Tage zwischen zwei Daten berechnen' : 'Calculate days between two dates'}</p>
                     </div>
                 </Link>
-                <Link href={ROUTES.addieren} className="group p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.06] hover:border-white/20 transition-all shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] text-left flex flex-col gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-neon/20 flex items-center justify-center text-neon group-hover:scale-110 transition-transform">
+                <Link href={ROUTES.addieren} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-700 group-hover:scale-110 transition-transform">
                         <PlusSquare className="w-5 h-5" />
                     </div>
                     <div>
-                        <h3 className="text-white font-bold text-lg mb-1">{locale === 'de' ? 'Datum addieren' : 'Add to Date'}</h3>
-                        <p className="text-white/50 text-sm leading-snug">{locale === 'de' ? 'Tage addieren oder abziehen' : 'Add or subtract days from a date'}</p>
+                        <h3 className="text-slate-900 font-bold text-lg mb-1">{locale === 'de' ? 'Datum addieren' : 'Add to Date'}</h3>
+                        <p className="text-slate-600 text-sm leading-snug">{locale === 'de' ? 'Tage addieren oder abziehen' : 'Add or subtract days from a date'}</p>
                     </div>
                 </Link>
-                <Link href={ROUTES.arbeitstage} className="group p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.06] hover:border-white/20 transition-all shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] text-left flex flex-col gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-neon-blue/20 flex items-center justify-center text-neon-blue group-hover:scale-110 transition-transform">
+                <Link href={ROUTES.arbeitstage} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center text-sky-600 group-hover:scale-110 transition-transform">
                         <Briefcase className="w-5 h-5" />
                     </div>
                     <div>
-                        <h3 className="text-white font-bold text-lg mb-1">{locale === 'de' ? 'Arbeitstage' : 'Business Days'}</h3>
-                        <p className="text-white/50 text-sm leading-snug">{locale === 'de' ? 'Netto-Arbeitstage ermitteln' : 'Calculate net business days'}</p>
+                        <h3 className="text-slate-900 font-bold text-lg mb-1">{locale === 'de' ? 'Arbeitstage' : 'Business Days'}</h3>
+                        <p className="text-slate-600 text-sm leading-snug">{locale === 'de' ? 'Netto-Arbeitstage ermitteln' : 'Calculate net business days'}</p>
                     </div>
                 </Link>
-                <Link href={ROUTES.alter} className="group p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.06] hover:border-white/20 transition-all shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] text-left flex flex-col gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">
+                <Link href={ROUTES.alter} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600 group-hover:scale-110 transition-transform">
                         <User className="w-5 h-5" />
                     </div>
                     <div>
-                        <h3 className="text-white font-bold text-lg mb-1">{locale === 'de' ? 'Alter berechnen' : 'Age Calculator'}</h3>
-                        <p className="text-white/50 text-sm leading-snug">{locale === 'de' ? 'Genaues Alter in Tagen & Jahren' : 'Exact age in days and years'}</p>
+                        <h3 className="text-slate-900 font-bold text-lg mb-1">{locale === 'de' ? 'Alter berechnen' : 'Age Calculator'}</h3>
+                        <p className="text-slate-600 text-sm leading-snug">{locale === 'de' ? 'Genaues Alter in Tagen & Jahren' : 'Exact age in days and years'}</p>
                     </div>
                 </Link>
             </section>
@@ -157,7 +157,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
 
             {/* Core Calculator Hub */}
-            <section aria-label={locale === 'de' ? "Hauptrechner" : "Main Calculator"} className="w-full max-w-5xl mx-auto rounded-[2.5rem] border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-3xl p-6 md:p-10 min-h-[400px] shadow-[0_0_50px_rgba(0,0,0,0.5)] mb-24 animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
+            <section aria-label={locale === 'de' ? "Hauptrechner" : "Main Calculator"} className="w-full max-w-5xl mx-auto rounded-2xl border border-slate-200 bg-white p-6 md:p-10 min-h-[400px] shadow-2xl mb-24 animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
                 <CalculatorCore />
             </section>
 

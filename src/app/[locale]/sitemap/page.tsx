@@ -61,10 +61,10 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
     return (
         <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <header className="text-center mb-16">
-                <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-white">
+                <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-slate-900">
                     {t('sitemap')}
                 </h1>
-                <p className="text-xl text-white/60">
+                <p className="text-xl text-slate-600">
                     {tSitemap('subtitle')}
                 </p>
             </header>
@@ -72,7 +72,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 {/* 1. Calculator Categories & Tools */}
                 <section className="space-y-8">
-                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3 text-white">
+                    <h2 className="text-2xl font-bold border-b border-slate-200 pb-4 mb-6 flex items-center gap-3 text-slate-900">
                         <span className="text-neon">01.</span> {tSitemap('calculators')}
                     </h2>
                     {calculatorIntents.map(intent => {
@@ -92,19 +92,19 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
 
                         return (
                             <div key={intent.id} className="space-y-4">
-                                <Link href={(`/${internalIntent}` as any)} className="text-lg font-bold hover:text-neon flex items-center gap-2 text-white">
+                                <Link href={(`/${internalIntent}` as any)} className="text-lg font-bold hover:text-blue-700 flex items-center gap-2 text-slate-900">
                                     <span>{intent.icon}</span>
                                     <span className="capitalize">{tNav(internalIntent)}</span>
                                 </Link>
-                                <ul className="pl-8 space-y-2 border-l border-white/5">
+                                <ul className="pl-8 space-y-2 border-l border-slate-200">
                                     {queries.slice(0, 10).map((def) => (
                                         <li key={def.canonicalSlug}>
-                                            <Link 
+                                            <Link
                                                 href={{
                                                     pathname: (`/${internalIntent}/[...slug]` as any),
                                                     params: { slug: [translateSlug(def.canonicalSlug, locale)] }
                                                 }}
-                                                className="text-white/50 hover:text-white transition-colors text-sm"
+                                                className="text-slate-600 hover:text-blue-700 transition-colors text-sm"
                                             >
                                                 {translateSlug(def.canonicalSlug, locale).replace(/-/g, ' ')}
                                             </Link>
@@ -118,7 +118,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
 
                 {/* 2. Guides & Articles */}
                 <section className="space-y-8">
-                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3 text-white">
+                    <h2 className="text-2xl font-bold border-b border-slate-200 pb-4 mb-6 flex items-center gap-3 text-slate-900">
                         <span className="text-neon">02.</span> {tNav('ratgeber')}
                     </h2>
                     <ul className="space-y-4">
@@ -129,10 +129,10 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                                         pathname: '/ratgeber/[slug]',
                                         params: { slug: article.slug }
                                     }}
-                                    className="block p-4 rounded-xl bg-white/5 border border-white/10 hover:border-neon/30 transition-all"
+                                    className="block p-4 rounded-xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all"
                                 >
-                                    <h3 className="font-bold text-white mb-1">{article.title}</h3>
-                                    <p className="text-xs text-white/40 line-clamp-2">{article.description}</p>
+                                    <h3 className="font-bold text-slate-900 mb-1">{article.title}</h3>
+                                    <p className="text-xs text-slate-500 line-clamp-2">{article.description}</p>
                                 </Link>
                             </li>
                         ))}
@@ -141,7 +141,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
 
                 {/* 3. Numeric Variations Directory */}
                 <section className="space-y-8 lg:col-span-3">
-                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3 text-white">
+                    <h2 className="text-2xl font-bold border-b border-slate-200 pb-4 mb-6 flex items-center gap-3 text-slate-900">
                         <span className="text-neon">03.</span> {tSitemap('commonSpans')}
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -160,7 +160,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                                         pathname: '/addieren/[...slug]',
                                         params: { slug: [locSlug] }
                                     }}
-                                    className="px-4 py-2 rounded-lg bg-white/5 border border-white/5 hover:border-neon/30 text-xs text-center text-white/50 hover:text-white transition-all capitalize"
+                                    className="px-4 py-2 rounded-lg bg-white border border-slate-200 hover:border-blue-400 text-xs text-center text-slate-600 hover:text-blue-700 transition-all capitalize"
                                 >
                                     {locSlug.replace(/-/g, ' ')}
                                 </Link>
@@ -171,7 +171,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
 
                 {/* 4. Legal */}
                 <section className="space-y-8">
-                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3 text-white">
+                    <h2 className="text-2xl font-bold border-b border-slate-200 pb-4 mb-6 flex items-center gap-3 text-slate-900">
                         <span className="text-neon">04.</span> {tSitemap('legal')}
                     </h2>
                     <ul className="space-y-3">
@@ -186,21 +186,21 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                             <li key={route}>
                                 <Link 
                                     href={(`/${route}` as any)} 
-                                    className="text-white/60 hover:text-neon flex items-center justify-between group py-2"
+                                    className="text-slate-700 hover:text-blue-700 flex items-center justify-between group py-2"
                                 >
                                     <span className="capitalize">{t(keyMap[route])}</span>
-                                    <div className="w-1 h-1 rounded-full bg-white/20 group-hover:bg-neon transition-colors"></div>
+                                    <div className="w-1 h-1 rounded-full bg-slate-300 group-hover:bg-blue-700 transition-colors"></div>
                                 </Link>
                             </li>
                             );
                         })}
                     </ul>
 
-                    <div className="mt-12 p-6 rounded-2xl bg-gradient-to-br from-neon/10 to-transparent border border-neon/20">
-                        <h3 className="font-bold text-white mb-2 italic">
-                            {isDe ? 'ISO 8601 zertifiziert' : 'ISO 8601 Certified'}
+                    <div className="mt-12 p-6 rounded-2xl bg-blue-50 border border-blue-200">
+                        <h3 className="font-bold text-slate-900 mb-2 italic">
+                            {isDe ? 'ISO 8601 konform' : 'ISO 8601 compliant'}
                         </h3>
-                        <p className="text-xs text-white/50 leading-relaxed">
+                        <p className="text-xs text-slate-600 leading-relaxed">
                             {isDe 
                                 ? 'Alle Berechnungen auf dieser Website unterliegen strikten mathematischen Kontrollen und halten den internationalen Standard für Datums- und Zeitangaben ein.'
                                 : 'All calculations on this website are subject to strict mathematical controls and comply with the international standard for date and time specifications.'}

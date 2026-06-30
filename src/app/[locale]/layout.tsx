@@ -161,7 +161,7 @@ export default async function LocaleLayout({
     };
 
     return (
-        <html lang={locale} className={`${inter.variable} h-full antialiased dark`}>
+        <html lang={locale} className={`${inter.variable} h-full antialiased`}>
             <head>
                 <Script
                     src="https://www.googletagmanager.com/gtag/js?id=G-8WZW69GJ0K"
@@ -185,7 +185,7 @@ export default async function LocaleLayout({
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
                 />
             </head>
-            <body className="min-h-full flex flex-col selection:bg-neon/30">
+            <body className="min-h-full flex flex-col selection:bg-blue-200">
                 <NextIntlClientProvider messages={messages} locale={locale}>
                     <Header />
                     <main id="main-content" className="flex-1 flex flex-col z-10" tabIndex={-1}>

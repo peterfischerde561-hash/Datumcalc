@@ -125,8 +125,8 @@ export function Header() {
                 role="banner"
                 className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ease-in-out ${
                     isScrolled
-                        ? 'bg-[#030303]/90 backdrop-blur-2xl border-b border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.6)] py-3'
-                        : 'bg-transparent py-5'
+                        ? 'bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-sm py-3'
+                        : 'bg-white/80 backdrop-blur-sm border-b border-transparent py-5'
                 }`}
             >
                 <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -144,10 +144,10 @@ export function Header() {
                                 alt={locale === 'de' ? 'Datumsrechner Logo' : 'Date Calculator Logo'}
                                 width={40}
                                 height={40}
-                                className="w-10 h-10 rounded-xl border border-white/20 shadow-[0_0_16px_rgba(0,210,255,0.25)] group-hover:shadow-[0_0_24px_rgba(255,0,85,0.45)] group-hover:scale-105 transition-all duration-300 object-cover"
+                                className="w-10 h-10 rounded-xl border border-slate-200 shadow-sm group-hover:scale-105 transition-all duration-300 object-cover"
                             />
                             <strong
-                                className="font-black text-lg sm:text-xl tracking-tighter text-white leading-none select-none"
+                                className="font-black text-lg sm:text-xl tracking-tighter text-slate-900 leading-none select-none"
                             >
                                 {t('title')}
                             </strong>
@@ -156,7 +156,7 @@ export function Header() {
                         {/* ── Desktop Navigation ── */}
                         <nav
                             aria-label={t('Nav.ariaLabel')}
-                            className="hidden lg:flex lg:flex-row items-center gap-1 bg-white/[0.04] px-2 py-1.5 rounded-2xl border border-white/[0.08] backdrop-blur-md shadow-inner"
+                            className="hidden lg:flex lg:flex-row items-center gap-1 bg-slate-100 px-2 py-1.5 rounded-2xl border border-slate-200"
                             itemScope
                             itemType="https://schema.org/SiteNavigationElement"
                         >
@@ -169,15 +169,15 @@ export function Header() {
                                         aria-current={isActive ? 'page' : undefined}
                                         title={link.description}
                                         itemProp="url"
-                                        className={`relative flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-200 group overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-neon-blue/70 ${
+                                        className={`relative flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-200 group overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                                             isActive
-                                                ? 'text-white bg-white/10 shadow-sm'
-                                                : 'text-white/55 hover:text-white hover:bg-white/[0.06]'
+                                                ? 'text-blue-700 bg-blue-50'
+                                                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                                         }`}
                                     >
                                         <link.icon
                                             className={`w-4 h-4 shrink-0 transition-all ${
-                                                isActive ? 'text-neon-blue' : 'opacity-50 group-hover:opacity-100 group-hover:text-neon'
+                                                isActive ? 'text-blue-700' : 'opacity-60 group-hover:opacity-100 group-hover:text-blue-700'
                                             }`}
                                             aria-hidden="true"
                                         />
@@ -204,7 +204,7 @@ export function Header() {
                                     aria-expanded={langOpen}
                                     aria-label={t('Nav.languageLabel')}
                                     onClick={() => setLangOpen(!langOpen)}
-                                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-white/50 hover:text-white px-3 py-2 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-neon-blue/70"
+                                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                                 >
                                     <Globe className="w-3.5 h-3.5" aria-hidden="true" />
                                     {locale.toUpperCase()}
@@ -214,7 +214,7 @@ export function Header() {
                                     <div
                                         role="listbox"
                                         aria-labelledby="lang-toggle"
-                                        className="absolute right-0 top-full mt-2 min-w-[9rem] bg-[#111]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] overflow-hidden animate-slide-up-fade z-50 py-1.5"
+                                        className="absolute right-0 top-full mt-2 min-w-[9rem] bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden animate-slide-up-fade z-50 py-1.5"
                                     >
                                         {locales.map((loc) => (
                                             <button
@@ -224,8 +224,8 @@ export function Header() {
                                                 onClick={() => handleLocaleChange(loc)}
                                                 className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
                                                     locale === loc
-                                                        ? 'text-neon-blue bg-neon-blue/10 font-bold'
-                                                        : 'text-white/60 hover:text-white hover:bg-white/[0.05] font-medium'
+                                                        ? 'text-blue-700 bg-blue-50 font-bold'
+                                                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium'
                                                 }`}
                                             >
                                                 {tCommon(loc)}
@@ -238,7 +238,7 @@ export function Header() {
                             {/* CTA */}
                             <NextLink
                                 href={locale === 'de' ? '/#tools' : `/${locale}#tools`}
-                                className="group flex items-center gap-2 bg-white text-black font-bold text-sm px-5 py-2.5 rounded-xl hover:scale-[1.03] hover:bg-white/90 transition-all duration-200 shadow-[0_2px_12px_rgba(255,255,255,0.15)] hover:shadow-[0_4px_20px_rgba(255,255,255,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                                className="group flex items-center gap-2 bg-blue-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-blue-800 transition-all duration-200 shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                             >
                                 {t('Nav.cta')}
                                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
@@ -251,7 +251,7 @@ export function Header() {
                             aria-expanded={mobileMenuOpen}
                             aria-label={mobileMenuOpen ? t('Nav.closeMenu') : t('Nav.openMenu')}
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="lg:hidden relative z-50 p-2.5 rounded-xl text-white/70 hover:text-white bg-white/[0.04] border border-white/10 hover:border-white/20 hover:bg-white/[0.08] transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-neon-blue/70"
+                            className="lg:hidden relative z-50 p-2.5 rounded-xl text-slate-600 hover:text-slate-900 bg-white border border-slate-300 hover:bg-slate-100 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                         >
                             <span aria-hidden="true">
                                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -275,7 +275,7 @@ export function Header() {
             >
                 {/* Backdrop */}
                 <div
-                    className="absolute inset-0 bg-[#030303]/97 backdrop-blur-3xl"
+                    className="absolute inset-0 bg-white/98 backdrop-blur-xl"
                     aria-hidden="true"
                     onClick={() => setMobileMenuOpen(false)}
                 />
@@ -289,7 +289,7 @@ export function Header() {
                     {/* Brand inside drawer */}
                     <div className="flex items-center gap-3 mb-10 opacity-60">
                         <img src="/logo.png" alt="Datumsrechner Logo" className="w-6 h-6 rounded-lg object-cover" />
-                        <span className="font-black text-lg tracking-tighter text-white">{t('title')}</span>
+                        <span className="font-black text-lg tracking-tighter text-slate-900">{t('title')}</span>
                     </div>
 
                     <nav
@@ -309,12 +309,12 @@ export function Header() {
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={`flex items-center gap-4 px-6 py-5 rounded-2xl text-xl font-bold transition-all duration-200 ${
                                         isActive
-                                            ? 'text-white bg-white/10 border border-white/10'
-                                            : 'text-white/50 hover:text-white hover:bg-white/[0.05]'
+                                            ? 'text-blue-700 bg-blue-50 border border-blue-100'
+                                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                                     }`}
                                 >
                                     <link.icon
-                                        className={`w-6 h-6 shrink-0 ${isActive ? 'text-neon-blue' : 'text-white/30'}`}
+                                        className={`w-6 h-6 shrink-0 ${isActive ? 'text-blue-700' : 'text-slate-400'}`}
                                         aria-hidden="true"
                                     />
                                     <span itemProp="name">{link.label}</span>
@@ -330,15 +330,15 @@ export function Header() {
                     <NextLink
                         href={locale === 'de' ? '/#tools' : `/${locale}#tools`}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center justify-center gap-2 bg-gradient-to-r from-neon to-neon-blue text-white font-bold text-base px-8 py-4 rounded-2xl shadow-[0_4px_24px_rgba(255,0,85,0.3)] hover:shadow-[0_6px_32px_rgba(255,0,85,0.5)] hover:scale-[1.02] transition-all duration-200 mb-6 mt-4"
+                        className="flex items-center justify-center gap-2 bg-blue-700 text-white font-bold text-base px-8 py-4 rounded-2xl shadow-sm hover:bg-blue-800 transition-all duration-200 mb-6 mt-4"
                     >
                         {t('Nav.cta')}
                         <ArrowRight className="w-5 h-5" aria-hidden="true" />
                     </NextLink>
 
                     {/* Mobile Language Switcher */}
-                    <div className="border-t border-white/5 pt-6">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/25 mb-4 px-2">
+                    <div className="border-t border-slate-200 pt-6">
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-4 px-2">
                             {t('Nav.languageLabel')}
                         </p>
                         <div className="flex flex-col gap-2">
@@ -349,8 +349,8 @@ export function Header() {
                                     aria-pressed={locale === loc}
                                     className={`w-full text-left px-5 py-4 rounded-2xl text-base font-bold transition-all duration-200 flex items-center justify-between ${
                                         locale === loc
-                                            ? 'bg-neon-blue/15 text-neon-blue border border-neon-blue/30'
-                                            : 'text-white/40 hover:text-white/70 border border-white/5 hover:border-white/15 bg-white/[0.02]'
+                                            ? 'bg-blue-50 text-blue-700 border border-blue-100'
+                                            : 'text-slate-500 hover:text-slate-900 border border-slate-200 hover:border-slate-300 bg-white'
                                     }`}
                                 >
                                     <span className="capitalize">{tCommon(loc)}</span>

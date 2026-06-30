@@ -284,63 +284,60 @@ export default async function ProgrammaticPage({
     }
 
     return (
-        <main className="flex-1 w-full relative">
+        <main className="flex-1 w-full relative bg-white text-slate-800">
             <BreadcrumbSchema items={breadcrumbItems} />
-            <ToolSchema 
-                name={displaySlug} 
-                description={isDe ? `Präziser Datumsrechner für ${displaySlug}.` : `Precise date calculator for ${displaySlug}.`} 
-                url={`${SITE_URL}${correctPath}`} 
+            <ToolSchema
+                name={displaySlug}
+                description={isDe ? `Präziser Datumsrechner für ${displaySlug}.` : `Precise date calculator for ${displaySlug}.`}
+                url={`${SITE_URL}${correctPath}`}
             />
-            <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 space-y-16">
+            <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-12">
 
-            <nav aria-label="Breadcrumb" className="mb-8 hidden sm:flex text-sm text-white/50 items-center justify-center space-x-2 animate-slide-up-fade">
-                <NextLink href={`${locale === 'de' ? '/' : `/${locale}`}`} className="hover:text-neon transition-colors">
+            <nav aria-label="Breadcrumb" className="flex text-sm text-slate-500 items-center space-x-2">
+                <NextLink href={`${locale === 'de' ? '/' : `/${locale}`}`} className="hover:text-blue-700 hover:underline transition-colors">
                     {isDe ? "Startseite" : "Home"}
                 </NextLink>
-                <ChevronRight className="w-4 h-4" />
-                <NextLink href={getCanonicalPath(locale, internalIntent)} className="hover:text-neon transition-colors">
+                <ChevronRight className="w-4 h-4 text-slate-400" />
+                <NextLink href={getCanonicalPath(locale, internalIntent)} className="hover:text-blue-700 hover:underline transition-colors">
                     {isDe ? (mode === 'add_subtract' ? 'Datumsrechner' : 'Tage Zählen') : (mode === 'add_subtract' ? 'Date Calculator' : 'Days Counter')}
                 </NextLink>
-                <ChevronRight className="w-4 h-4" />
-                <span className="text-white/80" aria-current="page">{correctSlug.replace(/-/g, ' ')}</span>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
+                <span className="text-slate-700 font-medium" aria-current="page">{correctSlug.replace(/-/g, ' ')}</span>
             </nav>
 
-            <header className="w-full text-center space-y-6 animate-slide-up-fade">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
+            <header className="w-full space-y-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                     {h1Text}
                 </h1>
-                <InstantResultClient 
-                    intent={internalIntent.toLowerCase()} 
-                    slugStr={canonicalSlugStr} 
-                    locale={locale} 
+                <InstantResultClient
+                    intent={internalIntent.toLowerCase()}
+                    slugStr={canonicalSlugStr}
+                    locale={locale}
                     translations={translations}
                 />
 
-                <div className="flex justify-center mt-6">
-                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-bold text-green-400 uppercase tracking-widest backdrop-blur-md">
+                <div className="flex items-center gap-3 flex-wrap">
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-50 border border-green-200 text-xs font-semibold text-green-700 uppercase tracking-wide">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         {t('verified')}
                     </span>
+                    <ConversionTools locale={locale} />
                 </div>
             </header>
 
-            <section aria-label="Share and Convert" className="animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-                <ConversionTools locale={locale} />
-            </section>
-
-            <section aria-label="Interaktiver Rechner" className="w-full max-w-5xl mx-auto rounded-[2.5rem] border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-3xl p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
+            <section aria-label="Interaktiver Rechner" className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
                 <CalculatorCore initialMode={mode as any} />
             </section>
 
-            <section aria-label="Detaillierte Informationen" className="max-w-4xl mx-auto space-y-12 animate-slide-up-fade" style={{ animationDelay: '0.3s' }}>
+            <section aria-label="Detaillierte Informationen" className="space-y-10">
                 <SEOContentBlock intent={intent} slug={slugStr} locale={locale} />
                 <InternalLinksBlock locale={locale} intent={intent} slug={slugStr} />
                 <FAQBlock intent={intent} slug={slugStr} locale={locale} />
             </section>
 
-            <TrustSignals />
+            <TrustSignals locale={locale} />
             </article>
         </main>
     );

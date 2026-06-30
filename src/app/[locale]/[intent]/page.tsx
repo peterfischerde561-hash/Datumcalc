@@ -211,28 +211,29 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     ];
 
     return (
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <main className="flex-1 w-full bg-white text-slate-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <BreadcrumbSchema items={breadcrumbItems} />
-            <ToolSchema 
-                name={localizedText.h1} 
-                description={isDe ? "Präziser Datumsrechner für verschiedene kalendarische Szenarien." : "Precise date calculator for various calendar scenarios."} 
-                url={`${SITE_URL}${correctPath}`} 
+            <ToolSchema
+                name={localizedText.h1}
+                description={isDe ? "Präziser Datumsrechner für verschiedene kalendarische Szenarien." : "Precise date calculator for various calendar scenarios."}
+                url={`${SITE_URL}${correctPath}`}
             />
-            <div className="text-center mb-16 space-y-4">
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight py-2">
+            <div className="mb-12 space-y-4">
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                     {localizedText.h1}
                 </h1>
-                <p className="text-lg text-white/60 max-w-2xl mx-auto">
+                <p className="text-lg text-slate-600 max-w-2xl">
                     {localizedText.sub}
                 </p>
                 {localizedText.intro && (
-                    <p className="text-md text-white/50 max-w-3xl mx-auto mt-4 leading-relaxed">
+                    <p className="text-md text-slate-600 max-w-3xl mt-4 leading-relaxed">
                         {localizedText.intro}
                     </p>
                 )}
             </div>
 
-            <section aria-label={isDe ? "Rechner" : "Calculator"} className="w-full max-w-5xl mx-auto rounded-[2.5rem] border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-3xl p-6 md:p-10 mb-16 shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
+            <section aria-label={isDe ? "Rechner" : "Calculator"} className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 mb-16 shadow-sm">
                 <CalculatorCore />
             </section>
 
@@ -240,8 +241,8 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                 <div className="max-w-5xl mx-auto space-y-12">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         {/* Popular / Transactional */}
-                        <div className="bg-white/5 border border-white/10 p-8 rounded-[2rem]">
-                            <h2 className="text-2xl font-bold mb-6 text-neon-blue">
+                        <div className="bg-white border border-slate-200 p-8 rounded-xl">
+                            <h2 className="text-2xl font-bold mb-6 text-blue-700">
                                 {locale === 'de' ? 'Häufige Berechnungen' : 'Popular Calculations'}
                             </h2>
                             <ul className="space-y-3">
@@ -249,7 +250,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                     <>
                                         {['Januar 2026', 'Februar 2026', 'Q1 2026', 'Q2 2026', 'Mai 2026', 'Juni 2026'].map(label => (
                                             <li key={label}>
-                                                <div className="text-white flex items-center justify-between p-3 rounded-lg border border-white/5 opacity-80 cursor-default">
+                                                <div className="text-slate-700 flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-default">
                                                     <span>Arbeitstage im {label}</span>
                                                 </div>
                                             </li>
@@ -260,7 +261,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                     <>
                                         {[1990, 2000, 1985, 2005].map(year => (
                                             <li key={year}>
-                                                <div className="text-white flex items-center justify-between p-3 rounded-lg border border-white/5 opacity-80 cursor-default">
+                                                <div className="text-slate-700 flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-default">
                                                     <span>Wie alt bin ich wenn ich {year} geboren wurde?</span>
                                                 </div>
                                             </li>
@@ -272,9 +273,9 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                     const href = getCanonicalPath(locale, internalIntent!, locSlug);
                                     return (
                                         <li key={def.canonicalSlug}>
-                                            <NextLink href={href} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                            <NextLink href={href} className="text-slate-700 hover:text-blue-700 flex items-center justify-between group p-3 rounded-lg hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
                                                 <span>{locSlug.replace(/-/g, ' ')}</span>
-                                                <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                                 </svg>
                                             </NextLink>
@@ -286,8 +287,8 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
 
                         {/* Events / Informational */}
                         {informational.length > 0 && (
-                            <div className="bg-white/5 border border-white/10 p-8 rounded-[2rem]">
-                                <h2 className="text-2xl font-bold mb-6 text-neon-blue">
+                            <div className="bg-white border border-slate-200 p-8 rounded-xl">
+                                <h2 className="text-2xl font-bold mb-6 text-blue-700">
                                     {locale === 'de' ? 'Meilensteine & Events' : 'Milestones & Events'}
                                 </h2>
                                 <ul className="space-y-3">
@@ -296,9 +297,9 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                         const href = getCanonicalPath(locale, internalIntent!, locSlug);
                                         return (
                                             <li key={def.canonicalSlug}>
-                                                <NextLink href={href} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                                <NextLink href={href} className="text-slate-700 hover:text-blue-700 flex items-center justify-between group p-3 rounded-lg hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
                                                     <span className="capitalize">{locSlug.replace(/-/g, ' ')}</span>
-                                                    <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                                     </svg>
                                                 </NextLink>
@@ -312,8 +313,8 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
 
                     {/* Explanation for Arbeitstage */}
                     {internalIntent.toLowerCase() === 'arbeitstage' && isDe && (
-                        <div className="max-w-4xl mx-auto bg-white/5 border border-white/10 p-8 md:p-12 rounded-[3rem] text-white/70 space-y-6 leading-relaxed">
-                            <h2 className="text-2xl font-bold text-white mb-6">Was sind Arbeitstage?</h2>
+                        <div className="bg-white border border-slate-200 p-8 md:p-12 rounded-xl text-slate-700 space-y-6 leading-relaxed">
+                            <h2 className="text-2xl font-bold text-slate-900 mb-6">Was sind Arbeitstage?</h2>
                             <p>
                                 Der Begriff Arbeitstage (oft auch Werktage genannt) beschreibt jene Tage, an denen üblicherweise gearbeitet wird. 
                                 In der Regel sind dies die Tage von Montag bis Freitag. Samstage und Sonntage werden bei der Berechnung von Netto-Arbeitstagen 
@@ -327,6 +328,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                     )}
                 </div>
             )}
+          </div>
         </main>
     );
 }

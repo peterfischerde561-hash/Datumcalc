@@ -32,10 +32,10 @@ const CONTENT: Record<string, any> = {
             },
         ],
         trustSignals: [
-            { icon: CheckCircle2, label: 'ISO 8601 konform', color: 'text-green-400' },
+            { icon: CheckCircle2, label: 'ISO 8601 konform', color: 'text-green-600' },
             { icon: CalendarCheck2, label: 'Schaltjahre berechnet', color: 'text-neon-blue' },
             { icon: Clock4, label: 'Sekundenschnell', color: 'text-neon' },
-            { icon: ShieldCheck, label: '100% kostenlos', color: 'text-white/70' },
+            { icon: ShieldCheck, label: '100% kostenlos', color: 'text-slate-700' },
         ],
         hero: {
             title: 'Entdecke den Datumsrechner',
@@ -96,10 +96,10 @@ const CONTENT: Record<string, any> = {
             },
         ],
         trustSignals: [
-            { icon: CheckCircle2, label: 'ISO 8601 compliant', color: 'text-green-400' },
+            { icon: CheckCircle2, label: 'ISO 8601 compliant', color: 'text-green-600' },
             { icon: CalendarCheck2, label: 'Leap years calculated', color: 'text-neon-blue' },
             { icon: Clock4, label: 'Lightning fast', color: 'text-neon' },
-            { icon: ShieldCheck, label: '100% free', color: 'text-white/70' },
+            { icon: ShieldCheck, label: '100% free', color: 'text-slate-700' },
         ],
         hero: {
             title: 'Explore the Date Calculator',
@@ -219,7 +219,7 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
             {/* ── 1. Trust Signals Bar ── */}
             <section aria-label={loc === 'de' ? "Vertrauenssignale" : "Trust Signals"} className="flex flex-wrap justify-center gap-4 animate-slide-up-fade">
                 {c.trustSignals.map(({ icon: Icon, label, color }: any, i: number) => (
-                    <div key={i} className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/[0.03] border border-white/[0.07] text-sm font-medium text-white/60">
+                    <div key={i} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-medium text-slate-700">
                         <Icon className={`w-4 h-4 shrink-0 ${color}`} aria-hidden="true" />
                         {label}
                     </div>
@@ -228,13 +228,13 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
 
             {/* ── 2. Internal Linking Mesh ── */}
             <nav aria-label={c.hero.title} className="space-y-10 animate-slide-up-fade">
-                <header className="border-b border-white/10 pb-6 text-center md:text-left">
+                <header className="border-b border-slate-200 pb-6 text-center md:text-left">
                     <h2 className="text-4xl font-extrabold tracking-tight">{c.hero.title}</h2>
-                    <p className="text-white/50 mt-2 text-lg">{c.hero.subtitle}</p>
+                    <p className="text-slate-600 mt-2 text-lg">{c.hero.subtitle}</p>
                 </header>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Fristen */}
-                    <div className="bg-white/[0.02] p-7 rounded-3xl border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300">
+                    <div className="bg-white p-7 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all duration-300">
                         <h3 className="text-neon font-bold text-xl mb-5 flex items-center gap-2">
                             <CalendarCheck2 className="w-5 h-5" aria-hidden="true" />
                             {c.hero.fristen}
@@ -242,7 +242,7 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                         <ul className="space-y-3">
                             {topQueries.map((q, i) => (
                                 <li key={i}>
-                                    <Link href={q.href as any} className="text-white/60 hover:text-white transition-colors flex items-center gap-2 group text-sm">
+                                    <Link href={q.href as any} className="text-slate-700 hover:text-blue-700 transition-colors flex items-center gap-2 group text-sm">
                                         <span className="text-neon/40 group-hover:text-neon text-xs" aria-hidden="true">▶</span>
                                         {q.title}
                                     </Link>
@@ -251,7 +251,7 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                         </ul>
                     </div>
                     {/* Ereignisse */}
-                    <div className="bg-white/[0.02] p-7 rounded-3xl border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300">
+                    <div className="bg-white p-7 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all duration-300">
                         <h3 className="text-neon-blue font-bold text-xl mb-5 flex items-center gap-2">
                             <Clock4 className="w-5 h-5" aria-hidden="true" />
                             {c.hero.ereignisse}
@@ -259,7 +259,7 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                         <ul className="space-y-3">
                             {eventQueries.map((q, i) => (
                                 <li key={i}>
-                                    <Link href={q.href as any} className="text-white/60 hover:text-white transition-colors flex items-center gap-2 group text-sm">
+                                    <Link href={q.href as any} className="text-slate-700 hover:text-blue-700 transition-colors flex items-center gap-2 group text-sm">
                                         <span className="text-neon-blue/40 group-hover:text-neon-blue text-xs" aria-hidden="true">▶</span>
                                         {q.title}
                                     </Link>
@@ -267,9 +267,9 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                             ))}
                         </ul>
                     </div>
-                    <div className="bg-white/[0.02] p-7 rounded-3xl border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300">
-                        <h3 className="text-white font-bold text-xl mb-5 flex items-center gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-green-400" aria-hidden="true" />
+                    <div className="bg-white p-7 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all duration-300">
+                        <h3 className="text-slate-900 font-bold text-xl mb-5 flex items-center gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-green-600" aria-hidden="true" />
                             {c.hero.ratgeber}
                         </h3>
                         <ul className="space-y-3">
@@ -282,8 +282,8 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                                 const slug = loc === 'de' ? g.de : g.en;
                                 return (
                                     <li key={i}>
-                                        <Link href={ROUTES.getRatgeber(slug)} className="text-white/60 hover:text-white transition-colors flex items-center gap-2 group text-sm">
-                                            <span className="text-green-400/40 group-hover:text-green-400 text-xs" aria-hidden="true">▶</span>
+                                        <Link href={ROUTES.getRatgeber(slug)} className="text-slate-700 hover:text-blue-700 transition-colors flex items-center gap-2 group text-sm">
+                                            <span className="text-green-600/40 group-hover:text-green-600 text-xs" aria-hidden="true">▶</span>
                                             {slug.replace(/-/g, ' ')}
                                         </Link>
                                     </li>
@@ -296,50 +296,50 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
 
             {/* ── 3. SEO Content Block ── */}
             <section aria-labelledby="seo-content-heading" className="animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-                <div className="prose prose-invert max-w-4xl mx-auto bg-[#0a0a0a]/80 backdrop-blur-xl rounded-[2.5rem] p-10 md:p-14 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+                <div className="prose max-w-4xl mx-auto bg-white rounded-2xl p-10 md:p-14 border border-slate-200 shadow-sm">
                     <header>
                         <h2 id="seo-content-heading" className="text-3xl md:text-5xl font-extrabold mb-8 leading-tight tracking-tight">
                             {c.seo.headline}
                         </h2>
                     </header>
-                    <p className="text-white/70 text-lg leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: c.seo.u1 }} />
-                    <p className="text-white/70 text-lg leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: c.seo.u2 }} />
+                    <p className="text-slate-700 text-lg leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: c.seo.u1 }} />
+                    <p className="text-slate-700 text-lg leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: c.seo.u2 }} />
                     
-                    <h3 className="text-white text-xl font-bold mb-4">{c.seo.tableTitle}</h3>
-                    <div className="overflow-x-auto my-6 rounded-2xl border border-white/10">
+                    <h3 className="text-slate-900 text-xl font-bold mb-4">{c.seo.tableTitle}</h3>
+                    <div className="overflow-x-auto my-6 rounded-lg border border-slate-200">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="border-b border-white/10 bg-white/[0.03]">
-                                    <th scope="col" className="py-4 px-5 font-bold text-white/90">{c.seo.th1}</th>
-                                    <th scope="col" className="py-4 px-5 font-bold text-white/90">{c.seo.th2}</th>
-                                    <th scope="col" className="py-4 px-5 font-bold text-white/90 hidden md:table-cell">{c.seo.th3}</th>
+                                <tr className="border-b border-slate-200 bg-slate-50">
+                                    <th scope="col" className="py-4 px-5 font-bold text-slate-900">{c.seo.th1}</th>
+                                    <th scope="col" className="py-4 px-5 font-bold text-slate-900">{c.seo.th2}</th>
+                                    <th scope="col" className="py-4 px-5 font-bold text-slate-900 hidden md:table-cell">{c.seo.th3}</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-white/60 divide-y divide-white/5">
-                                <tr className="hover:bg-white/[0.02] transition-colors">
-                                    <td className="py-4 px-5 text-neon font-medium">{c.seo.case1}</td>
-                                    <td className="py-4 px-5"><Link href="/addieren" className="underline hover:text-white">Datum addieren</Link></td>
+                            <tbody className="text-slate-700 divide-y divide-slate-100">
+                                <tr className="hover:bg-slate-50 transition-colors">
+                                    <td className="py-4 px-5 text-blue-700 font-medium">{c.seo.case1}</td>
+                                    <td className="py-4 px-5"><Link href="/addieren" className="underline hover:text-blue-700">Datum addieren</Link></td>
                                     <td className="py-4 px-5 hidden md:table-cell">"14 days from today"</td>
                                 </tr>
-                                <tr className="hover:bg-white/[0.02] transition-colors">
+                                <tr className="hover:bg-slate-50 transition-colors">
                                     <td className="py-4 px-5 text-neon-blue font-medium">{c.seo.case2}</td>
-                                    <td className="py-4 px-5"><Link href="/arbeitstage" className="underline hover:text-white">Arbeitstage</Link></td>
+                                    <td className="py-4 px-5"><Link href="/arbeitstage" className="underline hover:text-blue-700">Arbeitstage</Link></td>
                                     <td className="py-4 px-5 hidden md:table-cell">"Net business days Q4"</td>
                                 </tr>
-                                <tr className="hover:bg-white/[0.02] transition-colors">
-                                    <td className="py-4 px-5 text-purple-400 font-medium">{c.seo.case3}</td>
-                                    <td className="py-4 px-5"><Link href="/differenz" className="underline hover:text-white">Datumsdifferenz</Link></td>
+                                <tr className="hover:bg-slate-50 transition-colors">
+                                    <td className="py-4 px-5 text-purple-600 font-medium">{c.seo.case3}</td>
+                                    <td className="py-4 px-5"><Link href="/differenz" className="underline hover:text-blue-700">Datumsdifferenz</Link></td>
                                     <td className="py-4 px-5 hidden md:table-cell">"Tage bis Weihnachten"</td>
                                 </tr>
-                                <tr className="hover:bg-white/[0.02] transition-colors">
-                                    <td className="py-4 px-5 text-green-400 font-medium">{c.seo.case4}</td>
-                                    <td className="py-4 px-5"><Link href="/alter" className="underline hover:text-white">Altersrechner</Link></td>
+                                <tr className="hover:bg-slate-50 transition-colors">
+                                    <td className="py-4 px-5 text-green-600 font-medium">{c.seo.case4}</td>
+                                    <td className="py-4 px-5"><Link href="/alter" className="underline hover:text-blue-700">Altersrechner</Link></td>
                                     <td className="py-4 px-5 hidden md:table-cell">"Alter am 01.01.2050"</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <p className="text-white/70 text-lg leading-relaxed mt-6" dangerouslySetInnerHTML={{ __html: c.seo.footer }} />
+                    <p className="text-slate-700 text-lg leading-relaxed mt-6" dangerouslySetInnerHTML={{ __html: c.seo.footer }} />
                 </div>
             </section>
 
@@ -347,19 +347,19 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
             <section aria-labelledby="howto-heading" className="max-w-4xl mx-auto animate-slide-up-fade" style={{ animationDelay: '0.15s' }}>
                 <header className="text-center mb-10">
                     <h2 id="howto-heading" className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">{c.howto.title}</h2>
-                    <p className="text-white/50 text-lg">{c.howto.subtitle}</p>
+                    <p className="text-slate-600 text-lg">{c.howto.subtitle}</p>
                 </header>
                 <ol className="grid md:grid-cols-3 gap-6">
                     {c.howto.steps.map((step: any, i: number) => (
-                        <li key={i} className={`relative p-7 rounded-3xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 backdrop-blur-sm shadow-xl`}>
-                            <span className={`text-5xl font-black text-white/10 absolute top-4 right-6 select-none leading-none`}>
+                        <li key={i} className={`relative p-7 rounded-2xl bg-white border border-slate-200 shadow-sm`}>
+                            <span className={`text-5xl font-black text-slate-200 absolute top-4 right-6 select-none leading-none`}>
                                 {i + 1}
                             </span>
-                            <span className={`inline-flex items-center justify-center w-9 h-9 rounded-xl text-sm font-black text-neon bg-white/5 border border-white/10 mb-4`}>
+                            <span className={`inline-flex items-center justify-center w-9 h-9 rounded-xl text-sm font-black text-blue-700 bg-blue-50 border border-blue-100 mb-4`}>
                                 {i + 1}
                             </span>
-                            <h3 className="text-white font-bold text-lg mb-2">{step.title}</h3>
-                            <p className="text-white/55 text-sm leading-relaxed">{step.desc}</p>
+                            <h3 className="text-slate-900 font-bold text-lg mb-2">{step.title}</h3>
+                            <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
                         </li>
                     ))}
                 </ol>
@@ -369,17 +369,17 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
             <section aria-labelledby="faq-heading" className="max-w-4xl mx-auto space-y-6 animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
                 <header className="text-center mb-6">
                     <h2 id="faq-heading" className="text-4xl font-extrabold mb-3 tracking-tight">{c.faqHeading.title}</h2>
-                    <p className="text-white/50 text-lg">{c.faqHeading.subtitle}</p>
+                    <p className="text-slate-600 text-lg">{c.faqHeading.subtitle}</p>
                 </header>
                 <dl className="space-y-3">
                     {c.faqs.map((faq: any, i: number) => (
-                        <details key={i} className="bg-white/[0.02] border border-white/[0.07] rounded-2xl px-6 py-5 group cursor-pointer hover:border-white/20 hover:bg-white/[0.04] transition-all">
-                            <summary className="font-semibold text-lg list-none flex justify-between items-center text-white/85 group-hover:text-white">
+                        <details key={i} className="bg-white border border-slate-200 rounded-xl px-6 py-5 group cursor-pointer hover:border-blue-300 transition-all">
+                            <summary className="font-semibold text-lg list-none flex justify-between items-center text-slate-800 group-hover:text-blue-700">
                                 <dt className="inline">{faq.question}</dt>
                                 <span className="ml-4 shrink-0 text-neon group-open:rotate-180 transition-transform">▼</span>
                             </summary>
                             <dd className="mt-4 border-l-2 border-neon-blue/30 pl-4">
-                                <p className="text-white/60 leading-relaxed text-base">
+                                <p className="text-slate-700 leading-relaxed text-base">
                                     {faq.answer}
                                 </p>
                             </dd>

@@ -45,29 +45,30 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
     const isDe = locale === 'de';
 
     return (
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div className="text-center mb-16 space-y-4">
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+        <main className="flex-1 w-full bg-white text-slate-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div className="mb-12 space-y-4">
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                     {isDe ? 'Ratgeber & Guides' : 'Expert Guides & Tutorials'}
                 </h1>
-                <p className="text-lg text-white/60 max-w-2xl mx-auto">
-                    {isDe 
+                <p className="text-lg text-slate-600 max-w-2xl">
+                    {isDe
                         ? 'Alles Wissenswerte rund um Datum, Zeit und Fristen – verständlich erklärt.'
                         : 'Everything you need to know about dates, time, and deadlines – explained clearly.'}
                 </p>
             </div>
 
-            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
                 {articles.map((article) => (
-                    <article key={article.slug} className="bg-white/5 border border-white/10 p-6 rounded-[2rem] hover:border-neon/50 transition-colors group">
+                    <article key={article.slug} className="bg-white border border-slate-200 p-6 rounded-xl hover:border-blue-400 hover:shadow-sm transition-all group">
                         <Link href={{ pathname: '/ratgeber/[slug]', params: { slug: article.slug } }} className="block">
-                            <h2 className="text-xl font-bold mb-4 group-hover:text-neon transition-colors">
+                            <h2 className="text-xl font-bold mb-4 text-slate-900 group-hover:text-blue-700 transition-colors">
                                 {article.title}
                             </h2>
-                            <p className="text-white/60 mb-6 line-clamp-2">
+                            <p className="text-slate-600 mb-6 line-clamp-2">
                                 {article.description}
                             </p>
-                            <span className="text-neon-blue font-semibold flex items-center gap-2">
+                            <span className="text-blue-700 font-semibold flex items-center gap-2">
                                 {isDe ? 'Artikel lesen' : 'Read Article'}
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -77,6 +78,7 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
                     </article>
                 ))}
             </div>
+          </div>
         </main>
     );
 }

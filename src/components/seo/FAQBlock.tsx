@@ -19,8 +19,8 @@ export function FAQBlock({ intent, slug, locale }: { intent: string; slug: strin
     };
 
     return (
-        <section className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 mb-12">
-            <h2 className="text-2xl font-bold mb-8 text-white">{locale === 'de' ? 'Häufig gestellte Fragen (FAQ)' : 'Frequently Asked Questions (FAQ)'}</h2>
+        <section className="bg-white border border-slate-200 rounded-xl p-6 md:p-8">
+            <h2 className="text-2xl font-bold mb-8 text-slate-900">{locale === 'de' ? 'Häufig gestellte Fragen (FAQ)' : 'Frequently Asked Questions (FAQ)'}</h2>
 
             {/* Script for JSON-LD is manually injected safely */}
             <script
@@ -30,9 +30,9 @@ export function FAQBlock({ intent, slug, locale }: { intent: string; slug: strin
 
             <div className="space-y-6">
                 {faqs.map((faq, index) => (
-                    <div key={index} className="space-y-2 pb-6 border-b border-white/5 last:border-0 last:pb-0">
-                        <h3 className="text-lg font-semibold text-neon-blue">{faq.question}</h3>
-                        <p className="text-white/70 leading-relaxed">{faq.answer}</p>
+                    <div key={index} className="space-y-2 pb-6 border-b border-slate-100 last:border-0 last:pb-0">
+                        <h3 className="text-lg font-semibold text-slate-900">{faq.question}</h3>
+                        <p className="text-slate-700 leading-relaxed">{faq.answer}</p>
                     </div>
                 ))}
             </div>

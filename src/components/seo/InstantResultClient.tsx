@@ -126,24 +126,24 @@ export function InstantResultClient({ intent, slugStr, locale, translations }: I
     if (!result) {
         return (
             <div className="animate-pulse space-y-8">
-                <div className="h-8 bg-white/5 rounded-full w-48 mx-auto"></div>
-                <div className="h-24 bg-white/5 rounded-2xl w-full"></div>
-                <div className="h-6 bg-white/5 rounded-full w-64 mx-auto"></div>
+                <div className="h-8 bg-slate-100 rounded-full w-48 mx-auto"></div>
+                <div className="h-24 bg-slate-100 rounded-2xl w-full"></div>
+                <div className="h-6 bg-slate-100 rounded-full w-64 mx-auto"></div>
             </div>
         );
     }
 
     return (
-        <>
-            <p className="text-xl md:text-2xl font-bold text-white/50 tracking-[0.2em] uppercase">
+        <div className="rounded-xl border border-blue-200 bg-blue-50 px-6 py-10">
+            <p className="text-sm md:text-base font-semibold text-slate-600 tracking-[0.15em] uppercase">
                 {result.headline}
             </p>
-            <div className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/30 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)] py-4">
+            <div className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-blue-800 py-4">
                 {result.highlight}
             </div>
-            <p className="text-xl text-white/70 font-medium">
+            <p className="text-lg text-slate-600 font-medium">
                 {result.subtext}
             </p>
-        </>
+        </div>
     );
 }

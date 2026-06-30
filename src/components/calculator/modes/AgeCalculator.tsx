@@ -52,51 +52,49 @@ export function AgeCalculator() {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const inputClass = "w-full bg-white border border-slate-300 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors [color-scheme:light]";
+    const labelClass = "block text-sm font-semibold text-slate-700 mb-1.5";
+
     return (
         <div className="space-y-6 animate-in fade-in duration-300">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-white/80">{t('birthDate')}</label>
-                    <input
-                        type="date"
-                        value={birthdate}
-                        onChange={(e) => setBirthdate(e.target.value)}
-                        className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon transition-colors"
-                    />
+                <div>
+                    <label className={labelClass}>{t('birthDate')}</label>
+                    <input type="date" value={birthdate} onChange={(e) => setBirthdate(e.target.value)} className={inputClass} />
                 </div>
             </div>
 
             {result && (
-                <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-neon/30 shadow-[0_0_30px_rgba(255,0,85,0.05)] space-y-6 relative overflow-hidden">
+                <div className="mt-8 p-6 rounded-lg bg-blue-50 border border-blue-200 space-y-6">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h3 className="text-lg font-medium text-white/80">{t('currentAge')}</h3>
-                            <p className="text-4xl mt-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon to-neon-blue">
+                            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{t('currentAge')}</h3>
+                            <p className="text-4xl mt-2 font-bold text-blue-800">
                                 {result.years} {t('years')}
                             </p>
                         </div>
                         <div className="flex gap-2">
-                            <button onClick={handleSave} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title={t('save')}>
-                                <BookmarkPlus className="w-5 h-5 text-neon-blue" />
+                            <button onClick={handleSave} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors" title={t('save')}>
+                                <BookmarkPlus className="w-5 h-5 text-blue-700" />
                             </button>
-                            <button onClick={shareUrl} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title={t('share')}>
-                                {copied ? <Check className="w-5 h-5 text-green-400" /> : <Share2 className="w-5 h-5 text-neon" />}
+                            <button onClick={shareUrl} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors" title={t('share')}>
+                                {copied ? <Check className="w-5 h-5 text-green-600" /> : <Share2 className="w-5 h-5 text-blue-700" />}
                             </button>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/10">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-blue-200">
                         <div>
-                            <p className="text-sm text-white/50">{t('months')}</p>
-                            <p className="font-medium text-white">{result.months}</p>
+                            <p className="text-sm text-slate-500">{t('months')}</p>
+                            <p className="font-semibold text-slate-900">{result.months}</p>
                         </div>
                         <div>
-                            <p className="text-sm text-white/50">{t('days')}</p>
-                            <p className="font-medium text-white">{result.days}</p>
+                            <p className="text-sm text-slate-500">{t('days')}</p>
+                            <p className="font-semibold text-slate-900">{result.days}</p>
                         </div>
                         <div className="col-span-2">
-                            <p className="text-sm text-white/50">Total Life Days</p>
-                            <p className="font-medium text-white">{result.totalDays} {t('days')}</p>
+                            <p className="text-sm text-slate-500">Total Life Days</p>
+                            <p className="font-semibold text-slate-900">{result.totalDays} {t('days')}</p>
                         </div>
                     </div>
                 </div>

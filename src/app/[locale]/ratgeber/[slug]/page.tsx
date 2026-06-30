@@ -93,52 +93,49 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     ];
 
     return (
-        <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <main className="flex-1 w-full bg-white text-slate-800">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <BreadcrumbSchema items={breadcrumbItems} />
-            <ArticleSchema 
-                title={article.title} 
-                description={article.description} 
-                url={fullUrl} 
-                publishedAt="2024-03-24T00:00:00Z" 
+            <ArticleSchema
+                title={article.title}
+                description={article.description}
+                url={fullUrl}
+                publishedAt="2024-03-24T00:00:00Z"
             />
-            
-            <article className="w-full max-w-4xl mx-auto lg:py-24">
-            
-            <header className="mb-12 space-y-8 text-center animate-slide-up-fade">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neon/10 border border-neon/20 text-xs font-bold tracking-widest uppercase text-neon">
+
+            <article className="w-full max-w-3xl mx-auto">
+
+            <header className="mb-12 space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 border border-blue-200 text-xs font-bold tracking-widest uppercase text-blue-700">
                     {article.publishedAt} • {article.readTime} {t('readTime')}
                 </div>
-                
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900">
                     {article.title}
                 </h1>
-                
-                <p className="text-xl md:text-2xl text-white/50 max-w-3xl mx-auto font-medium leading-relaxed">
+
+                <p className="text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">
                     {article.description}
                 </p>
 
-                <div className="flex items-center justify-center gap-4 pt-4">
-                    <div className="w-12 h-12 rounded-full border-2 border-neon/30 p-0.5">
-                        <img 
-                            src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix" 
-                            alt="Felix Schmidt" 
-                            className="w-full h-full rounded-full object-cover"
-                        />
+                <div className="flex items-center gap-4 pt-6 border-t border-slate-200">
+                    <div className="w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center text-white font-bold text-lg shrink-0">
+                        FS
                     </div>
                     <div className="text-left">
-                        <div className="text-white font-bold">Felix Schmidt</div>
-                        <div className="text-white/40 text-sm tracking-wide uppercase font-bold text-[10px]">{t('authorTitle')}</div>
+                        <div className="text-slate-900 font-bold">Felix Schmidt</div>
+                        <div className="text-slate-500 text-[10px] tracking-wide uppercase font-bold">{t('authorTitle')}</div>
                     </div>
                 </div>
             </header>
 
             {/* Key Takeaways */}
-            <section className="mb-16 bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-lg bg-neon/20 flex items-center justify-center text-neon text-sm">✓</span>
+            <section className="mb-16 bg-blue-50 border border-blue-200 rounded-xl p-8 md:p-10">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900">
+                    <span className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700 text-sm">✓</span>
                     {t('takeaways')}
                 </h2>
-                <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 text-white/70">
+                <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-700">
                      <li>{t('takeawaysItem1')}</li>
                      <li>{t('takeawaysItem2')}</li>
                      <li>{t('takeawaysItem3')}</li>
@@ -147,20 +144,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
             {/* Main Article Content */}
             <div
-                className="prose prose-invert prose-lg md:prose-xl max-w-none prose-h2:text-4xl prose-h2:tracking-tight prose-h2:mb-8 prose-h2:mt-16 prose-h2:text-white prose-a:text-neon hover:prose-a:text-neon-blue prose-p:text-white/70 prose-li:text-white/70 animate-slide-up-fade"
-                style={{ animationDelay: '0.2s' }}
+                className="prose prose-lg md:prose-xl max-w-none prose-headings:text-slate-900 prose-h2:text-4xl prose-h2:tracking-tight prose-h2:mb-8 prose-h2:mt-16 prose-a:text-blue-700 hover:prose-a:text-blue-800 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-900"
                 dangerouslySetInnerHTML={{ __html: article.content }}
             />
 
             {/* In-Article Calculator CTA */}
-            <section aria-label="Ausprobieren" className="mt-24 bg-[#0a0a0a]/50 backdrop-blur-2xl rounded-[3rem] p-8 md:p-12 border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                <h3 className="text-center text-neon-blue font-bold uppercase tracking-widest text-sm mb-4">{t('theory')}</h3>
-                <h4 className="text-3xl md:text-4xl font-extrabold text-center mb-10 tracking-tight">{t('practice')}</h4>
+            <section aria-label="Ausprobieren" className="mt-20 bg-white rounded-xl p-6 md:p-10 border border-slate-200 shadow-sm">
+                <h3 className="text-center text-blue-700 font-bold uppercase tracking-widest text-sm mb-4">{t('theory')}</h3>
+                <h4 className="text-3xl md:text-4xl font-extrabold text-center mb-10 tracking-tight text-slate-900">{t('practice')}</h4>
                 <div className="max-w-4xl mx-auto">
                     <CalculatorCore />
                 </div>
             </section>
         </article>
+          </div>
         </main>
     );
 }

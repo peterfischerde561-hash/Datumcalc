@@ -3,11 +3,11 @@ import { translateSlug } from '@/lib/seo/translations';
 import { resolveCanonicalQuery } from '@/lib/seo/queryModel';
 
 const SHORTCUTS = [
-    { days: 30, color: 'hover:border-neon/50' },
-    { days: 60, color: 'hover:border-neon-blue/50' },
-    { days: 90, color: 'hover:border-purple-500/50' },
-    { days: 180, color: 'hover:border-green-500/50' },
-    { days: 365, color: 'hover:border-white/50' }
+    { days: 30, color: 'hover:border-blue-400' },
+    { days: 60, color: 'hover:border-sky-400' },
+    { days: 90, color: 'hover:border-purple-400' },
+    { days: 180, color: 'hover:border-green-400' },
+    { days: 365, color: 'hover:border-slate-400' }
 ];
 
 export function QuickShortcuts({ locale }: { locale: string }) {
@@ -15,7 +15,7 @@ export function QuickShortcuts({ locale }: { locale: string }) {
     
     return (
         <div className="flex flex-wrap gap-2 mt-4 animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-            <span className="text-white/30 text-xs font-bold uppercase tracking-widest mr-2 flex items-center">
+            <span className="text-slate-500 text-xs font-bold uppercase tracking-widest mr-2 flex items-center">
                 {isDe ? 'Beliebte Abfragen:' : 'Popular Queries:'}
             </span>
             {SHORTCUTS.map((s) => {
@@ -30,7 +30,7 @@ export function QuickShortcuts({ locale }: { locale: string }) {
                             pathname: '/addieren/[...slug]',
                             params: { slug: [locSlug] }
                         }}
-                        className={`px-3 py-1.5 rounded-full bg-white/5 border border-white/5 text-xs font-medium text-white/60 hover:text-white transition-all ${s.color} hover:bg-white/10`}
+                        className={`px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-medium text-slate-700 hover:text-blue-700 transition-all ${s.color} hover:bg-slate-50`}
                     >
                         +{s.days} {isDe ? 'Tage' : 'Days'}
                     </Link>
