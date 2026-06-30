@@ -11,12 +11,19 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        // Hashed, immutable build assets — safe to cache forever.
+        source: '/_next/static/:path*',
         headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, stale-while-revalidate=86400',
-          },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+      {
+        // HTML pages (everything except _next assets): the browser must always
+        // revalidate, while the CDN may cache briefly with stale-while-revalidate.
+        // NEVER cache HTML immutably — it references hashed JS that changes on deploy.
+        source: '/((?!_next/).*)',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' },
         ],
       },
     ]
