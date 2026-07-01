@@ -10,6 +10,7 @@ import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 export const revalidate = 86400; // 24 hours
 export const dynamicParams = false;
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
+import { HUB_CONTENT } from '@/lib/seo/hubContent';
 import { SITE_URL } from '@/lib/constants';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string }> }) {
@@ -203,7 +204,18 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     
     const isDe = locale === 'de';
     const localizedText = isDe ? currentText.de : currentText.en;
-    
+
+    const hub = HUB_CONTENT[internalIntent.toLowerCase()]?.[isDe ? 'de' : 'en'];
+    const hubFaqJsonLd = hub ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': hub.faqs.map(f => ({
+            '@type': 'Question',
+            'name': f.q,
+            'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
+        })),
+    } : null;
+
     // Breadcrumbs
     const breadcrumbItems = [
         { name: isDe ? 'Startseite' : 'Home', item: `/${locale === 'de' ? '' : locale}` },
@@ -311,21 +323,33 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                         )}
                     </div>
 
-                    {/* Explanation for Arbeitstage */}
-                    {internalIntent.toLowerCase() === 'arbeitstage' && isDe && (
-                        <div className="bg-white border border-slate-200 p-8 md:p-12 rounded-xl text-slate-700 space-y-6 leading-relaxed">
-                            <h2 className="text-2xl font-bold text-slate-900 mb-6">Was sind Arbeitstage?</h2>
-                            <p>
-                                Der Begriff Arbeitstage (oft auch Werktage genannt) beschreibt jene Tage, an denen üblicherweise gearbeitet wird. 
-                                In der Regel sind dies die Tage von Montag bis Freitag. Samstage und Sonntage werden bei der Berechnung von Netto-Arbeitstagen 
-                                ausgeklammert, um den realen Zeitaufwand für berufliche Projekte oder Fristen zu ermitteln.
-                            </p>
-                            <p>
-                                Unser Rechner hilft Ihnen dabei, genau diese Spanne zwischen zwei Daten zu bestimmen. Dies ist besonders nützlich für die 
-                                Personalplanung, das Projektmanagement oder die Berechnung von Kündigungsfristen, die sich oft auf Arbeitstage beziehen.
-                            </p>
+                </div>
+            )}
+
+            {/* Category-specific explainer + FAQ (unique per tool) */}
+            {hub && (
+                <div className="max-w-5xl mx-auto space-y-12 mt-16">
+                    <section aria-label={hub.explainerHeading} className="bg-white border border-slate-200 p-8 md:p-10 rounded-xl">
+                        <h2 className="text-2xl font-bold text-slate-900 mb-6">{hub.explainerHeading}</h2>
+                        <div className="space-y-4 text-slate-700 leading-relaxed text-lg">
+                            {hub.explainer.map((p, i) => <p key={i}>{p}</p>)}
                         </div>
-                    )}
+                    </section>
+
+                    <section aria-label={isDe ? 'Häufige Fragen' : 'Frequently asked questions'} className="bg-white border border-slate-200 p-8 md:p-10 rounded-xl">
+                        <h2 className="text-2xl font-bold text-slate-900 mb-8">{isDe ? 'Häufige Fragen' : 'Frequently asked questions'}</h2>
+                        {hubFaqJsonLd && (
+                            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubFaqJsonLd) }} />
+                        )}
+                        <div className="space-y-6">
+                            {hub.faqs.map((f, i) => (
+                                <div key={i} className="border-b border-slate-100 pb-6 last:border-0 last:pb-0">
+                                    <h3 className="text-lg font-semibold text-slate-900 mb-2">{f.q}</h3>
+                                    <p className="text-slate-700 leading-relaxed">{f.a}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
                 </div>
             )}
           </div>

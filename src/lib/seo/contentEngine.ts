@@ -8,6 +8,7 @@
  */
 
 import { reverseTranslateSlug } from './translations';
+import { EVENT_NAMES, getEventDateUTC } from '../events';
 
 type Locale = string;
 
@@ -104,20 +105,6 @@ const ADD_CONTEXT: Record<string, { de: string; en: string }> = {
     },
 };
 
-// Known events with grammatically correct German forms. `de` is the
-// nominative form (sentence start); `bis` is the form that follows "bis ".
-const EVENT_NAMES: Record<string, {
-    de: string; bisDe: string; en: string;
-    whenDe?: string; whenEn?: string; movable?: boolean;
-}> = {
-    weihnachten: { de: 'Weihnachten', bisDe: 'Weihnachten', en: 'Christmas', whenDe: 'jedes Jahr am 25. Dezember', whenEn: 'every year on December 25' },
-    silvester: { de: 'Silvester', bisDe: 'Silvester', en: "New Year's Eve", whenDe: 'am 31. Dezember', whenEn: 'on December 31' },
-    neujahr: { de: 'Neujahr', bisDe: 'Neujahr', en: 'New Year', whenDe: 'am 1. Januar', whenEn: 'on January 1' },
-    ostern: { de: 'Ostern', bisDe: 'Ostern', en: 'Easter', whenDe: 'an einem wechselnden Datum zwischen dem 22. März und dem 25. April', whenEn: 'on a changing date between March 22 and April 25', movable: true },
-    sommeranfang: { de: 'Der Sommeranfang', bisDe: 'zum Sommeranfang', en: 'the summer solstice', whenDe: 'um den 21. Juni', whenEn: 'around June 21' },
-    urlaub: { de: 'Der Urlaub', bisDe: 'zum Urlaub', en: 'your vacation' },
-};
-
 function pickVariation<T>(arr: T[], seed: number): T {
     return arr[Math.abs(seed) % arr.length];
 }
@@ -145,50 +132,16 @@ function isDiffIntent(intent: string) {
     return intent === 'differenz' || intent === 'difference';
 }
 
-// Easter Sunday (Gregorian) via the Anonymous Gregorian / Computus algorithm.
-function computeEaster(year: number): { month: number; day: number } {
-    const a = year % 19;
-    const b = Math.floor(year / 100);
-    const c = year % 100;
-    const d = Math.floor(b / 4);
-    const e = b % 4;
-    const f = Math.floor((b + 8) / 25);
-    const g = Math.floor((b - f + 1) / 3);
-    const h = (19 * a + b - d - g + 15) % 30;
-    const i = Math.floor(c / 4);
-    const k = c % 4;
-    const l = (32 + 2 * e + 2 * i - h - k) % 7;
-    const m = Math.floor((a + 11 * h + 22 * l) / 451);
-    const month = Math.floor((h + l - 7 * m + 114) / 31); // 3 = March, 4 = April
-    const day = ((h + l - 7 * m + 114) % 31) + 1;
-    return { month: month - 1, day }; // 0-indexed month
-}
-
-// Returns the UTC date of an event in a given year, or null if the event has
-// no fixed calendar date (e.g. "vacation").
-function getEventDate(eventKey: string, year: number): Date | null {
-    switch (eventKey) {
-        case 'weihnachten': return new Date(Date.UTC(year, 11, 25));
-        case 'silvester': return new Date(Date.UTC(year, 11, 31));
-        case 'neujahr': return new Date(Date.UTC(year, 0, 1));
-        case 'sommeranfang': return new Date(Date.UTC(year, 5, 21));
-        case 'ostern': {
-            const { month, day } = computeEaster(year);
-            return new Date(Date.UTC(year, month, day));
-        }
-        default: return null;
-    }
-}
-
 // Builds a "day of the week per year" table for the next 5 years. Returns
-// undefined for events without a fixed date.
+// undefined for events without a meaningful fixed date (e.g. "vacation").
 function buildWeekdayTable(eventKey: string, locale: string): { year: number; date: string; weekday: string }[] | undefined {
+    if (eventKey === 'urlaub') return undefined;
     const intlLoc = locale === 'de' ? 'de-DE' : 'en-US';
     const currentYear = new Date().getFullYear();
     const rows: { year: number; date: string; weekday: string }[] = [];
     for (let i = 0; i < 5; i++) {
         const year = currentYear + i;
-        const d = getEventDate(eventKey, year);
+        const d = getEventDateUTC(eventKey, year);
         if (!d) return undefined;
         rows.push({
             year,

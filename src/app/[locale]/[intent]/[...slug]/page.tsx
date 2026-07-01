@@ -29,6 +29,8 @@ export const dynamicParams = true;
 import { InstantResultClient } from '@/components/seo/InstantResultClient';
 import { ToolSchema } from '@/components/seo/ToolSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
+import { CountdownTimer } from '@/components/countdown/CountdownTimer';
+import { RelatedEvents } from '@/components/countdown/RelatedEvents';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string; slug: string[] }> }) {
     const { locale, intent, slug } = await params;
@@ -239,6 +241,7 @@ export default async function ProgrammaticPage({
     const isDe = locale === 'de';
     const isAdd = internalIntent === 'addieren' || internalIntent === 'add';
     const isDiff = internalIntent === 'differenz' || internalIntent === 'difference';
+    const eventKey = isDiff ? canonicalSlugStr.replace('tage-bis-', '') : null;
 
     // Breadcrumbs
     const breadcrumbItems = [
@@ -305,39 +308,76 @@ export default async function ProgrammaticPage({
                 <span className="text-slate-700 font-medium" aria-current="page">{correctSlug.replace(/-/g, ' ')}</span>
             </nav>
 
-            <header className="w-full space-y-6">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-                    {h1Text}
-                </h1>
-                <InstantResultClient
-                    intent={internalIntent.toLowerCase()}
-                    slugStr={canonicalSlugStr}
-                    locale={locale}
-                    translations={translations}
-                />
+            {isDiff && eventKey ? (
+                /* ── Countdown / event template ── */
+                <>
+                    <header className="w-full space-y-8 text-center">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                            {h1Text}
+                        </h1>
+                        <CountdownTimer eventKey={eventKey} locale={locale} />
+                        <div className="flex items-center justify-center gap-3 flex-wrap">
+                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-50 border border-green-200 text-xs font-semibold text-green-700 uppercase tracking-wide">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                                {t('verified')}
+                            </span>
+                            <ConversionTools locale={locale} />
+                        </div>
+                    </header>
 
-                <div className="flex items-center gap-3 flex-wrap">
-                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-50 border border-green-200 text-xs font-semibold text-green-700 uppercase tracking-wide">
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        {t('verified')}
-                    </span>
-                    <ConversionTools locale={locale} />
-                </div>
-            </header>
+                    <SEOContentBlock intent={intent} slug={slugStr} locale={locale} />
+                    <RelatedEvents locale={locale} currentEventKey={eventKey} />
+                    <FAQBlock intent={intent} slug={slugStr} locale={locale} />
 
-            <section aria-label="Interaktiver Rechner" className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
-                <CalculatorCore initialMode={mode as any} />
-            </section>
+                    <section aria-label={isDe ? 'Datumsdifferenz-Rechner' : 'Date difference calculator'} className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
+                        <h2 className="text-2xl font-bold text-slate-900 mb-6">
+                            {isDe ? 'Anderes Datum berechnen' : 'Calculate another date'}
+                        </h2>
+                        <CalculatorCore initialMode={mode as any} />
+                    </section>
 
-            <section aria-label="Detaillierte Informationen" className="space-y-10">
-                <SEOContentBlock intent={intent} slug={slugStr} locale={locale} />
-                <InternalLinksBlock locale={locale} intent={intent} slug={slugStr} />
-                <FAQBlock intent={intent} slug={slugStr} locale={locale} />
-            </section>
+                    <TrustSignals locale={locale} />
+                </>
+            ) : (
+                /* ── Add / subtract value template ── */
+                <>
+                    <header className="w-full space-y-6">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                            {h1Text}
+                        </h1>
+                        <InstantResultClient
+                            intent={internalIntent.toLowerCase()}
+                            slugStr={canonicalSlugStr}
+                            locale={locale}
+                            translations={translations}
+                        />
 
-            <TrustSignals locale={locale} />
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-50 border border-green-200 text-xs font-semibold text-green-700 uppercase tracking-wide">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                                {t('verified')}
+                            </span>
+                            <ConversionTools locale={locale} />
+                        </div>
+                    </header>
+
+                    <section aria-label="Interaktiver Rechner" className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
+                        <CalculatorCore initialMode={mode as any} />
+                    </section>
+
+                    <section aria-label="Detaillierte Informationen" className="space-y-10">
+                        <SEOContentBlock intent={intent} slug={slugStr} locale={locale} />
+                        <InternalLinksBlock locale={locale} intent={intent} slug={slugStr} />
+                        <FAQBlock intent={intent} slug={slugStr} locale={locale} />
+                    </section>
+
+                    <TrustSignals locale={locale} />
+                </>
+            )}
             </article>
         </main>
     );
