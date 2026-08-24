@@ -24,9 +24,15 @@ const intentToModeMap: Record<string, string> = {
     'age': 'age'
 };
 export const dynamic = 'force-static';
-export const revalidate = false; 
-export const dynamicParams = true; 
-import { InstantResultClient } from '@/components/seo/InstantResultClient';
+// These pages state a date derived from "today", so they must not be frozen at
+// build time. Hourly ISR bounds the staleness; Phase 3.1 adds on-demand
+// revalidation at the Europe/Berlin date boundary for same-minute accuracy.
+export const revalidate = 3600;
+export const dynamicParams = true;
+import { CountdownAnswer, OffsetAnswer, OffsetUnit } from '@/components/seo/AnswerBlock';
+import { getTodayInTimeZone } from '@/lib/date/civil';
+import { calculateOffsetDate, TimeUnit } from '@/lib/calculator';
+import { getNextOccurrenceCivil } from '@/lib/events';
 import { ToolSchema } from '@/components/seo/ToolSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { CountdownTimer } from '@/components/countdown/CountdownTimer';
@@ -78,7 +84,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const displaySlug = correctSlug.replace(/-/g, ' ');
     const isAdd = internalIntent === 'addieren' || internalIntent === 'add';
     const isDiff = internalIntent === 'differenz' || internalIntent === 'difference';
-    const currentYear = new Date().getFullYear();
     const tEvents = await getTranslations({ locale, namespace: 'Events' });
     
     let title = isDe 
@@ -123,13 +128,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         } catch (e) {
             // fallback
         }
-        
+
+        // Derive the year from the same occurrence the countdown points at, so
+        // the title cannot disagree with the page once the date has passed.
+        const occurrence = getNextOccurrenceCivil(eventKey, getTodayInTimeZone());
+        const eventYear = occurrence?.date.year ?? getTodayInTimeZone().year;
+
         title = isDe
-            ? `Wie viele Tage bis ${label} ${currentYear}?`
-            : `How many days until ${label} ${currentYear}?`;
+            ? `Wie viele Tage bis ${label} ${eventYear}?`
+            : `How many days until ${label} ${eventYear}?`;
         description = isDe
-            ? `Wie viele Tage sind es noch bis ${label} ${currentYear}? Berechnen Sie den exakten Countdown und die verbleibende Zeit online – kostenlos und sofort.`
-            : `How many days until ${label} ${currentYear}? Calculate the exact countdown and remaining time to ${label} online – free, fast, and highly precise.`;
+            ? `Wie viele Tage sind es noch bis ${label} ${eventYear}? Berechnen Sie den exakten Countdown und die verbleibende Zeit online – kostenlos und sofort.`
+            : `How many days until ${label} ${eventYear}? Calculate the exact countdown and remaining time to ${label} online – free, fast, and highly precise.`;
     }
 
     // robots: prevent index bloat for non-canonical number variations
@@ -214,34 +224,32 @@ export default async function ProgrammaticPage({
         permanentRedirect(targetPath);
     } 
 
-    const tSlug = await getTranslations({ locale, namespace: 'SlugPage' });
     const tEvents = await getTranslations({ locale, namespace: 'Events' });
-    const tCalc = await getTranslations({ locale, namespace: 'Calculator' });
-
-    const translations = {
-        in: tSlug('in'),
-        is: tSlug('is'),
-        basedOn: tSlug('basedOn'),
-        until: tSlug('until'),
-        areYet: tSlug('areYet'),
-        theDateIs: tSlug('theDateIs'),
-        days: tCalc('days'),
-        months: tCalc('months'),
-        years: tCalc('years'),
-        events: {
-            weihnachten: tEvents('weihnachten'),
-            silvester: tEvents('silvester'),
-            neujahr: tEvents('neujahr'),
-            sommeranfang: tEvents('sommeranfang'),
-            ostern: tEvents('ostern'),
-            urlaub: tEvents('urlaub')
-        }
-    };
 
     const isDe = locale === 'de';
     const isAdd = internalIntent === 'addieren' || internalIntent === 'add';
     const isDiff = internalIntent === 'differenz' || internalIntent === 'difference';
     const eventKey = isDiff ? canonicalSlugStr.replace('tage-bis-', '') : null;
+
+    // The canonical "today" for every server-rendered answer on this page.
+    const today = getTodayInTimeZone();
+    const occurrence = eventKey ? getNextOccurrenceCivil(eventKey, today) : null;
+
+    // Offset answer inputs, when the slug describes one.
+    const offsetMatch = isAdd
+        ? canonicalSlugStr.match(/^(\d+)-(tage|monate|jahre|jahr)-ab-heute$/)
+        : null;
+    const offsetUnit = offsetMatch ? (offsetMatch[2] as OffsetUnit) : null;
+    const offsetAmount = offsetMatch ? parseInt(offsetMatch[1], 10) : null;
+    const offsetTarget =
+        offsetUnit && offsetAmount !== null
+            ? calculateOffsetDate(
+                  today,
+                  offsetAmount,
+                  (offsetUnit === 'tage' ? 'days' : offsetUnit === 'monate' ? 'months' : 'years') as TimeUnit,
+                  'add'
+              )
+            : null;
 
     // Breadcrumbs
     const breadcrumbItems = [
@@ -315,6 +323,17 @@ export default async function ProgrammaticPage({
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                             {h1Text}
                         </h1>
+                        {occurrence && (
+                            <div className="text-left">
+                                <CountdownAnswer
+                                    eventKey={eventKey}
+                                    today={today}
+                                    target={occurrence.date}
+                                    daysRemaining={occurrence.daysRemaining}
+                                    locale={locale}
+                                />
+                            </div>
+                        )}
                         <CountdownTimer eventKey={eventKey} locale={locale} />
                         <div className="flex items-center justify-center gap-3 flex-wrap">
                             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-50 border border-green-200 text-xs font-semibold text-green-700 uppercase tracking-wide">
@@ -347,12 +366,15 @@ export default async function ProgrammaticPage({
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                             {h1Text}
                         </h1>
-                        <InstantResultClient
-                            intent={internalIntent.toLowerCase()}
-                            slugStr={canonicalSlugStr}
-                            locale={locale}
-                            translations={translations}
-                        />
+                        {offsetTarget && offsetUnit && offsetAmount !== null && (
+                            <OffsetAnswer
+                                amount={offsetAmount}
+                                unit={offsetUnit}
+                                today={today}
+                                target={offsetTarget}
+                                locale={locale}
+                            />
+                        )}
 
                         <div className="flex items-center gap-3 flex-wrap">
                             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-50 border border-green-200 text-xs font-semibold text-green-700 uppercase tracking-wide">

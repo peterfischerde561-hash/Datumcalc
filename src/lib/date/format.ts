@@ -43,6 +43,11 @@ export function formatLongNoWeekday(date: CivilDate, locale: string): string {
     }).format(toUtcDate(date));
 }
 
+/** "25. Dezember" / "December 25" — no year, for use after a year is already stated. */
+export function formatDayMonthLong(date: CivilDate, locale: string): string {
+    return formatter(bcp47(locale), { day: 'numeric', month: 'long' }).format(toUtcDate(date));
+}
+
 /** "24. Aug. 2026" / "Aug 24, 2026" — abbreviated month. */
 export function formatMedium(date: CivilDate, locale: string): string {
     return formatter(bcp47(locale), {

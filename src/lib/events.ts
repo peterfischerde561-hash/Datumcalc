@@ -4,6 +4,8 @@
  * client-side countdown timer, so Easter and occurrence logic live in one place.
  */
 
+import { CivilDate, differenceInDays } from './date/civil';
+
 // Grammatically correct German forms. `de` is nominative (sentence start),
 // `bisDe` the form that follows "bis ".
 export const EVENT_NAMES: Record<string, {
@@ -69,4 +71,38 @@ export function getNextOccurrence(eventKey: string, from: Date = new Date()): Da
         d = new Date(year + 1, next.month, next.day, 0, 0, 0, 0);
     }
     return d;
+}
+
+// ---------------------------------------------------------------------------
+// Civil-date API — what server-rendered answers and metadata must use.
+// ---------------------------------------------------------------------------
+
+/** The event's calendar date in a given year. */
+export function getEventCivilDate(eventKey: string, year: number): CivilDate | null {
+    const md = eventMonthDay(eventKey, year);
+    if (!md) return null;
+    return { year, month: md.month + 1, day: md.day };
+}
+
+/**
+ * The occurrence a countdown should point at, given today's civil date.
+ *
+ * The event still counts as upcoming *on the day itself* — on 25 December the
+ * answer is "today", not "365 days". (The legacy Date-based helper above rolls
+ * to next year at 00:00:01 on the day, which is why the countdown read 365 on
+ * the event date itself.)
+ */
+export function getNextOccurrenceCivil(
+    eventKey: string,
+    today: CivilDate
+): { date: CivilDate; daysRemaining: number } | null {
+    const thisYear = getEventCivilDate(eventKey, today.year);
+    if (!thisYear) return null;
+
+    const date =
+        differenceInDays(today, thisYear) >= 0
+            ? thisYear
+            : getEventCivilDate(eventKey, today.year + 1)!;
+
+    return { date, daysRemaining: differenceInDays(today, date) };
 }

@@ -289,14 +289,14 @@ export function generateDynamicFAQs(intent: string, slug: string, locale: Locale
             {
                 question: isDe ? `Wie viele Tage sind es noch bis ${bis}?` : `How many days are left until ${name}?`,
                 answer: isDe
-                    ? `Der Countdown oben zeigt die verbleibenden Tage bis ${bis} an. Er wird beim Laden der Seite anhand des aktuellen Datums berechnet und springt nach dem Termin automatisch auf das nächste Jahr.`
-                    : `The countdown above shows the days remaining until ${name}. It is calculated from the current date on page load and rolls over to next year automatically once the date has passed.`,
+                    ? `Die Antwort oben nennt die verbleibenden Tage bis ${bis}. Sie wird serverseitig aus dem heutigen Datum in der Zeitzone Europe/Berlin berechnet und springt nach dem Termin automatisch auf das nächste Jahr.`
+                    : `The answer above states the days remaining until ${name}. It is computed on the server from today's date in the Europe/Berlin timezone and rolls over to next year automatically once the date has passed.`,
             },
             {
                 question: isDe ? 'Aktualisiert sich der Countdown automatisch?' : 'Does the countdown update automatically?',
                 answer: isDe
-                    ? 'Ja. Die Zahl wird direkt in Ihrem Browser aus dem heutigen Datum berechnet, sodass sie bei jedem Aufruf stimmt – ganz ohne gespeichertes oder veraltetes Datum.'
-                    : 'Yes. The number is computed in your browser from today\'s date, so it is correct on every visit – with no stored or stale date.',
+                    ? 'Ja. Stichtag ist der laufende Kalendertag in der Zeitzone Europe/Berlin. Die Uhr darunter zählt zusätzlich sekundengenau in Ihrem Browser weiter.'
+                    : 'Yes. The reference point is the current calendar day in the Europe/Berlin timezone. The clock below additionally ticks down to the second in your browser.',
             },
         ];
 
@@ -322,7 +322,7 @@ export function generateDynamicFAQs(intent: string, slug: string, locale: Locale
         return [
             {
                 question: `Welches Datum ist in ${valueDat} ab heute?`,
-                answer: `Der Rechner nimmt das heutige Datum als Startpunkt und zählt ${valueNom} vorwärts. Das Ergebnis oben wird live im Browser berechnet und zeigt das genaue Zieldatum inklusive Wochentag an.`,
+                answer: `Der Rechner nimmt das heutige Datum als Startpunkt und zählt ${valueNom} vorwärts. Das Ergebnis oben nennt das genaue Zieldatum inklusive Wochentag, Kalenderwoche und Tag des Jahres.`,
             },
             {
                 question: numValue && isDays

@@ -1,10 +1,13 @@
 import { Link } from '@/i18n/routing';
+import { getTodayInTimeZone } from '@/lib/date/civil';
+import { formatLongNoWeekday } from '@/lib/date/format';
 
 export function TrustSignals({ locale = 'de' }: { locale?: string }) {
     const isDe = locale === 'de';
-    const lastUpdated = new Date().toLocaleDateString(isDe ? 'de-DE' : 'en-US', {
-        day: '2-digit', month: 'long', year: 'numeric'
-    });
+    // Derived from the canonical Berlin date at render time, not the server's
+    // local clock. Pages that show this revalidate, so it no longer freezes at
+    // the date of the last deploy.
+    const lastUpdated = formatLongNoWeekday(getTodayInTimeZone(), locale);
 
     return (
         <div className="flex flex-col items-start gap-6 mt-8 pt-8 border-t border-slate-200">
