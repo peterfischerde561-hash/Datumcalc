@@ -7,6 +7,7 @@ import { SITE_URL } from '@/lib/constants';
 import { ArticleSchema } from '@/components/seo/ArticleSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
+import { hreflangAlternates } from '@/lib/seo/indexPolicy';
 
 export const dynamic = 'force-static';
 export const revalidate = false; 
@@ -42,13 +43,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         return {};
     }
 
-    const languages: Record<string, string> = {};
-    locales.forEach(loc => {
+    const languages = hreflangAlternates((loc) => {
         const locSlug = getLocalizedArticleSlug(slug, locale, loc);
-        languages[loc] = `${siteUrl}${getCanonicalPath(loc, 'ratgeber', locSlug)}`;
+        return `${siteUrl}${getCanonicalPath(loc, 'ratgeber', locSlug)}`;
     });
-    const deSlug = getLocalizedArticleSlug(slug, locale, 'de');
-    languages['x-default'] = `${siteUrl}${getCanonicalPath('de', 'ratgeber', deSlug)}`;
 
     return {
         title: article.title,
@@ -136,9 +134,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     {t('takeaways')}
                 </h2>
                 <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-700">
-                     <li>{t('takeawaysItem1')}</li>
-                     <li>{t('takeawaysItem2')}</li>
-                     <li>{t('takeawaysItem3')}</li>
+                    {article.takeaways.map((point) => (
+                        <li key={point}>{point}</li>
+                    ))}
                 </ul>
             </section>
 

@@ -3,6 +3,7 @@ import { ROUTES } from '@/lib/routes';
 import { CheckCircle2, CalendarCheck2, Clock4, Users, ShieldCheck } from 'lucide-react';
 import { SITE_URL } from '@/lib/constants';
 import { translateSlug } from '@/lib/seo/translations';
+import { routeLabel } from '@/lib/seo/routeLabels';
 
 const siteUrl = SITE_URL;
 const dateModified = new Date().toISOString().split('T')[0];
@@ -316,26 +317,25 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                                 </tr>
                             </thead>
                             <tbody className="text-slate-700 divide-y divide-slate-100">
-                                <tr className="hover:bg-slate-50 transition-colors">
-                                    <td className="py-4 px-5 text-blue-700 font-medium">{c.seo.case1}</td>
-                                    <td className="py-4 px-5"><Link href="/addieren" className="underline hover:text-blue-700">Datum addieren</Link></td>
-                                    <td className="py-4 px-5 hidden md:table-cell">"14 days from today"</td>
-                                </tr>
-                                <tr className="hover:bg-slate-50 transition-colors">
-                                    <td className="py-4 px-5 text-neon-blue font-medium">{c.seo.case2}</td>
-                                    <td className="py-4 px-5"><Link href="/arbeitstage" className="underline hover:text-blue-700">Arbeitstage</Link></td>
-                                    <td className="py-4 px-5 hidden md:table-cell">"Net business days Q4"</td>
-                                </tr>
-                                <tr className="hover:bg-slate-50 transition-colors">
-                                    <td className="py-4 px-5 text-purple-600 font-medium">{c.seo.case3}</td>
-                                    <td className="py-4 px-5"><Link href="/differenz" className="underline hover:text-blue-700">Datumsdifferenz</Link></td>
-                                    <td className="py-4 px-5 hidden md:table-cell">"Tage bis Weihnachten"</td>
-                                </tr>
-                                <tr className="hover:bg-slate-50 transition-colors">
-                                    <td className="py-4 px-5 text-green-600 font-medium">{c.seo.case4}</td>
-                                    <td className="py-4 px-5"><Link href="/alter" className="underline hover:text-blue-700">Altersrechner</Link></td>
-                                    <td className="py-4 px-5 hidden md:table-cell">"Alter am 01.01.2050"</td>
-                                </tr>
+                                {([
+                                    { key: 'addieren', href: '/addieren', useCase: c.seo.case1, tone: 'text-blue-700' },
+                                    { key: 'arbeitstage', href: '/arbeitstage', useCase: c.seo.case2, tone: 'text-neon-blue' },
+                                    { key: 'differenz', href: '/differenz', useCase: c.seo.case3, tone: 'text-purple-600' },
+                                    { key: 'alter', href: '/alter', useCase: c.seo.case4, tone: 'text-green-600' }
+                                ] as const).map((row) => {
+                                    const rl = routeLabel(row.key, loc);
+                                    return (
+                                        <tr key={row.key} className="hover:bg-slate-50 transition-colors">
+                                            <td className={`py-4 px-5 font-medium ${row.tone}`}>{row.useCase}</td>
+                                            <td className="py-4 px-5">
+                                                <Link href={row.href} className="underline hover:text-blue-700">
+                                                    {rl.label}
+                                                </Link>
+                                            </td>
+                                            <td className="py-4 px-5 hidden md:table-cell">&ldquo;{rl.example}&rdquo;</td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </div>

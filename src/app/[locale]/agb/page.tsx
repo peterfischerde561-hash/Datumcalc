@@ -5,6 +5,7 @@ import { SITE_URL, DOMAIN } from '@/lib/constants';
 export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
+import { hreflangAlternates } from '@/lib/seo/indexPolicy';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -13,12 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const siteUrl = SITE_URL;
     const fullUrl = `${siteUrl}${getCanonicalPath(locale, 'agb')}`;
 
-    // Build hreflang alternates
-    const languages: Record<string, string> = {};
-    locales.forEach(loc => {
-        languages[loc] = `${siteUrl}${getCanonicalPath(loc, 'agb')}`;
-    });
-    languages['x-default'] = `${siteUrl}${getCanonicalPath('de', 'agb')}`;
+    const languages = hreflangAlternates((loc) => `${siteUrl}${getCanonicalPath(loc, 'agb')}`);
 
     return {
         title: locale === 'de' ? 'Nutzungsbedingungen' : 'Terms of Service',

@@ -7,6 +7,7 @@ import { SITE_URL } from "@/lib/constants";
 import { ROUTES } from '@/lib/routes';
 import { SplitSquareHorizontal, PlusSquare, Briefcase, User } from 'lucide-react';
 import { LiveDatePreview } from '@/components/hero/LiveDatePreview';
+import { hreflangAlternates } from '@/lib/seo/indexPolicy';
 import { QuickShortcuts } from '@/components/hero/QuickShortcuts';
 
 // The hero states today's date, ordinal day and ISO week, so this page is
@@ -32,10 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         description,
         alternates: {
             canonical: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
-            languages: locales.reduce((acc, loc) => ({
-                ...acc,
-                [loc]: `${siteUrl}${loc === 'de' ? '' : `/${loc}`}`
-            }), { 'x-default': siteUrl })
+            languages: hreflangAlternates((loc) => `${siteUrl}${loc === 'de' ? '' : `/${loc}`}`)
         },
         openGraph: {
             title,
@@ -47,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
                     url: '/og-image.png',
                     width: 1200,
                     height: 630,
-                    alt: 'Datumsrechner – Differenz, Arbeitstage & Alter online berechnen',
+                    alt: title,
                 }
             ]
         },

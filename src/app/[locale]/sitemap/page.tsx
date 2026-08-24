@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
+import { hreflangAlternates } from '@/lib/seo/indexPolicy';
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { getArticles } from '@/lib/articles';
 import { Link } from '@/i18n/routing';
@@ -16,12 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const siteUrl = SITE_URL;
     const fullUrl = `${siteUrl}${getCanonicalPath(locale, 'sitemap')}`;
 
-    // Build hreflang alternates
-    const languages: Record<string, string> = {};
-    locales.forEach(loc => {
-        languages[loc] = `${siteUrl}${getCanonicalPath(loc, 'sitemap')}`;
-    });
-    languages['x-default'] = `${siteUrl}${getCanonicalPath('de', 'sitemap')}`;
+    const languages = hreflangAlternates((loc) => `${siteUrl}${getCanonicalPath(loc, 'sitemap')}`);
 
     return {
         title: locale === 'de' ? 'Sitemap – Alle Seiten' : 'Sitemap',

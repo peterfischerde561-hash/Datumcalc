@@ -6,6 +6,7 @@ import { SITE_URL } from '@/lib/constants';
 export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
+import { hreflangAlternates } from '@/lib/seo/indexPolicy';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -22,11 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         ? "Ratgeber zur Datumsberechnung: Schaltjahre, Arbeitstage, ISO 8601 und Kalenderwochen verständlich erklärt."
         : "Expert guides on date calculation: leap years, business days, ISO 8601, and calendar weeks explained clearly.";
 
-    const languages: Record<string, string> = {};
-    locales.forEach(loc => {
-        languages[loc] = `${siteUrl}${getCanonicalPath(loc, 'ratgeber')}`;
-    });
-    languages['x-default'] = `${siteUrl}${getCanonicalPath('de', 'ratgeber')}`;
+    const languages = hreflangAlternates((loc) => `${siteUrl}${getCanonicalPath(loc, 'ratgeber')}`);
 
     return {
         title,

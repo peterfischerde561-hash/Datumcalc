@@ -10,6 +10,7 @@ import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 export const revalidate = 86400; // 24 hours
 export const dynamicParams = false;
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
+import { hreflangAlternates } from '@/lib/seo/indexPolicy';
 import { HUB_CONTENT } from '@/lib/seo/hubContent';
 import { SITE_URL } from '@/lib/constants';
 
@@ -30,12 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const canonicalPath = getCanonicalPath(locale, finalIntent);
     const fullUrl = `${SITE_URL}${canonicalPath}`;
     
-    // Build hreflang alternates
-    const languages: Record<string, string> = {};
-    locales.forEach(loc => {
-        languages[loc] = `${SITE_URL}${getCanonicalPath(loc, finalIntent)}`;
-    });
-    languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', finalIntent)}`;
+    const languages = hreflangAlternates((loc) => `${SITE_URL}${getCanonicalPath(loc, finalIntent)}`);
 
     const metaData: Record<string, { title: string; description: string }> = {
         'differenz': {

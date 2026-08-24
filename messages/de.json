@@ -49,9 +49,6 @@
     "Article": {
         "readTime": "Lesezeit",
         "takeaways": "Das Wichtigste auf einen Blick",
-        "takeawaysItem1": "Alle Berechnungen basieren auf standardisierten Algorithmen (ISO 8601).",
-        "takeawaysItem2": "Muster besser erkennen, um Fristen präziser zu setzen.",
-        "takeawaysItem3": "Die Mathematik hinter den Kalendern erleichtert die tägliche Arbeit spürbar.",
         "theory": "Theorie in die Praxis umsetzen",
         "practice": "Berechnen Sie Ihr Datum jetzt",
         "factCheck": "Faktencheck: Aktuell verifiziert",

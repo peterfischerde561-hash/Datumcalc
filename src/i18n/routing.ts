@@ -1,11 +1,14 @@
 import { defineRouting } from 'next-intl/routing';
 import { createNavigation } from 'next-intl/navigation';
+import { locales, defaultLocale } from './locales';
 
-export const locales = ['de', 'en'] as const;
+// Re-exported so existing `from '@/i18n/routing'` imports keep working; the
+// constant itself lives in a dependency-free module.
+export { locales, defaultLocale, type Locale } from './locales';
 
 export const routing = defineRouting({
     locales,
-    defaultLocale: 'de',
+    defaultLocale,
     localePrefix: 'as-needed',
     localeDetection: false,
     alternateLinks: false,

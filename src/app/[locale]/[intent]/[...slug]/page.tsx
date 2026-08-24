@@ -12,6 +12,8 @@ import { resolveCanonicalQuery, CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
+import { routeLabel, ToolKey } from '@/lib/seo/routeLabels';
+import { robotsDirective, hreflangAlternates } from '@/lib/seo/indexPolicy';
 
 const intentToModeMap: Record<string, string> = {
     'differenz': 'difference',
@@ -70,15 +72,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
     const correctUrl = `${SITE_URL}${correctPath}`;
 
-    // Build hreflang alternates (prefix-aware)
-    const languages: Record<string, string> = {};
-    locales.forEach(loc => {
+    const languages = hreflangAlternates((loc) => {
         const locSlug = translateSlug(canonicalSlug || canonicalSlugStr, loc);
-        const locPath = getCanonicalPath(loc, internalIntent, locSlug);
-        languages[loc] = `${SITE_URL}${locPath}`;
+        return `${SITE_URL}${getCanonicalPath(loc, internalIntent, locSlug)}`;
     });
-    const deSlug = translateSlug(canonicalSlug || canonicalSlugStr, 'de');
-    languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', internalIntent, deSlug)}`;
 
     // SERP Domination formatting
     const isDe = locale === 'de';
@@ -143,8 +140,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             : `How many days until ${label} ${eventYear}? Calculate the exact countdown and remaining time to ${label} online – free, fast, and highly precise.`;
     }
 
-    // robots: prevent index bloat for non-canonical number variations
-    const robots = def?.isIndexable ? 'index, follow' : 'noindex, follow';
+    // Non-canonical number variations stay out of the index; so does every page
+    // in a noindexed locale.
+    const robots = robotsDirective(locale, Boolean(def?.isIndexable));
 
     return {
         title,
@@ -255,7 +253,8 @@ export default async function ProgrammaticPage({
     // Breadcrumbs
     const breadcrumbItems = [
         { name: isDe ? 'Startseite' : 'Home', item: `${SITE_URL}/${locale === 'de' ? '' : locale}` },
-        { name: intent.charAt(0).toUpperCase() + intent.slice(1), item: `${SITE_URL}${getCanonicalPath(locale, internalIntent)}` },
+        // Same label the visible breadcrumb renders, so schema and page agree.
+        { name: routeLabel(internalIntent as ToolKey, locale).label, item: `${SITE_URL}${getCanonicalPath(locale, internalIntent)}` },
         { name: displaySlug, item: `${SITE_URL}${correctPath}` }
     ];
 
@@ -311,7 +310,7 @@ export default async function ProgrammaticPage({
                 </NextLink>
                 <ChevronRight className="w-4 h-4 text-slate-400" />
                 <NextLink href={getCanonicalPath(locale, internalIntent)} className="hover:text-blue-700 hover:underline transition-colors">
-                    {isDe ? (mode === 'add_subtract' ? 'Datumsrechner' : 'Tage Zählen') : (mode === 'add_subtract' ? 'Date Calculator' : 'Days Counter')}
+                    {routeLabel(internalIntent as ToolKey, locale).label}
                 </NextLink>
                 <ChevronRight className="w-4 h-4 text-slate-400" />
                 <span className="text-slate-700 font-medium" aria-current="page">{correctSlug.replace(/-/g, ' ')}</span>

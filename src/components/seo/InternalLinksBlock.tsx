@@ -1,6 +1,7 @@
 import { Link } from '@/i18n/routing';
 import { ROUTES } from '@/lib/routes';
 import { translateSlug, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { routeLabel } from '@/lib/seo/routeLabels';
 import { useTranslations } from 'next-intl';
 
 export function InternalLinksBlock({ locale, intent, slug }: { locale: string; intent: string; slug: string }) {
@@ -52,16 +53,19 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
         });
     });
 
-    links.push({ 
-        label: t('arbeitstage'), 
-        href: '/arbeitstage', 
-        type: isDe ? 'Ratgeber' : 'Guide' 
+    // /arbeitstage is a calculator, not a guide — it was previously grouped and
+    // labelled as "Ratgeber", which mislabels the destination for users and
+    // dilutes the anchor.
+    links.push({
+        label: routeLabel('arbeitstage', locale).label,
+        href: '/arbeitstage',
+        type: isDe ? 'Rechner' : 'Calculator'
     });
 
-    links.push({ 
-        label: t('ratgeber'), 
-        href: '/ratgeber', 
-        type: isDe ? 'Ratgeber' : 'Guide' 
+    links.push({
+        label: routeLabel('ratgeber', locale).label,
+        href: '/ratgeber',
+        type: isDe ? 'Ratgeber' : 'Guide'
     });
 
     return (

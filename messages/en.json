@@ -49,9 +49,6 @@
     "Article": {
         "readTime": "Read time",
         "takeaways": "Key Takeaways",
-        "takeawaysItem1": "All calculations are based on standardized algorithms (ISO 8601).",
-        "takeawaysItem2": "Recognize patterns better to set deadlines more precisely.",
-        "takeawaysItem3": "The math behind calendars makes daily work noticeably easier.",
         "theory": "Putting theory into practice",
         "practice": "Calculate your date now",
         "factCheck": "Fact check: Currently verified",

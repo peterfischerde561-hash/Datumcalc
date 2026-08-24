@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from "@/lib/constants";
+import { isIndexableLocale, hreflangAlternates } from "@/lib/seo/indexPolicy";
 import Script from 'next/script';
 import "../globals.css";
 
@@ -28,12 +29,7 @@ export async function generateMetadata(
     const { locale } = await params;
     setRequestLocale(locale);
     
-    // Build language alternates (Hreflang)
-    const languages: Record<string, string> = {};
-    locales.forEach(loc => {
-        languages[loc] = `${SITE_URL}${loc === 'de' ? '' : `/${loc}`}`;
-    });
-    languages['x-default'] = `${SITE_URL}`;
+    const languages = hreflangAlternates((loc) => `${SITE_URL}${loc === 'de' ? '' : `/${loc}`}`);
 
     const defaultTitle = locale === 'de' 
         ? 'Datumsrechner – Tage, Arbeitstage & Alter berechnen'
@@ -74,7 +70,7 @@ export async function generateMetadata(
                     url: '/og-image.png',
                     width: 1200,
                     height: 630,
-                    alt: 'Datumsrechner – Differenz, Arbeitstage & Alter online berechnen',
+                    alt: defaultTitle,
                 },
             ],
         },
@@ -89,10 +85,10 @@ export async function generateMetadata(
             google: '7KUnH1MRuX53v_0Kzyg8GT_rlLgg-VJLs6w-5n6Byy8',
         },
         robots: {
-            index: true,
+            index: isIndexableLocale(locale),
             follow: true,
             googleBot: {
-                index: true,
+                index: isIndexableLocale(locale),
                 follow: true,
                 'max-video-preview': -1,
                 'max-image-preview': 'large',

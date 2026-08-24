@@ -4,6 +4,20 @@ export interface Article {
     description: string;
     publishedAt: string;
     readTime: string;
+    /**
+     * The specific things this article establishes — required, and specific to
+     * this article. These previously came from the shared `Article.takeaways*`
+     * i18n strings, so every guide displayed the same three generic bullets in
+     * its highest-visibility position, and a leap-year article opened with
+     * three sentences that said nothing about leap years. Because they lived in
+     * the translation files they were also translated per locale while the
+     * article bodies were not, which is how a French URL ended up serving
+     * French bullets above a German article.
+     *
+     * Assert them against the article's own content. If you cannot write three
+     * that are true only of this article, the article needs work, not filler.
+     */
+    takeaways: string[];
     content: string;
 }
 
@@ -15,6 +29,11 @@ export const articles: Record<string, Article[]> = {
             description: 'Was ist ein Schaltjahr und warum gibt es den 29. Februar? Alle Regeln, Beispiele und die Berechnung einfach erklärt.',
             publishedAt: '24. März 2024',
             readTime: '3 min',
+            takeaways: [
+                'Das nächste Schaltjahr ist 2028 – zuletzt hatte 2024 einen 29. Februar.',
+                '1900 war kein Schaltjahr, obwohl es durch 4 teilbar ist: volle Jahrhunderte fallen aus.',
+                '2000 war dagegen eines, weil die Ausnahme für durch 400 teilbare Jahre greift.'
+            ],
             content: `
           <h2>Was ist ein Schaltjahr?</h2>
           <p>Ein Schaltjahr hat 366 Tage statt der üblichen 365. Der zusätzliche Tag wird am Ende des Februars als 29. Februar eingefügt. Dies ist notwendig, um unseren Kalender mit dem Sonnenjahr (der Zeit, die die Erde für eine Umkreisung der Sonne benötigt) zu synchronisieren.</p>
@@ -38,6 +57,11 @@ export const articles: Record<string, Article[]> = {
             description: 'Was ist ein Arbeitstag? Definition, Unterschied zu Werktagen und was bei gesetzlichen Fristen zu beachten ist – einfach erklärt.',
             publishedAt: '25. März 2024',
             readTime: '3 min',
+            takeaways: [
+                'Arbeitstag meint in der Regel die 5-Tage-Woche von Montag bis Freitag.',
+                'Werktag ist weiter gefasst: Nach dem Bundesurlaubsgesetz zählt auch der Samstag dazu.',
+                'Steht im Vertrag „Werktage“, verkürzt sich eine Frist gegenüber „Arbeitstagen“ spürbar.'
+            ],
             content: `
           <h2>Definition: Arbeitstag</h2>
           <p>Ein Arbeitstag ist ein Tag, an dem üblicherweise gearbeitet wird. Im Gegensatz zum Kalendertag oder Werktag werden hierbei Wochenenden und gesetzliche Feiertage grundsätzlich ausgeschlossen.</p>
@@ -55,6 +79,11 @@ export const articles: Record<string, Article[]> = {
             description: 'Hat ein Jahr immer 52 Wochen? Erfahre alles über ISO-Kalenderwochen und warum manche Jahre 53 Wochen haben.',
             publishedAt: '20. März 2024',
             readTime: '2 min',
+            takeaways: [
+                'Ein Gemeinjahr hat 52 Wochen und einen Resttag, ein Schaltjahr 52 Wochen und zwei.',
+                'Deshalb verschiebt sich der Wochentag eines Datums jedes Jahr um eins – nach einem Schaltjahr um zwei.',
+                'Ein Jahr hat 53 Kalenderwochen, wenn es an einem Donnerstag beginnt (Schaltjahre auch ab Mittwoch).'
+            ],
             content: `
           <h2>Die 52-Wochen-Regel</h2>
           <p>Normalerweise geht man davon aus, dass ein Jahr 52 Wochen hat. Teilt man 365 durch 7 (Tage pro Woche), erhält man exakt 52,14. Ein normales Jahr hat also 52 volle Wochen und einen Resttag. Ein Schaltjahr hat 52 Wochen und 2 Resttage.</p>
@@ -76,6 +105,11 @@ export const articles: Record<string, Article[]> = {
             description: 'ISO 8601 einfach erklärt: Der internationale Standard für Datum und Zeit – Aufbau, Beispiele und warum er wichtig ist.',
             publishedAt: '26. März 2024',
             readTime: '4 min',
+            takeaways: [
+                'ISO 8601 schreibt absteigend Jahr-Monat-Tag: 2026-08-24.',
+                'Dadurch entfällt die Verwechslung zwischen US-Format (MM/DD/YYYY) und deutschem Format (DD.MM.YYYY).',
+                'Weil die Stellen absteigend sortiert sind, ergibt alphabetisches Sortieren automatisch die richtige Reihenfolge.'
+            ],
             content: `
           <h2>Was ist ISO 8601?</h2>
           <p>ISO 8601 ist der internationale Standard der ISO für die Darstellung von Datum und Uhrzeit. Er sorgt dafür, dass Zeitangaben weltweit eindeutig und maschinenlesbar sind.</p>
@@ -95,6 +129,11 @@ export const articles: Record<string, Article[]> = {
             description: 'Everything you need to know about leap years. Learn why our calendar needs an extra day every four years and how it is calculated.',
             publishedAt: 'March 24, 2024',
             readTime: '3 min',
+            takeaways: [
+                'The next leap year is 2028 – the most recent February 29 was in 2024.',
+                '1900 was not a leap year despite being divisible by 4: full centuries are skipped.',
+                '2000 was one, because the exception for years divisible by 400 applies.'
+            ],
             content: `
           <h2>What is a Leap Year?</h2>
           <p>A leap year has 366 days instead of the usual 365. The extra day is added to the end of February – February 29th. This is necessary to synchronize our calendar with the solar year (the time it takes for the Earth to orbit the Sun).</p>
@@ -118,6 +157,11 @@ export const articles: Record<string, Article[]> = {
             description: 'Learn everything about the term business day, how it differs from a working day and what to consider for deadlines.',
             publishedAt: 'March 25, 2024',
             readTime: '3 min',
+            takeaways: [
+                'A business day normally means the Monday-to-Friday working week.',
+                'Weekends and public holidays are excluded, which is what separates it from a calendar day.',
+                'Contracts that count "working days" instead of calendar days lengthen a deadline in practice.'
+            ],
             content: `
           <h2>Definition: Business Day</h2>
           <p>A business day is a day on which work is normally performed. Unlike the calendar day or working day, weekends and public holidays are excluded.</p>
@@ -135,6 +179,11 @@ export const articles: Record<string, Article[]> = {
             description: 'Does a year always have 52 weeks? Find out more about ISO weeks, leap years, and why some years have 53 weeks.',
             publishedAt: 'March 20, 2024',
             readTime: '2 min',
+            takeaways: [
+                'A common year is 52 weeks plus one day; a leap year is 52 weeks plus two.',
+                'That leftover day is why a given date shifts one weekday each year, and two after a leap year.',
+                'A year has 53 ISO weeks when it starts on a Thursday (or a Wednesday, in a leap year).'
+            ],
             content: `
           <h2>The 52-Week Rule</h2>
           <p>Normally, a year is assumed to have 52 weeks. If you divide 365 by 7 (days per week), you get exactly 52.14. A normal year thus has 52 full weeks and one remainder day. A leap year has 52 weeks and 2 remainder days.</p>
@@ -153,6 +202,11 @@ export const articles: Record<string, Article[]> = {
             description: 'Why ISO 8601 is the most important standard for digital time measurement and how to apply it correctly.',
             publishedAt: 'March 26, 2024',
             readTime: '4 min',
+            takeaways: [
+                'ISO 8601 writes dates largest unit first: 2026-08-24.',
+                'That removes the ambiguity between the US format (MM/DD/YYYY) and the European one (DD.MM.YYYY).',
+                'Because the digits descend in significance, sorting the strings alphabetically also sorts them chronologically.'
+            ],
             content: `
           <h2>What is ISO 8601?</h2>
           <p>ISO 8601 is the international ISO standard for the representation of date and time. It ensures that time data is globally unambiguous and machine-readable.</p>
@@ -170,6 +224,54 @@ export const articles: Record<string, Article[]> = {
 export function getArticles(locale: string): Article[] {
     return articles[locale] || articles['de'];
 }
+
+/**
+ * Fail the build rather than shipping a guide whose most prominent block is
+ * empty or padded. Runs at module load, so `next build` surfaces it.
+ */
+function assertArticlesAreComplete() {
+    const problems: string[] = [];
+
+    for (const [locale, list] of Object.entries(articles)) {
+        for (const article of list) {
+            const where = `${locale}/${article.slug}`;
+            if (!Array.isArray(article.takeaways) || article.takeaways.length < 3) {
+                problems.push(`${where}: needs at least 3 takeaways`);
+                continue;
+            }
+            if (article.takeaways.some((t) => !t || t.trim().length < 20)) {
+                problems.push(`${where}: has an empty or stub takeaway`);
+            }
+            if (new Set(article.takeaways).size !== article.takeaways.length) {
+                problems.push(`${where}: has duplicate takeaways`);
+            }
+        }
+    }
+
+    // Catch the failure mode this replaced: the same bullet reused across
+    // articles, which is filler wearing the shape of a summary.
+    const seen = new Map<string, string>();
+    for (const [locale, list] of Object.entries(articles)) {
+        for (const article of list) {
+            for (const point of article.takeaways ?? []) {
+                const key = `${locale}::${point}`;
+                const owner = seen.get(key);
+                if (owner) {
+                    problems.push(
+                        `${locale}/${article.slug}: takeaway is shared with ${owner} — write one specific to this article`
+                    );
+                }
+                seen.set(key, `${locale}/${article.slug}`);
+            }
+        }
+    }
+
+    if (problems.length) {
+        throw new Error(`Invalid article content:\n  - ${problems.join('\n  - ')}`);
+    }
+}
+
+assertArticlesAreComplete();
 
 export function getArticleBySlug(slug: string, locale: string = 'de') {
     return (articles[locale] || articles['de'])?.find(a => a.slug === slug);

@@ -3,6 +3,12 @@ import { locales } from '@/i18n/routing';
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from './translations';
 import { SITE_URL } from '@/lib/constants';
 import { getArticles } from '@/lib/articles';
+import { isIndexableLocale } from './indexPolicy';
+
+// A sitemap is a request to index. Listing a noindexed locale asks Google to
+// index a page that then tells it not to, which is a contradiction worth
+// avoiding rather than a signal worth sending.
+const indexableLocales = locales.filter(isIndexableLocale);
 
 const CALC_MODE_TO_INTENT: Record<string, string> = {
     add_subtract: 'addieren',
@@ -30,7 +36,7 @@ export function getCoreSitemapUrls() {
     const internalPaths = ['', 'addieren', 'differenz', 'arbeitstage', 'alter', 'ratgeber', 'sitemap', 'ueber-uns', 'datenschutz', 'impressum', 'agb'];
     const urls: any[] = [];
 
-    locales.forEach(locale => {
+    indexableLocales.forEach(locale => {
         internalPaths.forEach(path => {
             let canonicalPath = '';
             if (path === '') {
@@ -66,7 +72,7 @@ export function getCoreSitemapUrls() {
 export function getSEOSitemapUrls() {
     const urls: any[] = [];
     
-    locales.forEach(locale => {
+    indexableLocales.forEach(locale => {
         Object.values(CANONICAL_QUERIES).forEach((def) => {
             if (def.isIndexable && def.intentType !== 'Informational') {
                 const internalIntent = CALC_MODE_TO_INTENT[def.calcMode] || 'differenz';
@@ -89,7 +95,7 @@ export function getSEOSitemapUrls() {
 export function getEventsSitemapUrls() {
     const urls: any[] = [];
     
-    locales.forEach(locale => {
+    indexableLocales.forEach(locale => {
         Object.values(CANONICAL_QUERIES).forEach((def) => {
             if (def.isIndexable && (def.priority === 'High' || def.priority === 'Medium') && def.intentType === 'Informational') {
                  const internalIntent = CALC_MODE_TO_INTENT[def.calcMode] || 'differenz';
