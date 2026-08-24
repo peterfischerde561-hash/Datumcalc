@@ -7,7 +7,7 @@ import { SITE_URL } from "@/lib/constants";
 import { ROUTES } from '@/lib/routes';
 import { SplitSquareHorizontal, PlusSquare, Briefcase, User } from 'lucide-react';
 import { LiveDatePreview } from '@/components/hero/LiveDatePreview';
-import { hreflangAlternates } from '@/lib/seo/indexPolicy';
+import { buildPageMetadata } from '@/lib/seo/metadata';
 import { QuickShortcuts } from '@/components/hero/QuickShortcuts';
 
 // The hero states today's date, ordinal day and ISO week, so this page is
@@ -28,34 +28,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         ? 'Datumsrechner online: Datumsdifferenz, Arbeitstage & Alter kostenlos berechnen. ISO 8601 konform, mit Schaltjahren. Ohne Anmeldung.'
         : 'Online date calculator: calculate date differences, business days & age for free. ISO 8601 compliant, with leap years. No registration.';
 
-    return {
+    return buildPageMetadata({
+        locale,
         title,
         description,
-        alternates: {
-            canonical: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
-            languages: hreflangAlternates((loc) => `${siteUrl}${loc === 'de' ? '' : `/${loc}`}`)
-        },
-        openGraph: {
-            title,
-            description,
-            url: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
-            type: 'website',
-            images: [
-                {
-                    url: '/og-image.png',
-                    width: 1200,
-                    height: 630,
-                    alt: title,
-                }
-            ]
-        },
-        twitter: {
-            card: 'summary_large_image',
-            title,
-            description,
-            images: ['/og-image.png']
-        }
-    };
+        path: locale === 'de' ? '/' : `/${locale}`,
+        pathForLocale: (loc) => (loc === 'de' ? '/' : `/${loc}`)
+    });
 }
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {

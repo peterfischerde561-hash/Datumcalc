@@ -10,7 +10,7 @@ import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 export const revalidate = 86400; // 24 hours
 export const dynamicParams = false;
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
-import { hreflangAlternates } from '@/lib/seo/indexPolicy';
+import { buildPageMetadata } from '@/lib/seo/metadata';
 import { HUB_CONTENT } from '@/lib/seo/hubContent';
 import { SITE_URL } from '@/lib/constants';
 
@@ -30,8 +30,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     
     const canonicalPath = getCanonicalPath(locale, finalIntent);
     const fullUrl = `${SITE_URL}${canonicalPath}`;
-    
-    const languages = hreflangAlternates((loc) => `${SITE_URL}${getCanonicalPath(loc, finalIntent)}`);
 
     const metaData: Record<string, { title: string; description: string }> = {
         'differenz': {
@@ -82,26 +80,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const title = locale === 'de' ? metaData.de.title : metaData.en.title;
     const description = locale === 'de' ? metaData.de.description : metaData.en.description;
 
-    return {
+    return buildPageMetadata({
+        locale,
         title,
         description,
-        alternates: {
-            canonical: fullUrl,
-            languages
-        },
-        openGraph: {
-            title,
-            description,
-            url: fullUrl,
-            type: 'website',
-            locale: locale,
-        },
-        twitter: {
-            card: 'summary_large_image',
-            title,
-            description,
-        }
-    };
+        path: getCanonicalPath(locale, finalIntent),
+        pathForLocale: (loc) => getCanonicalPath(loc, finalIntent)
+    });
 }
 
 export default async function IntentHubPage({ params }: { params: Promise<{ locale: string; intent: string }> }) {

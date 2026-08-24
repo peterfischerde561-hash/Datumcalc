@@ -5,7 +5,7 @@ import { SITE_URL, DOMAIN } from '@/lib/constants';
 export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
-import { hreflangAlternates } from '@/lib/seo/indexPolicy';
+import { buildPageMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -14,25 +14,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const siteUrl = SITE_URL;
     const fullUrl = `${siteUrl}${getCanonicalPath(locale, 'impressum')}`;
 
-    const languages = hreflangAlternates((loc) => `${siteUrl}${getCanonicalPath(loc, 'impressum')}`);
-
-    return {
+    return buildPageMetadata({
+        locale,
         title: locale === 'de' ? 'Impressum' : 'Imprint & Legal Notice',
-        description: locale === 'de' 
+        description: locale === 'de'
             ? `Impressum und gesetzliche Anbieterkennzeichnung für ${DOMAIN}. Erfahren Sie mehr über unsere Transparenz, Kontaktmöglichkeiten und Rechtssicherheit.`
             : `Imprint and legal provider identification for ${DOMAIN}. Find all contact details, legal notice, and regulatory information about our website.`,
-        alternates: {
-            canonical: fullUrl,
-            languages
-        },
-        openGraph: {
-            title: locale === 'de' ? 'Impressum' : 'Imprint & Legal Notice',
-            description: `Rechtliche Informationen von ${DOMAIN}.`,
-            url: fullUrl,
-            type: 'website',
-            locale: locale,
-        }
-    };
+        path: getCanonicalPath(locale, 'impressum'),
+        pathForLocale: (loc) => getCanonicalPath(loc, 'impressum')
+    });
 }
 
 export default async function ImprintPage({ params }: { params: Promise<{ locale: string }> }) {

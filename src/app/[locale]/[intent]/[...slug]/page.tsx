@@ -13,7 +13,8 @@ import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import { routeLabel, ToolKey } from '@/lib/seo/routeLabels';
-import { robotsDirective, hreflangAlternates } from '@/lib/seo/indexPolicy';
+import { robotsDirective } from '@/lib/seo/indexPolicy';
+import { buildPageMetadata, canonicalUrl } from '@/lib/seo/metadata';
 
 const intentToModeMap: Record<string, string> = {
     'differenz': 'difference',
@@ -71,11 +72,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     }
 
     const correctUrl = `${SITE_URL}${correctPath}`;
-
-    const languages = hreflangAlternates((loc) => {
-        const locSlug = translateSlug(canonicalSlug || canonicalSlugStr, loc);
-        return `${SITE_URL}${getCanonicalPath(loc, internalIntent, locSlug)}`;
-    });
 
     // SERP Domination formatting
     const isDe = locale === 'de';
@@ -144,36 +140,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     // in a noindexed locale.
     const robots = robotsDirective(locale, Boolean(def?.isIndexable));
 
-    return {
+    return buildPageMetadata({
+        locale,
         title,
         description,
-        robots,
-        alternates: {
-            canonical: correctUrl,
-            languages
-        },
-        openGraph: {
-            title,
-            description,
-            url: correctUrl,
-            type: 'website',
-            locale: locale,
-            images: [
-                {
-                    url: '/og-image.png',
-                    width: 1200,
-                    height: 630,
-                    alt: isDe ? `Datumsrechner: ${displaySlug}` : `Date Calculator: ${displaySlug}`,
-                }
-            ]
-        },
-        twitter: {
-            card: 'summary_large_image',
-            title,
-            description,
-            images: ['/og-image.png'],
-        }
-    };
+        path: correctPath,
+        pathForLocale: (loc) =>
+            getCanonicalPath(loc, internalIntent, translateSlug(canonicalSlug || canonicalSlugStr, loc)),
+        indexable: Boolean(def?.isIndexable),
+        imageAlt: isDe ? `Datumsrechner: ${displaySlug}` : `Date Calculator: ${displaySlug}`
+    });
 }
 
 export default async function ProgrammaticPage({
@@ -252,7 +228,9 @@ export default async function ProgrammaticPage({
 
     // Breadcrumbs
     const breadcrumbItems = [
-        { name: isDe ? 'Startseite' : 'Home', item: `${SITE_URL}/${locale === 'de' ? '' : locale}` },
+        // canonicalUrl strips the trailing slash so this matches the homepage
+        // canonical exactly; the two must not disagree.
+        { name: isDe ? 'Startseite' : 'Home', item: canonicalUrl(locale === 'de' ? '/' : `/${locale}`) },
         // Same label the visible breadcrumb renders, so schema and page agree.
         { name: routeLabel(internalIntent as ToolKey, locale).label, item: `${SITE_URL}${getCanonicalPath(locale, internalIntent)}` },
         { name: displaySlug, item: `${SITE_URL}${correctPath}` }

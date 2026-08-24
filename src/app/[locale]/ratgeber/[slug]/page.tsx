@@ -7,7 +7,7 @@ import { SITE_URL } from '@/lib/constants';
 import { ArticleSchema } from '@/components/seo/ArticleSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
-import { hreflangAlternates } from '@/lib/seo/indexPolicy';
+import { buildPageMetadata, canonicalUrl } from '@/lib/seo/metadata';
 
 export const dynamic = 'force-static';
 export const revalidate = false; 
@@ -43,19 +43,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         return {};
     }
 
-    const languages = hreflangAlternates((loc) => {
-        const locSlug = getLocalizedArticleSlug(slug, locale, loc);
-        return `${siteUrl}${getCanonicalPath(loc, 'ratgeber', locSlug)}`;
-    });
-
-    return {
+    return buildPageMetadata({
+        locale,
         title: article.title,
         description: article.description,
-        alternates: {
-            canonical: `${siteUrl}${getCanonicalPath(locale, 'ratgeber', slug)}`,
-            languages
-        }
-    };
+        path: getCanonicalPath(locale, 'ratgeber', slug),
+        pathForLocale: (loc) =>
+            getCanonicalPath(loc, 'ratgeber', getLocalizedArticleSlug(slug, locale, loc)),
+        // Editorial content, unlike the calculator pages.
+        type: 'article'
+    });
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
@@ -85,7 +82,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
     // Breadcrumbs
     const breadcrumbItems = [
-        { name: isDe ? 'Startseite' : 'Home', item: `${SITE_URL}${locale === 'de' ? '/' : `/${locale}`}` },
+        { name: isDe ? 'Startseite' : 'Home', item: canonicalUrl(locale === 'de' ? '/' : `/${locale}`) },
         { name: isDe ? 'Ratgeber' : 'Guides', item: `${SITE_URL}${parentPath}` },
         { name: article.title, item: `${SITE_URL}${correctPath}` }
     ];

@@ -5,7 +5,7 @@ import { SITE_URL, DOMAIN } from '@/lib/constants';
 export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
-import { hreflangAlternates } from '@/lib/seo/indexPolicy';
+import { buildPageMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -14,25 +14,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const siteUrl = SITE_URL;
     const fullUrl = `${siteUrl}${getCanonicalPath(locale, 'agb')}`;
 
-    const languages = hreflangAlternates((loc) => `${siteUrl}${getCanonicalPath(loc, 'agb')}`);
-
-    return {
+    return buildPageMetadata({
+        locale,
         title: locale === 'de' ? 'Nutzungsbedingungen' : 'Terms of Service',
         description: locale === 'de' 
             ? `Allgemeine Geschäftsbedingungen für ${DOMAIN}. Informationen zur Nutzung unserer Tools, Haftung und mathematischen Genauigkeit.`
             : `General terms and conditions for ${DOMAIN}. Information on using our tools, liability and mathematical accuracy.`,
-        alternates: {
-            canonical: fullUrl,
-            languages
-        },
-        openGraph: {
-            title: locale === 'de' ? 'AGB' : 'Terms of Service',
-            description: `Nutzungsbestimmungen von ${DOMAIN}.`,
-            url: fullUrl,
-            type: 'website',
-            locale: locale,
-        }
-    };
+        path: getCanonicalPath(locale, 'agb'),
+        pathForLocale: (loc) => getCanonicalPath(loc, 'agb')
+    });
 }
 
 export default async function TermsPage({ params }: { params: Promise<{ locale: string }> }) {

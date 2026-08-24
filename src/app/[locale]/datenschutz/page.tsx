@@ -5,7 +5,7 @@ import { SITE_URL, DOMAIN } from '@/lib/constants';
 export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
-import { hreflangAlternates } from '@/lib/seo/indexPolicy';
+import { buildPageMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -14,25 +14,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const siteUrl = SITE_URL;
     const fullUrl = `${siteUrl}${getCanonicalPath(locale, 'datenschutz')}`;
 
-    const languages = hreflangAlternates((loc) => `${siteUrl}${getCanonicalPath(loc, 'datenschutz')}`);
-
-    return {
+    return buildPageMetadata({
+        locale,
         title: locale === 'de' ? 'Datenschutzerklärung' : 'Privacy Policy',
         description: locale === 'de' 
             ? `Informationen zum Datenschutz bei ${DOMAIN}. Wie wir Ihre Daten gemäß DSGVO schützen und warum wir auf Tracking verzichten.`
             : `Information on data protection at ${DOMAIN}. How we protect your data according to GDPR and why we refrain from tracking.`,
-        alternates: {
-            canonical: fullUrl,
-            languages
-        },
-        openGraph: {
-            title: locale === 'de' ? 'Datenschutz' : 'Privacy Policy',
-            description: `Datenschutz-Informationen von ${DOMAIN}.`,
-            url: fullUrl,
-            type: 'website',
-            locale: locale,
-        }
-    };
+        path: getCanonicalPath(locale, 'datenschutz'),
+        pathForLocale: (loc) => getCanonicalPath(loc, 'datenschutz')
+    });
 }
 
 export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {

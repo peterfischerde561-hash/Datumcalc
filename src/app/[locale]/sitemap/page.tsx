@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
-import { hreflangAlternates } from '@/lib/seo/indexPolicy';
+import { buildPageMetadata } from '@/lib/seo/metadata';
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { getArticles } from '@/lib/articles';
 import { Link } from '@/i18n/routing';
@@ -17,24 +17,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const siteUrl = SITE_URL;
     const fullUrl = `${siteUrl}${getCanonicalPath(locale, 'sitemap')}`;
 
-    const languages = hreflangAlternates((loc) => `${siteUrl}${getCanonicalPath(loc, 'sitemap')}`);
-
-    return {
+    return buildPageMetadata({
+        locale,
         title: locale === 'de' ? 'Sitemap – Alle Seiten' : 'Sitemap',
         description: locale === 'de'
             ? `Inhaltsverzeichnis und Übersicht aller Tools, Ratgeber und rechtlichen Informationen von ${DOMAIN}. Finden Sie schnell den passenden Datumsrechner.`
             : `Sitemap of all calculators, expert guides, and legal information on ${DOMAIN}. Find the perfect date difference or business day tool instantly.`,
-        alternates: {
-            canonical: fullUrl,
-            languages
-        },
-        openGraph: {
-            title: `${t('sitemap')} - Datumsrechner`,
-            url: fullUrl,
-            type: 'website',
-            locale: locale,
-        }
-    };
+        path: getCanonicalPath(locale, 'sitemap'),
+        pathForLocale: (loc) => getCanonicalPath(loc, 'sitemap')
+    });
 }
 
 export default async function SitemapPage({ params }: { params: Promise<{ locale: string }> }) {

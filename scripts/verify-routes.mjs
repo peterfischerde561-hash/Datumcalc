@@ -26,6 +26,23 @@ const ROUTE_EXPECTATIONS = {
     '/en/difference/days-until-*': ['days-remaining', 'target-date']
 };
 
+// Routes with no result contract are still checked for canonical/og:url
+// agreement, metadata completeness and a single h1.
+const METADATA_ONLY_ROUTES = [
+    '/addieren',
+    '/differenz',
+    '/arbeitstage',
+    '/alter',
+    '/ratgeber',
+    '/ratgeber/schaltjahre-erklaert',
+    '/ratgeber/iso-8601-erklaert',
+    '/ueber-uns',
+    '/impressum',
+    '/datenschutz',
+    '/agb',
+    '/sitemap'
+];
+
 const ROUTES = [
     '/',
     '/en',
@@ -76,7 +93,7 @@ const DATE_VALUED = new Set(['target-date', 'today']);
 let failures = 0;
 let checked = 0;
 
-for (const route of ROUTES) {
+for (const route of [...ROUTES, ...METADATA_ONLY_ROUTES]) {
     const url = BASE + route;
     let res, html;
     try {
@@ -94,7 +111,10 @@ for (const route of ROUTES) {
 
     const expected = expectationFor(route);
     if (!expected) {
-        problems.push('no expectation declared in resultContract.ts');
+        // Only routes that promise a calculated answer need a contract.
+        if (!METADATA_ONLY_ROUTES.includes(route)) {
+            problems.push('no expectation declared in resultContract.ts');
+        }
     } else {
         const found = contractValues(html);
         for (const type of expected) {
@@ -111,11 +131,31 @@ for (const route of ROUTES) {
 
     const canonical = attr(html, /<link[^>]*rel="canonical"[^>]*href="([^"]*)"/i);
     const ogUrl = attr(html, /<meta[^>]*property="og:url"[^>]*content="([^"]*)"/i);
+    const ogTitle = attr(html, /<meta[^>]*property="og:title"[^>]*content="([^"]*)"/i);
+    const ogImage = attr(html, /<meta[^>]*property="og:image"[^>]*content="([^"]*)"/i);
+    const twTitle = attr(html, /<meta[^>]*name="twitter:title"[^>]*content="([^"]*)"/i);
+    const title = attr(html, /<title[^>]*>([^<]*)<\/title>/i);
+
     if (!canonical) problems.push('no canonical');
+    if (!ogUrl) problems.push('no og:url');
     if (canonical && ogUrl && canonical !== ogUrl) {
         problems.push(`og:url !== canonical\n       canonical: ${canonical}\n       og:url:    ${ogUrl}`);
     }
-    if (!/<h1[^>]*>/i.test(html)) problems.push('no h1');
+    if (canonical && canonical !== BASE && canonical.endsWith('/')) {
+        problems.push(`canonical has a trailing slash: ${canonical}`);
+    }
+    // The inheritance bug: a child page silently showing the parent's card.
+    if (!ogImage) problems.push('no og:image');
+    if (ogTitle && title && !title.startsWith(ogTitle.slice(0, 24))) {
+        problems.push(`og:title does not match <title>\n       <title>:  ${title}\n       og:title: ${ogTitle}`);
+    }
+    if (twTitle && ogTitle && twTitle !== ogTitle) {
+        problems.push(`twitter:title !== og:title\n       og:  ${ogTitle}\n       tw:  ${twTitle}`);
+    }
+
+    const h1Count = (html.match(/<h1[\s>]/gi) || []).length;
+    if (h1Count === 0) problems.push('no h1');
+    if (h1Count > 1) problems.push(`${h1Count} h1 elements`);
 
     checked++;
     if (problems.length) {

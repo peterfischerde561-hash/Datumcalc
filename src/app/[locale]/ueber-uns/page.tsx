@@ -5,7 +5,7 @@ import { SITE_URL, DOMAIN } from '@/lib/constants';
 export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
-import { hreflangAlternates } from '@/lib/seo/indexPolicy';
+import { buildPageMetadata } from '@/lib/seo/metadata';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -15,25 +15,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const siteUrl = SITE_URL;
     const fullUrl = `${siteUrl}${getCanonicalPath(locale, 'ueber-uns')}`;
 
-    const languages = hreflangAlternates((loc) => `${siteUrl}${getCanonicalPath(loc, 'ueber-uns')}`);
-
-    return {
+    return buildPageMetadata({
+        locale,
         title: locale === 'de' ? 'Über uns' : 'About us',
         description: locale === 'de' 
             ? `Erfahren Sie mehr über die Mission von ${DOMAIN}. Wie wir Kalenderlogik vereinfachen und höchste Präzision nach ISO-8601 bieten.`
             : `Learn more about the mission of ${DOMAIN}. How we simplify calendar logic and offer maximum precision according to ISO-8601.`,
-        alternates: {
-            canonical: fullUrl,
-            languages
-        },
-        openGraph: {
-            title: locale === 'de' ? 'Über uns' : 'About us',
-            description: `Die Geschichte und Mission hinter ${DOMAIN}.`,
-            url: fullUrl,
-            type: 'website',
-            locale: locale,
-        }
-    };
+        path: getCanonicalPath(locale, 'ueber-uns'),
+        pathForLocale: (loc) => getCanonicalPath(loc, 'ueber-uns')
+    });
 }
 
 export default async function AboutUsPage({ params }: { params: Promise<{ locale: string }> }) {
