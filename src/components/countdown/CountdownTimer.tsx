@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getNextOccurrence } from '@/lib/events';
 
 const LABELS: Record<string, { days: string; hours: string; minutes: string; seconds: string; on: string }> = {
     de: { days: 'Tage', hours: 'Std.', minutes: 'Min.', seconds: 'Sek.', on: 'am' },
@@ -19,38 +18,43 @@ function Cell({ value, label }: { value: number; label: string }) {
     );
 }
 
-export function CountdownTimer({ eventKey, locale }: { eventKey: string; locale: string }) {
+/**
+ * Live clock for a countdown page.
+ *
+ * The target instant and the initial day count come from the server, computed
+ * from the canonical Europe/Berlin date. The clock therefore ticks toward the
+ * same moment the server-rendered answer counts to, so a viewer in another
+ * timezone never sees the clock contradict the indexed number. Client-side
+ * ticking is presentation only — it changes no URL, canonical or metadata.
+ */
+export function CountdownTimer({
+    targetEpochMs,
+    initialDays,
+    targetLabel,
+    locale
+}: {
+    targetEpochMs: number;
+    initialDays: number;
+    targetLabel: string;
+    locale: string;
+}) {
     const l = LABELS[locale] || LABELS.de;
-    const [target, setTarget] = useState<Date | null>(null);
-    const [now, setNow] = useState<Date | null>(null);
+
+    // Server and first client paint agree: whole days, no time components yet.
+    const [remainingMs, setRemainingMs] = useState<number | null>(null);
 
     useEffect(() => {
-        setTarget(getNextOccurrence(eventKey));
-        setNow(new Date());
-        const id = setInterval(() => setNow(new Date()), 1000);
+        const tick = () => setRemainingMs(Math.max(0, targetEpochMs - Date.now()));
+        tick();
+        const id = setInterval(tick, 1000);
         return () => clearInterval(id);
-    }, [eventKey]);
+    }, [targetEpochMs]);
 
-    if (!target || !now) {
-        return (
-            <div className="flex justify-center gap-3 sm:gap-4 animate-pulse py-2" aria-hidden="true">
-                {[0, 1, 2, 3].map((i) => (
-                    <div key={i} className="h-20 sm:h-24 w-14 sm:w-20 bg-slate-100 rounded-xl border border-slate-200" />
-                ))}
-            </div>
-        );
-    }
-
-    const diffMs = Math.max(0, target.getTime() - now.getTime());
-    const totalSec = Math.floor(diffMs / 1000);
-    const days = Math.floor(totalSec / 86400);
-    const hours = Math.floor((totalSec % 86400) / 3600);
-    const minutes = Math.floor((totalSec % 3600) / 60);
-    const seconds = totalSec % 60;
-
-    const dateLabel = new Intl.DateTimeFormat(locale === 'de' ? 'de-DE' : 'en-US', {
-        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-    }).format(target);
+    const totalSec = remainingMs === null ? null : Math.floor(remainingMs / 1000);
+    const days = totalSec === null ? initialDays : Math.floor(totalSec / 86400);
+    const hours = totalSec === null ? 0 : Math.floor((totalSec % 86400) / 3600);
+    const minutes = totalSec === null ? 0 : Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec === null ? 0 : totalSec % 60;
 
     return (
         <div className="space-y-5">
@@ -61,7 +65,7 @@ export function CountdownTimer({ eventKey, locale }: { eventKey: string; locale:
                 <Cell value={seconds} label={l.seconds} />
             </div>
             <p className="text-center text-slate-600 text-lg">
-                {l.on} <span className="font-semibold text-slate-900">{dateLabel}</span>
+                {l.on} <span className="font-semibold text-slate-900">{targetLabel}</span>
             </p>
         </div>
     );

@@ -9,7 +9,10 @@ import { SplitSquareHorizontal, PlusSquare, Briefcase, User } from 'lucide-react
 import { LiveDatePreview } from '@/components/hero/LiveDatePreview';
 import { QuickShortcuts } from '@/components/hero/QuickShortcuts';
 
-export const revalidate = 86400; // 24 hours
+// The hero states today's date, ordinal day and ISO week, so this page is
+// date-dependent. Hourly ISR bounds staleness; the daily cron refreshes it at
+// the Europe/Berlin date boundary.
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;

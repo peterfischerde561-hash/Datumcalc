@@ -16,6 +16,8 @@ const BASE = (process.argv[2] || 'http://localhost:3000').replace(/\/$/, '');
 // Mirrors src/lib/seo/resultContract.ts. Kept as plain data so this script can
 // run against a deployed URL without a build step.
 const ROUTE_EXPECTATIONS = {
+    '/': ['today', 'day-of-year', 'iso-week'],
+    '/en': ['today', 'day-of-year', 'iso-week'],
     '/addieren/*-tage-ab-heute': ['target-date', 'iso-week', 'day-of-year'],
     '/addieren/*-monate-ab-heute': ['target-date', 'iso-week', 'day-of-year'],
     '/addieren/*-jahr*-ab-heute': ['target-date', 'iso-week', 'day-of-year'],
@@ -25,6 +27,8 @@ const ROUTE_EXPECTATIONS = {
 };
 
 const ROUTES = [
+    '/',
+    '/en',
     '/differenz/tage-bis-weihnachten',
     '/differenz/tage-bis-sommeranfang',
     '/differenz/tage-bis-ostern',
@@ -66,6 +70,8 @@ function contractValues(html) {
 }
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+// Result types whose value is a calendar date rather than a count.
+const DATE_VALUED = new Set(['target-date', 'today']);
 
 let failures = 0;
 let checked = 0;
@@ -95,9 +101,9 @@ for (const route of ROUTES) {
             const value = found[type];
             if (value === undefined) {
                 problems.push(`missing result "${type}" in server HTML`);
-            } else if (type === 'target-date' && !ISO_DATE.test(value)) {
+            } else if (DATE_VALUED.has(type) && !ISO_DATE.test(value)) {
                 problems.push(`"${type}" is not an ISO date: ${value}`);
-            } else if (type !== 'target-date' && !/^-?\d+$/.test(value)) {
+            } else if (!DATE_VALUED.has(type) && !/^-?\d+$/.test(value)) {
                 problems.push(`"${type}" is not an integer: ${value}`);
             }
         }

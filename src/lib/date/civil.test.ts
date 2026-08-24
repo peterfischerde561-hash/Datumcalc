@@ -19,7 +19,8 @@ import {
     isoWeeksInYear,
     parseCivilDate,
     subtractDays,
-    toDayNumber
+    toDayNumber,
+    zonedStartOfDayMs
 } from './civil';
 
 const d = (year: number, month: number, day: number): CivilDate => ({ year, month, day });
@@ -243,6 +244,47 @@ describe('getTodayInTimeZone', () => {
         expect(iso(getTodayInTimeZone('Europe/Berlin', instant))).toBe('2026-08-24');
         expect(iso(getTodayInTimeZone('UTC', instant))).toBe('2026-08-23');
         expect(iso(getTodayInTimeZone('America/New_York', instant))).toBe('2026-08-23');
+    });
+});
+
+describe('zonedStartOfDayMs', () => {
+    const at = (ms: number) => new Date(ms).toISOString();
+
+    it('resolves Berlin midnight in winter (UTC+1)', () => {
+        expect(at(zonedStartOfDayMs(d(2026, 12, 25), 'Europe/Berlin'))).toBe(
+            '2026-12-24T23:00:00.000Z'
+        );
+    });
+
+    it('resolves Berlin midnight in summer (UTC+2)', () => {
+        expect(at(zonedStartOfDayMs(d(2026, 6, 21), 'Europe/Berlin'))).toBe(
+            '2026-06-20T22:00:00.000Z'
+        );
+    });
+
+    it('resolves the DST transition days themselves', () => {
+        // 29 March 2026: clocks go forward at 02:00 local; the day still starts
+        // at 00:00 CET = 23:00Z the previous day.
+        expect(at(zonedStartOfDayMs(d(2026, 3, 29), 'Europe/Berlin'))).toBe(
+            '2026-03-28T23:00:00.000Z'
+        );
+        // 25 October 2026: clocks go back at 03:00 local; the day starts at
+        // 00:00 CEST = 22:00Z the previous day.
+        expect(at(zonedStartOfDayMs(d(2026, 10, 25), 'Europe/Berlin'))).toBe(
+            '2026-10-24T22:00:00.000Z'
+        );
+    });
+
+    it('agrees with getTodayInTimeZone at the boundary', () => {
+        // One millisecond before the day starts it is still the previous date;
+        // at the boundary it is the new one.
+        const startMs = zonedStartOfDayMs(d(2026, 8, 24), 'Europe/Berlin');
+        expect(iso(getTodayInTimeZone('Europe/Berlin', new Date(startMs)))).toBe('2026-08-24');
+        expect(iso(getTodayInTimeZone('Europe/Berlin', new Date(startMs - 1)))).toBe('2026-08-23');
+    });
+
+    it('handles UTC as a no-op', () => {
+        expect(at(zonedStartOfDayMs(d(2026, 8, 24), 'UTC'))).toBe('2026-08-24T00:00:00.000Z');
     });
 });
 

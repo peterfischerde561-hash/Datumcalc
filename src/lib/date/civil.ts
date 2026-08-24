@@ -235,6 +235,55 @@ export function getTodayInTimeZone(
 }
 
 /**
+ * The UTC offset of a timezone at a given instant, in milliseconds.
+ * Derived from Intl rather than a hardcoded table, so DST rule changes and
+ * historical offsets are handled by the platform.
+ */
+function timeZoneOffsetMs(utcMs: number, timeZone: string): number {
+    const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone,
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).formatToParts(new Date(utcMs));
+
+    const get = (type: string) => Number(parts.find((p) => p.type === type)!.value);
+    // Read the wall-clock reading in that zone as if it were UTC; the gap is the offset.
+    const asIfUtc = Date.UTC(
+        get('year'),
+        get('month') - 1,
+        get('day'),
+        get('hour') % 24,
+        get('minute'),
+        get('second')
+    );
+    return asIfUtc - utcMs;
+}
+
+/**
+ * The instant (epoch ms) at which a calendar day begins in a timezone.
+ *
+ * Used to anchor the client-side countdown to the same moment the
+ * server-rendered answer counts to, so the ticking clock cannot contradict the
+ * indexed number for a viewer in another timezone.
+ */
+export function zonedStartOfDayMs(
+    date: CivilDate,
+    timeZone: string = CANONICAL_TIMEZONE
+): number {
+    const naive = Date.UTC(date.year, date.month - 1, date.day);
+    const firstPass = naive - timeZoneOffsetMs(naive, timeZone);
+    // Near a DST boundary the offset at the corrected instant can differ from
+    // the offset at the guess; re-resolve once against the corrected instant.
+    const corrected = naive - timeZoneOffsetMs(firstPass, timeZone);
+    return corrected;
+}
+
+/**
  * The current civil date in the *viewer's* timezone.
  *
  * For interactive client-side tools only. Server-rendered canonical content

@@ -19,6 +19,14 @@ export type RouteExpectation = {
 };
 
 export const ROUTE_EXPECTATIONS: Record<string, RouteExpectation> = {
+    '/': {
+        required: ['today', 'day-of-year', 'iso-week'],
+        describe: 'Homepage hero must state today, its ordinal day and its ISO week.'
+    },
+    '/en': {
+        required: ['today', 'day-of-year', 'iso-week'],
+        describe: 'English homepage hero must state today, its ordinal day and its ISO week.'
+    },
     '/addieren/*-tage-ab-heute': {
         required: ['target-date', 'iso-week', 'day-of-year'],
         describe: 'Day offset must state the target date, its ISO week and its day of year.'

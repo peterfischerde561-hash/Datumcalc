@@ -30,7 +30,8 @@ export const dynamic = 'force-static';
 export const revalidate = 3600;
 export const dynamicParams = true;
 import { CountdownAnswer, OffsetAnswer, OffsetUnit } from '@/components/seo/AnswerBlock';
-import { getTodayInTimeZone } from '@/lib/date/civil';
+import { getTodayInTimeZone, zonedStartOfDayMs } from '@/lib/date/civil';
+import { formatLong } from '@/lib/date/format';
 import { calculateOffsetDate, TimeUnit } from '@/lib/calculator';
 import { getNextOccurrenceCivil } from '@/lib/events';
 import { ToolSchema } from '@/components/seo/ToolSchema';
@@ -334,7 +335,14 @@ export default async function ProgrammaticPage({
                                 />
                             </div>
                         )}
-                        <CountdownTimer eventKey={eventKey} locale={locale} />
+                        {occurrence && (
+                            <CountdownTimer
+                                targetEpochMs={zonedStartOfDayMs(occurrence.date)}
+                                initialDays={occurrence.daysRemaining}
+                                targetLabel={formatLong(occurrence.date, locale)}
+                                locale={locale}
+                            />
+                        )}
                         <div className="flex items-center justify-center gap-3 flex-wrap">
                             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-50 border border-green-200 text-xs font-semibold text-green-700 uppercase tracking-wide">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

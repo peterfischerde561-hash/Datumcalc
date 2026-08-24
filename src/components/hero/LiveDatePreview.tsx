@@ -1,37 +1,34 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import { Calendar, Clock, Hash } from 'lucide-react';
+import {
+    CANONICAL_TIMEZONE,
+    daysInYear,
+    formatCivilDate,
+    getDayOfYear,
+    getIsoWeek,
+    getTodayInTimeZone
+} from '@/lib/date/civil';
+import { formatLongNoWeekday } from '@/lib/date/format';
+import { ResultValue } from '@/components/seo/ResultValue';
 
+/**
+ * Today's date, ordinal day and ISO week — server-rendered from the canonical
+ * Europe/Berlin date so the values are present in the HTML and identical for
+ * every requester.
+ *
+ * This was previously a client component seeded with `new Date()`, which meant
+ * the server HTML froze at build time and its own day-of-year helper lost a day
+ * between 00:00 and 01:00 local once Berlin moved to UTC+2. Both figures now
+ * come from the shared date core. There is nothing to tick: every value here
+ * changes only at midnight, and the page revalidates at the Berlin boundary.
+ */
 export function LiveDatePreview({ locale }: { locale: string }) {
-    const [date, setDate] = useState(new Date());
-
-    useEffect(() => {
-        const timer = setInterval(() => setDate(new Date()), 1000 * 60); // Update every minute
-        return () => clearInterval(timer);
-    }, []);
-
-    // Helper functions for stats
-    const getDayOfYear = (d: Date) => {
-        const start = new Date(d.getFullYear(), 0, 0);
-        const diff = d.getTime() - start.getTime();
-        const oneDay = 1000 * 60 * 60 * 24;
-        return Math.floor(diff / oneDay);
-    };
-
-    const getWeekNumber = (d: Date) => {
-        const date = new Date(d.getTime());
-        date.setHours(0, 0, 0, 0);
-        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-        const week1 = new Date(date.getFullYear(), 0, 4);
-        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-    };
-
-    const dayOfYear = getDayOfYear(date);
-    const totalDays = (date.getFullYear() % 4 === 0 && (date.getFullYear() % 100 !== 0 || date.getFullYear() % 400 === 0)) ? 366 : 365;
-    const weekNum = getWeekNumber(date);
-
     const isDe = locale === 'de';
+    const today = getTodayInTimeZone(CANONICAL_TIMEZONE);
+
+    const dayOfYear = getDayOfYear(today);
+    const totalDays = daysInYear(today.year);
+    const { week } = getIsoWeek(today);
+    const progress = Math.round((dayOfYear / totalDays) * 100);
 
     return (
         <div className="relative group">
@@ -44,14 +41,12 @@ export function LiveDatePreview({ locale }: { locale: string }) {
                             </div>
                             <div>
                                 <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">
-                                    {isDe ? 'Heute ist der' : "Today is"}
+                                    {isDe ? 'Heute ist der' : 'Today is'}
                                 </p>
                                 <p className="text-slate-900 font-bold text-lg">
-                                    {date.toLocaleDateString(locale === 'de' ? 'de-DE' : 'en-US', {
-                                        day: '2-digit',
-                                        month: 'long',
-                                        year: 'numeric'
-                                    })}
+                                    <ResultValue type="today" value={formatCivilDate(today)}>
+                                        {formatLongNoWeekday(today, locale)}
+                                    </ResultValue>
                                 </p>
                             </div>
                         </div>
@@ -66,7 +61,10 @@ export function LiveDatePreview({ locale }: { locale: string }) {
                                 </span>
                             </div>
                             <p className="text-2xl font-black text-slate-900">
-                                {dayOfYear} <span className="text-sm font-normal text-slate-400">/ {totalDays}</span>
+                                <ResultValue type="day-of-year" value={dayOfYear}>
+                                    {dayOfYear}
+                                </ResultValue>{' '}
+                                <span className="text-sm font-normal text-slate-400">/ {totalDays}</span>
                             </p>
                         </div>
 
@@ -78,21 +76,23 @@ export function LiveDatePreview({ locale }: { locale: string }) {
                                 </span>
                             </div>
                             <p className="text-2xl font-black text-slate-900">
-                                {isDe ? 'KW' : 'CW'} {weekNum}
+                                {isDe ? 'KW' : 'CW'}{' '}
+                                <ResultValue type="iso-week" value={week}>
+                                    {week}
+                                </ResultValue>
                             </p>
                         </div>
                     </div>
 
-                    {/* Live Progress Bar */}
                     <div className="space-y-2">
                         <div className="flex justify-between text-[10px] uppercase tracking-widest font-bold text-slate-500">
                             <span>{isDe ? 'Jahresfortschritt' : 'Year Progress'}</span>
-                            <span>{Math.round((dayOfYear / totalDays) * 100)}%</span>
+                            <span>{progress}%</span>
                         </div>
                         <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
                             <div
                                 className="h-full bg-blue-600 rounded-full transition-all duration-1000"
-                                style={{ width: `${(dayOfYear / totalDays) * 100}%` }}
+                                style={{ width: `${progress}%` }}
                             ></div>
                         </div>
                     </div>
