@@ -57,18 +57,22 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
 
                 {/* Team & Author Section */}
                 <section className="bg-white border border-slate-200 p-10 rounded-2xl shadow-sm flex flex-col md:flex-row items-center gap-8">
-                    <div className="w-32 h-32 shrink-0 rounded-full bg-blue-700 flex items-center justify-center text-white font-bold text-4xl">
-                        FS
-                    </div>
+                    {/*
+                      A profile for "Felix Schmidt" stood here, described as
+                      "Lead Developer & Kalender-Experte" while the same name
+                      appeared on the guides as "Mathematiker & Autor" and the
+                      Impressum named a different operator entirely. The person
+                      did not exist, so the section describes the method rather
+                      than inventing someone to vouch for it.
+                    */}
                     <div>
-                        <h2 className="text-3xl font-bold text-slate-900 mb-2">Felix Schmidt</h2>
-                        <p className="text-neon font-bold text-sm uppercase tracking-widest mb-4">
-                            {locale === 'de' ? 'Lead Developer & Kalender-Experte' : 'Lead Developer & Calendar Expert'}
-                        </p>
+                        <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                            {locale === 'de' ? 'Wie gerechnet wird' : 'How the calculation works'}
+                        </h2>
                         <p className="text-slate-700 text-lg leading-relaxed">
                             {locale === 'de'
-                                ? 'Felix ist das mathematische und technische Herz hinter dem Datumsrechner. Mit einem tiefen Verständnis für komplexe Zeit-Algorithmen stellt er sicher, dass jedes Datum exakt und fehlerfrei berechnet wird.'
-                                : 'Felix is the mathematical and technical heart behind the Date Calculator. With a deep understanding of complex time algorithms, he ensures that every date is calculated exactly and without errors.'}
+                                ? 'Alle Berechnungen laufen über eine gemeinsame Kalender-Bibliothek: Datumsarithmetik erfolgt auf ganzen Kalendertagen, nicht auf Zeitstempeln. Dadurch kann eine Zeitumstellung kein Datum um einen Tag verschieben. Die Schaltjahrregel, die Monatslängen und die ISO-8601-Kalenderwochen sind durch automatisierte Tests abgedeckt, inklusive der Grenzfälle um den 29. Februar und den Jahreswechsel.'
+                                : 'Every calculation runs through one shared calendar library: date arithmetic works on whole calendar days rather than timestamps, so a daylight-saving change cannot shift a date by a day. The leap-year rule, month lengths and ISO 8601 calendar weeks are covered by automated tests, including the edge cases around February 29 and the turn of the year.'}
                         </p>
                     </div>
                 </section>
@@ -81,15 +85,22 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                         </h2>
                         <p className="text-slate-700 mb-6">
                             {locale === 'de'
-                                ? 'Wir haben unsere Core-Engine so entwickelt, dass sie alle Eventualitäten des gregorianischen Kalenders abdeckt. Schaltjahre, unregelmäßige Monatslängen und Arbeitstage-Konfigurationen werden sekundenschnell ohne Rundungsfehler verarbeitet. \n\nDabei setzen wir auf den internationalen Standard ISO-8601. Dies stellt sicher, dass unsere Berechnungen weltweit kompatibel und nachvollziehbar sind.'
-                                : 'We have developed our core engine to cover all eventualities of the Gregorian calendar. Leap years, irregular month lengths, and working day configurations are processed in seconds without rounding errors. \n\nIn doing so, we rely on the international ISO-8601 standard. This ensures that our calculations are globally compatible and transparent.'}
+                                ? 'Die Rechenlogik bildet den gregorianischen Kalender mit der vollständigen Schaltjahrregel ab und berücksichtigt die unterschiedlichen Monatslängen. Kalenderwochen folgen ISO 8601 – dem Standard für die Darstellung von Datumsangaben, der die Woche am Montag beginnen lässt und die erste Woche eines Jahres über den ersten Donnerstag bestimmt.\n\nGesetzliche Feiertage werden bei den Arbeitstagen derzeit nicht automatisch abgezogen; herausgefiltert werden Samstage und Sonntage.'
+                                : 'The calculation maps the Gregorian calendar with the full leap-year rule and accounts for varying month lengths. Calendar weeks follow ISO 8601 – the standard for representing dates, which starts the week on Monday and defines the first week of a year by its first Thursday.\n\nPublic holidays are not currently deducted automatically from business days; Saturdays and Sundays are filtered out.'}
                         </p>
                     </div>
-                    <div className="bg-blue-50 border border-blue-200 p-8 rounded-2xl flex flex-col justify-center text-center">
-                        <span className="text-5xl font-bold text-neon mb-2">100%</span>
+                    {/* "100% Mathematisch exakt" was here — a claim no
+                        implementation can support. States the actual basis instead. */}
+                    <div className="bg-blue-50 border border-blue-200 p-8 rounded-2xl flex flex-col justify-center gap-3">
                         <span className="text-sm font-bold uppercase tracking-widest text-slate-500">
-                            {locale === 'de' ? 'Mathematisch exakt' : 'Mathematically exact'}
+                            {locale === 'de' ? 'Rechengrundlage' : 'Calculation basis'}
                         </span>
+                        <ul className="text-slate-700 space-y-2 text-left">
+                            <li>{locale === 'de' ? 'Gregorianischer Kalender' : 'Gregorian calendar'}</li>
+                            <li>{locale === 'de' ? 'Vollständige Schaltjahrregel (4 / 100 / 400)' : 'Full leap-year rule (4 / 100 / 400)'}</li>
+                            <li>{locale === 'de' ? 'Kalenderwochen nach ISO 8601' : 'Calendar weeks per ISO 8601'}</li>
+                            <li>{locale === 'de' ? 'Stichtag in der Zeitzone Europe/Berlin' : 'Reference day in the Europe/Berlin timezone'}</li>
+                        </ul>
                     </div>
                 </section>
 
@@ -100,8 +111,8 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                     </h2>
                     <p className="text-slate-700">
                         {locale === 'de'
-                            ? `Hinter ${DOMAIN} steht ein agiles Team aus Software-Engineers und Kalender-Enthusiasten. Wir nutzen moderne Technologien wie Next.js und Turbopack, um eine blitzschnelle Performance zu garantieren – auch auf mobilen Endgeräten. \n\nIn der Zukunft planen wir die Integration weiterer Spezialrechner, wie zum Beispiel für islamische, jüdische oder chinesische Kalendersysteme, um die kulturelle Vielfalt der Zeitrechnung abzubilden.`
-                            : `Behind ${DOMAIN} stands an agile team of software engineers and calendar enthusiasts. We use modern technologies like Next.js and Turbopack to guarantee lightning-fast performance – even on mobile devices. \n\nIn the future, we plan to integrate further special calculators, for example for Islamic, Jewish or Chinese calendar systems, to reflect the cultural diversity of time calculation.`}
+                            ? `${DOMAIN} läuft auf Next.js und wird als statische Seite ausgeliefert, damit die Ergebnisse ohne Wartezeit erscheinen – auch auf mobilen Endgeräten. Die datumsabhängigen Seiten werden täglich zum Berliner Datumswechsel neu erzeugt.\n\nGeplant sind weitere Spezialrechner, etwa für Kalenderwochen und Fristen.`
+                            : `${DOMAIN} runs on Next.js and is served as a static site, so results appear without waiting – on mobile devices too. Date-dependent pages are regenerated daily at the Berlin date boundary.\n\nFurther specialised calculators are planned, for calendar weeks and deadlines among others.`}
                     </p>
                 </section>
 

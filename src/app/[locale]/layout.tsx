@@ -36,8 +36,8 @@ export async function generateMetadata(
         : 'Date Calculator – Count Days, Add Dates & Business Days';
 
     const defaultDescription = locale === 'de'
-        ? 'Datumsrechner online: Datumsdifferenz, Arbeitstage & Alter kostenlos berechnen. ISO 8601 konform, mit Schaltjahren. Ohne Anmeldung.'
-        : 'Online date calculator: calculate date differences, business days & age for free. ISO 8601 compliant, with leap years. No registration.';
+        ? 'Datumsrechner online: Datumsdifferenz, Arbeitstage & Alter kostenlos berechnen. Mit vollständiger Schaltjahrregel und Kalenderwochen nach ISO 8601. Ohne Anmeldung.'
+        : 'Online date calculator: calculate date differences, business days & age for free. Full leap-year rule, calendar weeks per ISO 8601. No registration.';
 
     return {
         title: {
@@ -119,8 +119,8 @@ export default async function LocaleLayout({
         "operatingSystem": "All",
         "inLanguage": locale,
         "description": locale === "de"
-            ? "Kostenloser Online-Datumsrechner für exakte Zeitspannen, Fristen und Arbeitstage – ISO 8601 konform."
-            : "Free online date calculator for exact durations, deadlines and business days – ISO 8601 compliant.",
+            ? "Kostenloser Online-Datumsrechner für exakte Zeitspannen, Fristen und Arbeitstage – mit Kalenderwochen nach ISO 8601."
+            : "Free online date calculator for exact durations, deadlines and business days – with calendar weeks per ISO 8601.",
         "offers": {
             "@type": "Offer",
             "price": "0",

@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         : 'Date Calculator – Count Days, Add Dates & Business Days';
     
     const description = locale === 'de' 
-        ? 'Datumsrechner online: Datumsdifferenz, Arbeitstage & Alter kostenlos berechnen. ISO 8601 konform, mit Schaltjahren. Ohne Anmeldung.'
-        : 'Online date calculator: calculate date differences, business days & age for free. ISO 8601 compliant, with leap years. No registration.';
+        ? 'Datumsrechner online: Datumsdifferenz, Arbeitstage & Alter kostenlos berechnen. Mit vollständiger Schaltjahrregel und Kalenderwochen nach ISO 8601. Ohne Anmeldung.'
+        : 'Online date calculator: calculate date differences, business days & age for free. Full leap-year rule, calendar weeks per ISO 8601. No registration.';
 
     return buildPageMetadata({
         locale,
@@ -49,7 +49,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 <header className="lg:col-span-7 space-y-8 animate-slide-up-fade">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-bold uppercase tracking-widest text-blue-700 mb-2">
                         <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" aria-hidden="true"></span>
-                        {locale === 'de' ? 'Mathematisch Präzise' : 'Mathematically Precise'}
+                        {locale === 'de' ? 'Gregorianischer Kalender' : 'Gregorian calendar'}
                     </div>
                     <h1 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight leading-[0.95] max-w-2xl text-slate-900">
                         {locale === 'de' ? (
@@ -60,8 +60,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     </h1>
                     <p className="text-lg md:text-xl text-slate-600 max-w-xl font-medium leading-relaxed">
                         {locale === 'de' 
-                            ? 'Berechnen Sie exakte Zeitspannen, addieren Sie Tage oder ermitteln Sie Netto-Arbeitstage nach ISO-8601 Standard.'
-                            : 'Calculate exact time spans, add days or determine net business days according to ISO-8601 standards.'}
+                            ? 'Berechnen Sie Zeitspannen, addieren Sie Tage oder ermitteln Sie Netto-Arbeitstage – mit vollständiger Schaltjahrregel und Kalenderwochen nach ISO 8601.'
+                            : 'Calculate time spans, add days or determine net business days – with the full leap-year rule and calendar weeks per ISO 8601.'}
                     </p>
 
                     {/* Smart Input Search integrated in Hero */}
@@ -74,17 +74,18 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                         <a href="#tools" className="px-8 py-4 rounded-xl bg-blue-700 text-white font-bold hover:bg-blue-800 transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                             {locale === 'de' ? 'Rechner starten' : 'Start Calculator'}
                         </a>
-                        <div className="flex -space-x-2">
-                            {['bg-blue-500', 'bg-emerald-500', 'bg-amber-500'].map((c, i) => (
-                                <div key={i} className={`w-10 h-10 rounded-full border-2 border-white ${c} flex items-center justify-center text-[10px] font-bold text-white`}>
-                                    {String.fromCharCode(65 + i)}
-                                </div>
-                            ))}
-                            <div className="pl-4 flex flex-col justify-center">
-                                <span className="text-xs font-bold text-slate-900 leading-none">2.4k+</span>
-                                <span className="text-[10px] text-slate-500 uppercase tracking-tighter">{locale === 'de' ? 'Nutzer täglich' : 'Users daily'}</span>
-                            </div>
-                        </div>
+                        {/*
+                          A "2.4k+ Nutzer täglich" counter sat here beside three
+                          circles reading A, B, C — a placeholder avatar stack
+                          standing in for real users. Neither figure was
+                          measured, so both are gone rather than restyled.
+                        */}
+                        <Link
+                            href={ROUTES.ratgeber}
+                            className="text-sm font-semibold text-blue-700 hover:text-blue-800 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+                        >
+                            {locale === 'de' ? 'Wie wir rechnen' : 'How we calculate'}
+                        </Link>
                     </div>
                 </header>
 

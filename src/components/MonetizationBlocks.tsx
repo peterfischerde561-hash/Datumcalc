@@ -12,7 +12,7 @@ export function AffiliateCards() {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">Zeit sparen mit Notion</h3>
                 <p className="text-sm text-white/50 mb-6 leading-relaxed max-w-[85%]">
-                    Verwalte deine Fristen und Kalender noch effizienter mit dem ultimativen Workspace-Tipp.
+                    Fristen, Notizen und Kalender an einem Ort verwalten.
                 </p>
                 <a href="#" className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white text-sm font-medium px-4 py-2 rounded-xl transition-colors">
                     Jetzt testen <ExternalLink className="w-4 h-4" />

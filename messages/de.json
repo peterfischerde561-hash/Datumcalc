@@ -37,7 +37,7 @@
             "mobileNavLabel": "Mobile Navigation",
             "alter": "Alter",
             "alterDesc": "Berechnen Sie Ihr genaues Alter",
-            "verified": "Mathematisch & kalendarisch verifiziert"
+            "verified": "Rechenlogik offengelegt"
         }
     },
     "Modes": {
@@ -51,8 +51,7 @@
         "takeaways": "Das Wichtigste auf einen Blick",
         "theory": "Theorie in die Praxis umsetzen",
         "practice": "Berechnen Sie Ihr Datum jetzt",
-        "factCheck": "Faktencheck: Aktuell verifiziert",
-        "authorTitle": "Mathematiker & Autor"
+        "factCheck": "Faktencheck: Aktuell verifiziert"
     },
     "SmartInput": {
         "placeholder": "z. B. '30 Tage ab heute' oder ein Datum eingeben...",
@@ -105,7 +104,7 @@
         "until": "Bis",
         "areYet": "sind es noch",
         "theDateIs": "Das Datum ist",
-        "verified": "Mathematisch & kalendarisch verifiziert",
+        "verified": "Rechenlogik offengelegt",
         "description": "Exakte ISO-8601-konforme Berechnung für {slug}."
     },
     "Sitemap": {

@@ -185,7 +185,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
 
                     <div className="mt-12 p-6 rounded-2xl bg-blue-50 border border-blue-200">
                         <h3 className="font-bold text-slate-900 mb-2 italic">
-                            {isDe ? 'ISO 8601 konform' : 'ISO 8601 compliant'}
+                            {isDe ? 'Kalenderwochen nach ISO 8601' : 'ISO 8601 calendar weeks'}
                         </h3>
                         <p className="text-xs text-slate-600 leading-relaxed">
                             {isDe 

@@ -95,14 +95,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 title={article.title}
                 description={article.description}
                 url={fullUrl}
-                publishedAt="2024-03-24T00:00:00Z"
+                locale={locale}
             />
 
             <article className="w-full max-w-3xl mx-auto">
 
             <header className="mb-12 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 border border-blue-200 text-xs font-bold tracking-widest uppercase text-blue-700">
-                    {article.publishedAt} • {article.readTime} {t('readTime')}
+                    {article.readTime} {t('readTime')}
                 </div>
 
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900">
@@ -113,15 +113,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     {article.description}
                 </p>
 
-                <div className="flex items-center gap-4 pt-6 border-t border-slate-200">
-                    <div className="w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center text-white font-bold text-lg shrink-0">
-                        FS
-                    </div>
-                    <div className="text-left">
-                        <div className="text-slate-900 font-bold">Felix Schmidt</div>
-                        <div className="text-slate-500 text-[10px] tracking-wide uppercase font-bold">{t('authorTitle')}</div>
-                    </div>
-                </div>
+                {/*
+                  A byline for "Felix Schmidt" sat here — a name that appeared
+                  nowhere else as a real entity, carried two conflicting job
+                  titles across two pages, and was attached to dates predating
+                  the site. Removed rather than restyled; the operator decided
+                  against bylines instead of inventing a person to hold them.
+                */}
             </header>
 
             {/* Key Takeaways */}

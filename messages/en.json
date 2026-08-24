@@ -37,7 +37,7 @@
             "mobileNavLabel": "Mobile Navigation",
             "alter": "Age",
             "alterDesc": "Calculate your exact age",
-            "verified": "Mathematically & calendar verified"
+            "verified": "Calculation method disclosed"
         }
     },
     "Modes": {
@@ -51,8 +51,7 @@
         "takeaways": "Key Takeaways",
         "theory": "Putting theory into practice",
         "practice": "Calculate your date now",
-        "factCheck": "Fact check: Currently verified",
-        "authorTitle": "Mathematician & Author"
+        "factCheck": "Fact check: Currently verified"
     },
     "SmartInput": {
         "placeholder": "e.g., '30 days from today' or enter a date...",
@@ -105,7 +104,7 @@
         "until": "Until",
         "areYet": "there are still",
         "theDateIs": "The date is",
-        "verified": "Mathematically & calendar verified",
+        "verified": "Calculation method disclosed",
         "description": "Exact ISO-8601 compliant calculation for {slug}."
     },
     "Sitemap": {

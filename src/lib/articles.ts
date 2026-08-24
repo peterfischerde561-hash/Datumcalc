@@ -2,7 +2,6 @@ export interface Article {
     slug: string;
     title: string;
     description: string;
-    publishedAt: string;
     readTime: string;
     /**
      * The specific things this article establishes — required, and specific to
@@ -27,7 +26,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'schaltjahre-erklaert',
             title: 'Schaltjahre erklärt – Warum gibt es den 29. Februar?',
             description: 'Was ist ein Schaltjahr und warum gibt es den 29. Februar? Alle Regeln, Beispiele und die Berechnung einfach erklärt.',
-            publishedAt: '24. März 2024',
             readTime: '3 min',
             takeaways: [
                 'Das nächste Schaltjahr ist 2028 – zuletzt hatte 2024 einen 29. Februar.',
@@ -55,7 +53,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'was-ist-ein-arbeitstag',
             title: 'Was ist ein Arbeitstag? Definition & Gesetz',
             description: 'Was ist ein Arbeitstag? Definition, Unterschied zu Werktagen und was bei gesetzlichen Fristen zu beachten ist – einfach erklärt.',
-            publishedAt: '25. März 2024',
             readTime: '3 min',
             takeaways: [
                 'Arbeitstag meint in der Regel die 5-Tage-Woche von Montag bis Freitag.',
@@ -77,7 +74,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'wochen-im-jahr',
             title: 'Wie viele Wochen hat ein Jahr? – 52 oder 53 Wochen?',
             description: 'Hat ein Jahr immer 52 Wochen? Erfahre alles über ISO-Kalenderwochen und warum manche Jahre 53 Wochen haben.',
-            publishedAt: '20. März 2024',
             readTime: '2 min',
             takeaways: [
                 'Ein Gemeinjahr hat 52 Wochen und einen Resttag, ein Schaltjahr 52 Wochen und zwei.',
@@ -103,7 +99,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'iso-8601-erklaert',
             title: 'ISO 8601 einfach erklärt (Datum & Zeit)',
             description: 'ISO 8601 einfach erklärt: Der internationale Standard für Datum und Zeit – Aufbau, Beispiele und warum er wichtig ist.',
-            publishedAt: '26. März 2024',
             readTime: '4 min',
             takeaways: [
                 'ISO 8601 schreibt absteigend Jahr-Monat-Tag: 2026-08-24.',
@@ -127,7 +122,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'leap-years-explained',
             title: 'Leap Years Explained: Why February 29th Exists',
             description: 'Everything you need to know about leap years. Learn why our calendar needs an extra day every four years and how it is calculated.',
-            publishedAt: 'March 24, 2024',
             readTime: '3 min',
             takeaways: [
                 'The next leap year is 2028 – the most recent February 29 was in 2024.',
@@ -155,7 +149,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'what-is-a-business-day',
             title: 'What is a Business Day? Definition & Rules',
             description: 'Learn everything about the term business day, how it differs from a working day and what to consider for deadlines.',
-            publishedAt: 'March 25, 2024',
             readTime: '3 min',
             takeaways: [
                 'A business day normally means the Monday-to-Friday working week.',
@@ -177,7 +170,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'weeks-in-a-year',
             title: 'How Many Weeks Are in a Year?',
             description: 'Does a year always have 52 weeks? Find out more about ISO weeks, leap years, and why some years have 53 weeks.',
-            publishedAt: 'March 20, 2024',
             readTime: '2 min',
             takeaways: [
                 'A common year is 52 weeks plus one day; a leap year is 52 weeks plus two.',
@@ -200,7 +192,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'iso-8601-explained',
             title: 'ISO 8601 Standard Explained: Date & Time',
             description: 'Why ISO 8601 is the most important standard for digital time measurement and how to apply it correctly.',
-            publishedAt: 'March 26, 2024',
             readTime: '4 min',
             takeaways: [
                 'ISO 8601 writes dates largest unit first: 2026-08-24.',

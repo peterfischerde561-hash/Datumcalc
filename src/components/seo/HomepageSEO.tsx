@@ -32,11 +32,14 @@ const CONTENT: Record<string, any> = {
                 answer: 'Ja, der Datumsrechner ist vollständig kostenlos und ohne Anmeldung nutzbar. Alle Berechnungen – Datumsdifferenz, Datum addieren und Arbeitstage – stehen unbegrenzt zur Verfügung.',
             },
         ],
+        // ISO 8601 defines how dates are *represented*; it does not certify
+        // arithmetic. It is cited only where it is load-bearing — week
+        // numbering — rather than as a blanket badge.
         trustSignals: [
-            { icon: CheckCircle2, label: 'ISO 8601 konform', color: 'text-green-600' },
-            { icon: CalendarCheck2, label: 'Schaltjahre berechnet', color: 'text-neon-blue' },
-            { icon: Clock4, label: 'Sekundenschnell', color: 'text-neon' },
-            { icon: ShieldCheck, label: '100% kostenlos', color: 'text-slate-700' },
+            { icon: CalendarCheck2, label: 'Gregorianischer Kalender', color: 'text-green-600' },
+            { icon: CheckCircle2, label: 'Vollständige Schaltjahrregel', color: 'text-neon-blue' },
+            { icon: Clock4, label: 'Kalenderwochen nach ISO 8601', color: 'text-neon' },
+            { icon: ShieldCheck, label: 'Kostenlos, ohne Anmeldung', color: 'text-slate-700' },
         ],
         hero: {
             title: 'Entdecke den Datumsrechner',
@@ -46,9 +49,13 @@ const CONTENT: Record<string, any> = {
             ratgeber: 'Ratgeber & Wissen'
         },
         seo: {
-            headline: 'Der ultimative Datumsrechner für Profis und Alltag',
+            headline: 'Datumsrechner für Fristen, Arbeitstage und Countdowns',
             u1: 'Egal ob Sie Projektfristen planen, Ihr genaues Alter in Tagen berechnen oder wissen möchten, an welchem Wochentag ein bestimmtes Datum liegt – unser <strong>Datumsrechner</strong> liefert sekundenschnelle, präzise Antworten. Die Ergebnisse sind perfekt für Kalender, Countdowns und rechtliche Fristen.',
-            u2: 'Mit unserem Tool können Sie <strong>Tage zwischen zwei Daten berechnen</strong>, <strong>Datum addieren oder subtrahieren</strong> sowie <strong>Netto-Arbeitstage</strong> ermitteln – alles in einem einzigen, intuitiven Interface. Keine Anmeldung, keine Werbung, kein Datenschutzproblem.',
+            // The site is ad- and affiliate-funded (see /ueber-uns), so the
+            // previous "keine Werbung" claim contradicted it. This states only
+            // what remains true once ads are live: no account, and the dates you
+            // type into the calculator are processed in your browser.
+            u2: 'Mit unserem Tool können Sie <strong>Tage zwischen zwei Daten berechnen</strong>, <strong>Datum addieren oder subtrahieren</strong> sowie <strong>Netto-Arbeitstage</strong> ermitteln – alles in einem einzigen, intuitiven Interface. Keine Anmeldung, keine Datenweitergabe: Ihre Eingaben im Rechner verlassen den Browser nicht.',
             tableTitle: 'Anwendungsfälle im Überblick',
             th1: 'Anwendungsfall',
             th2: 'Empfohlenes Tool',
@@ -57,7 +64,7 @@ const CONTENT: Record<string, any> = {
             case2: 'Projektplanung',
             case3: 'Event Countdowns',
             case4: 'Alter berechnen',
-            footer: 'Unser System berücksichtigt dank fortschrittlicher <strong>ISO-8601 Kalender-Algorithmen</strong> komplexe Faktoren wie Schaltjahre sowie unregelmäßige Monatslängen völlig automatisch. Das garantiert 100% mathematische Genauigkeit – ohne Rundungsfehler.'
+            footer: 'Der Rechner bildet den <strong>gregorianischen Kalender</strong> mit der vollständigen Schaltjahrregel ab und berücksichtigt unterschiedliche Monatslängen automatisch. Kalenderwochen folgen <strong>ISO 8601</strong>: Die Woche beginnt am Montag, und die erste Woche eines Jahres ist die mit dem ersten Donnerstag.'
         },
         howto: {
             title: 'Wie funktioniert der Datumsrechner?',
@@ -97,10 +104,10 @@ const CONTENT: Record<string, any> = {
             },
         ],
         trustSignals: [
-            { icon: CheckCircle2, label: 'ISO 8601 compliant', color: 'text-green-600' },
-            { icon: CalendarCheck2, label: 'Leap years calculated', color: 'text-neon-blue' },
-            { icon: Clock4, label: 'Lightning fast', color: 'text-neon' },
-            { icon: ShieldCheck, label: '100% free', color: 'text-slate-700' },
+            { icon: CalendarCheck2, label: 'Gregorian calendar', color: 'text-green-600' },
+            { icon: CheckCircle2, label: 'Full leap-year rule', color: 'text-neon-blue' },
+            { icon: Clock4, label: 'ISO 8601 calendar weeks', color: 'text-neon' },
+            { icon: ShieldCheck, label: 'Free, no registration', color: 'text-slate-700' },
         ],
         hero: {
             title: 'Explore the Date Calculator',
@@ -110,9 +117,9 @@ const CONTENT: Record<string, any> = {
             ratgeber: 'Guides & Knowledge'
         },
         seo: {
-            headline: 'The Ultimate Date Calculator for Professionals and Everyday Life',
+            headline: 'Date Calculator for Deadlines, Business Days and Countdowns',
             u1: 'Whether you are planning project deadlines, calculating your exact age in days or want to know which day of the week a certain date falls on – our <strong>Date Calculator</strong> provides precise answers in seconds. The results are perfect for calendars, countdowns and legal deadlines.',
-            u2: 'With our tool, you can <strong>calculate days between two dates</strong>, <strong>add or subtract dates</strong> as well as determine <strong>net business days</strong> – all in a single, intuitive interface. No registration, no ads, no privacy issues.',
+            u2: 'With our tool, you can <strong>calculate days between two dates</strong>, <strong>add or subtract dates</strong> as well as determine <strong>net business days</strong> – all in a single, intuitive interface. No registration and no data sharing: the dates you enter stay in your browser.',
             tableTitle: 'Usage Cases at a Glance',
             th1: 'Usage Case',
             th2: 'Recommended Tool',
@@ -121,7 +128,7 @@ const CONTENT: Record<string, any> = {
             case2: 'Project Planning',
             case3: 'Event Countdowns',
             case4: 'Calculate Age',
-            footer: 'Thanks to advanced <strong>ISO 8601 calendar algorithms</strong>, our system automatically takes into account complex factors such as leap years and irregular month lengths. This guarantees 100% mathematical accuracy – without rounding errors.'
+            footer: 'The calculator maps the <strong>Gregorian calendar</strong> with the full leap-year rule and accounts for varying month lengths automatically. Calendar weeks follow <strong>ISO 8601</strong>: the week starts on Monday, and the first week of a year is the one containing the first Thursday.'
         },
         howto: {
             title: 'How does the Date Calculator work?',
@@ -186,36 +193,41 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
         })),
     };
 
-    const articleJsonLd = {
+    /*
+     * The homepage previously emitted Article JSON-LD naming "Felix Schmidt"
+     * as a Person author, with datePublished 2024-01-01. Two problems: the
+     * homepage is a calculator, not an article, and the author did not exist.
+     * Article markup on a tool page is schema coverage for its own sake, and
+     * an author node turns a fabricated byline into a machine-readable claim.
+     *
+     * It is replaced by WebApplication, which is what this page actually is.
+     * No author node: the publisher is the organisation.
+     */
+    const appJsonLd = {
         '@context': 'https://schema.org',
-        '@type': 'Article',
-        '@id': `${siteUrl}/${loc}/#article`,
-        'headline': c.seo.headline,
-        'description': loc === 'de' ? 'Kostenloser Online-Datumsrechner für exakte Datumsdifferenzen.' : 'Free online date calculator for exact date differences.',
+        '@type': 'WebApplication',
+        '@id': `${siteUrl}/${loc}/#calculator`,
+        'name': loc === 'de' ? 'Datumsrechner' : 'Date Calculator',
+        'description':
+            loc === 'de'
+                ? 'Kostenloser Online-Datumsrechner für Datumsdifferenzen, Arbeitstage und Alter.'
+                : 'Free online date calculator for date differences, business days and age.',
         'url': `${siteUrl}/${loc}`,
-        'dateModified': dateModified,
-        'datePublished': '2024-01-01',
-        'author': {
-            '@type': 'Person',
-            'name': 'Felix Schmidt',
-            'url': `${siteUrl}/${loc}/ueber-uns`,
-        },
+        'applicationCategory': 'UtilityApplication',
+        'operatingSystem': 'All',
+        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR' },
         'publisher': {
             '@type': 'Organization',
             'name': 'Datumsrechner',
             '@id': `${siteUrl}/#organization`,
         },
         'inLanguage': loc,
-        'mainEntityOfPage': {
-            '@type': 'WebPage',
-            '@id': `${siteUrl}/${loc}`,
-        },
     };
 
     return (
         <article className="w-full max-w-7xl mx-auto mt-24 mb-16 space-y-24">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appJsonLd) }} />
 
             {/* ── 1. Trust Signals Bar ── */}
             <section aria-label={loc === 'de' ? "Vertrauenssignale" : "Trust Signals"} className="flex flex-wrap justify-center gap-4 animate-slide-up-fade">

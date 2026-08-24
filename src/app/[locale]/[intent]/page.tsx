@@ -35,11 +35,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         'differenz': {
             de: {
                 title: 'Tage zwischen zwei Daten berechnen',
-                description: 'Berechnen Sie exakt wie viele Tage, Wochen oder Monate zwischen zwei Daten liegen. Kostenlos, präzise & sofort – ISO 8601 konform.'
+                description: 'Berechnen Sie exakt wie viele Tage, Wochen oder Monate zwischen zwei Daten liegen. Kostenlos, präzise & sofort – mit Kalenderwochen nach ISO 8601.'
             },
             en: {
                 title: 'Calculate Days Between Two Dates',
-                description: 'Calculate exactly how many days, weeks or months lie between two dates. Free, precise & instant – ISO 8601 compliant.'
+                description: 'Calculate exactly how many days, weeks or months lie between two dates. Free, precise & instant – with calendar weeks per ISO 8601.'
             }
         },
         'addieren': {

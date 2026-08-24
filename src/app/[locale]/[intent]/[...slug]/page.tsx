@@ -85,8 +85,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         : `${displaySlug} – Exact calculation online`;
     
     let description = isDe
-        ? `Nutzen Sie den kostenlosen Datumsrechner für exakte Ergebnisse zu ${displaySlug}. ISO 8601 konform, präzise und sekundenschnell.`
-        : `Use the free date calculator for exact results on ${displaySlug}. ISO 8601 compliant, precise and lightning fast.`;
+        ? `Nutzen Sie den kostenlosen Datumsrechner für exakte Ergebnisse zu ${displaySlug}. Mit vollständiger Schaltjahrregel, präzise und sekundenschnell.`
+        : `Use the free date calculator for exact results on ${displaySlug}. Full leap-year rule, precise and lightning fast.`;
 
     if (isAdd) {
         const match = (canonicalSlug || canonicalSlugStr).match(/^(\d+)-(tage|monate|jahre|jahr)-ab-heute$/);
