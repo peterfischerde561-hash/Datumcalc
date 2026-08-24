@@ -4,7 +4,6 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { locales } from '@/i18n/routing';
 import { setRequestLocale } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
-import { ToolSchema } from '@/components/seo/ToolSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 
 export const revalidate = 86400; // 24 hours
@@ -207,11 +206,8 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
         <main className="flex-1 w-full bg-white text-slate-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <BreadcrumbSchema items={breadcrumbItems} />
-            <ToolSchema
-                name={localizedText.h1}
-                description={isDe ? "Präziser Datumsrechner für verschiedene kalendarische Szenarien." : "Precise date calculator for various calendar scenarios."}
-                url={`${SITE_URL}${correctPath}`}
-            />
+            {/* See the note in [...slug]/page.tsx: the site-level
+                WebApplication lives in the layout, not once per URL. */}
             <div className="mb-12 space-y-4">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                     {localizedText.h1}

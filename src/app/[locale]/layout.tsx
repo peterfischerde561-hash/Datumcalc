@@ -138,7 +138,9 @@ export default async function LocaleLayout({
             "Age calculator",
             "Countdown to events"
         ],
-        "browserRequirements": "Requires JavaScript. Works in all modern browsers."
+        // The stated answer on each page is server-rendered; JavaScript is only
+        // needed for the interactive calculator and the live countdown.
+        "browserRequirements": "Works in all modern browsers. JavaScript is required only for the interactive calculator."
     };
 
     const orgSchema = {

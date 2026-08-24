@@ -200,34 +200,18 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
      * Article markup on a tool page is schema coverage for its own sake, and
      * an author node turns a fabricated byline into a machine-readable claim.
      *
-     * It is replaced by WebApplication, which is what this page actually is.
-     * No author node: the publisher is the organisation.
+     * Nothing replaces it here. The layout already declares the site-level
+     * WebApplication (@id .../#webapp) on every page, so describing the
+     * calculator again would be a second node for one entity.
+     *
+     * The FAQPage below stays: those questions are written by hand and are
+     * visible on the page, unlike the template-generated FAQs on the
+     * programmatic pages, which carry no markup.
      */
-    const appJsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        '@id': `${siteUrl}/${loc}/#calculator`,
-        'name': loc === 'de' ? 'Datumsrechner' : 'Date Calculator',
-        'description':
-            loc === 'de'
-                ? 'Kostenloser Online-Datumsrechner für Datumsdifferenzen, Arbeitstage und Alter.'
-                : 'Free online date calculator for date differences, business days and age.',
-        'url': `${siteUrl}/${loc}`,
-        'applicationCategory': 'UtilityApplication',
-        'operatingSystem': 'All',
-        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR' },
-        'publisher': {
-            '@type': 'Organization',
-            'name': 'Datumsrechner',
-            '@id': `${siteUrl}/#organization`,
-        },
-        'inLanguage': loc,
-    };
 
     return (
         <article className="w-full max-w-7xl mx-auto mt-24 mb-16 space-y-24">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appJsonLd) }} />
 
             {/* ── 1. Trust Signals Bar ── */}
             <section aria-label={loc === 'de' ? "Vertrauenssignale" : "Trust Signals"} className="flex flex-wrap justify-center gap-4 animate-slide-up-fade">

@@ -9,6 +9,7 @@
 
 import { reverseTranslateSlug } from './translations';
 import { EVENT_NAMES, getEventDateUTC } from '../events';
+import { formatNumber } from '@/lib/date/format';
 
 type Locale = string;
 
@@ -19,12 +20,12 @@ type Locale = string;
 // prepositions like "in", "von", "bei", "nach" ("30 Tagen"). English ignores `dat`.
 const ADD_EXPLANATIONS: Record<string, ((num: number, nom: string, dat: string) => string)[]> = {
     de: [
-        (num, nom, dat) => `Sie möchten wissen, welches Datum in genau ${num} ${dat} liegt? Der Rechner nimmt das heutige Datum als Startpunkt und zählt ${num} ${nom} vorwärts – die fortlaufende Aktualisierung im Browser sorgt dafür, dass das Ergebnis immer auf dem aktuellen Tag beruht.`,
+        (num, nom, dat) => `Sie möchten wissen, welches Datum in genau ${num} ${dat} liegt? Der Rechner nimmt das heutige Datum als Startpunkt und zählt ${num} ${nom} vorwärts – Stichtag ist der laufende Kalendertag in der Zeitzone Europe/Berlin.`,
         (num, nom, dat) => `Für eine Frist von ${num} ${dat} reicht grobes Kopfrechnen selten aus, weil Monate unterschiedlich lang sind und Schaltjahre einen zusätzlichen Tag einschieben. Der Rechner berücksichtigt beides automatisch und liefert das exakte Zieldatum samt Wochentag.`,
         (num, nom) => `Ob Liefertermin, Projektmeilenstein oder Kündigungsfrist: Wer ${num} ${nom} ab heute plant, braucht ein verlässliches Datum. Genau das ermittelt dieser Rechner, ohne dass Sie Kalenderseiten durchzählen müssen.`,
     ],
     en: [
-        (num, nom) => `Want to know which date falls exactly ${num} ${nom} from now? The calculator takes today as the starting point and counts ${num} ${nom} forward. Because it updates in your browser, the result always reflects the current day.`,
+        (num, nom) => `Want to know which date falls exactly ${num} ${nom} from now? The calculator takes today as the starting point and counts ${num} ${nom} forward. The reference point is the current calendar day in the Europe/Berlin timezone.`,
         (num, nom) => `For a deadline of ${num} ${nom}, rough mental arithmetic rarely works: months have different lengths and leap years add an extra day. The calculator handles both automatically and returns the exact target date including the weekday.`,
         (num, nom) => `Whether it is a delivery date, a project milestone or a notice period, planning ${num} ${nom} from today calls for a reliable date. That is exactly what this calculator provides, without counting through a paper calendar.`,
     ],
@@ -164,14 +165,16 @@ export function generateContextualInsight(num: number, unitNom: string, locale: 
     const isDe = locale === 'de';
     const u = unitNom.toLowerCase();
     if (u === 'tage' || u === 'days') {
-        const monthsApprox = (num / 30.44).toFixed(1);
-        const weeksApprox = (num / 7).toFixed(1);
+        // toFixed always emits a dot. German writes 3,3 — and the surrounding
+        // copy already used "30,44" correctly, so the page contradicted itself.
+        const monthsApprox = formatNumber(num / 30.44, locale);
+        const weeksApprox = formatNumber(num / 7, locale);
         if (num >= 30 && num < 365) {
             return isDe
                 ? `Zur Einordnung: ${num} Tage entsprechen ungefähr ${monthsApprox} Monaten oder ${weeksApprox} Wochen. Das ist ein typischer Zeitraum für mittelfristige Fristen.`
                 : `For context: ${num} days are roughly ${monthsApprox} months or ${weeksApprox} weeks – a typical span for medium-term deadlines.`;
         } else if (num >= 365) {
-            const yearsApprox = (num / 365.25).toFixed(1);
+            const yearsApprox = formatNumber(num / 365.25, locale);
             return isDe
                 ? `Zur Einordnung: ${num} Tage entsprechen rund ${yearsApprox} Jahren.`
                 : `For context: ${num} days are around ${yearsApprox} years.`;
@@ -329,7 +332,9 @@ export function generateDynamicFAQs(intent: string, slug: string, locale: Locale
                     ? `Wie viele Monate sind ${valueNom}?`
                     : `Wofür nutzt man die Berechnung von ${valueDat}?`,
                 answer: numValue && isDays
-                    ? `${valueNom} entsprechen etwa ${(numValue / 30.44).toFixed(1)} Monaten, da ein Monat im Durchschnitt rund 30,44 Tage hat. Für das exakte Kalenderdatum nutzen Sie am besten den Rechner oben.`
+                    // German uses a comma as the decimal separator; the same
+                    // sentence already wrote "30,44" correctly two clauses later.
+                    ? `${valueNom} entsprechen etwa ${formatNumber(numValue / 30.44, 'de')} Monaten, da ein Monat im Durchschnitt rund 30,44 Tage hat. Für das exakte Kalenderdatum nutzen Sie am besten den Rechner oben.`
                     : `Diese Berechnung wird häufig für Fristen, Liefertermine, Projektplanung und persönliche Countdowns wie Jahrestage genutzt.`,
             },
             {
@@ -342,14 +347,14 @@ export function generateDynamicFAQs(intent: string, slug: string, locale: Locale
     return [
         {
             question: `What date is ${valueNom} from today?`,
-            answer: `The calculator takes today's date as the starting point and counts ${valueNom} forward. The result above is computed live in your browser and shows the exact target date including the weekday.`,
+            answer: `The calculator takes today's date as the starting point and counts ${valueNom} forward. The result above states the exact target date including the weekday, calendar week and day of the year.`,
         },
         {
             question: numValue && isDays
                 ? `How many months are ${valueNom}?`
                 : `What is calculating ${valueNom} used for?`,
             answer: numValue && isDays
-                ? `${valueNom} correspond to about ${(numValue / 30.44).toFixed(1)} months, since a month averages around 30.44 days. For the exact calendar date, use the calculator above.`
+                ? `${valueNom} correspond to about ${formatNumber(numValue / 30.44, 'en')} months, since a month averages around 30.44 days. For the exact calendar date, use the calculator above.`
                 : `This calculation is commonly used for deadlines, delivery dates, project planning and personal countdowns such as anniversaries.`,
         },
         {

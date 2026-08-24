@@ -90,6 +90,88 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 // Result types whose value is a calendar date rather than a count.
 const DATE_VALUED = new Set(['target-date', 'today']);
 
+/** Names that must never reappear in markup. */
+const FABRICATED = ['Felix Schmidt', 'Mathematiker & Autor', 'Lead Developer & Kalender-Experte'];
+
+function decodeEntities(s) {
+    return s
+        .replace(/&quot;/g, '"')
+        .replace(/&#x27;|&apos;/g, "'")
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>');
+}
+
+/**
+ * Structured data must parse, describe the page it sits on, and assert nothing
+ * the page does not show. Checks here rather than in a unit test because the
+ * failure mode is in rendered output, not in the component.
+ */
+function checkJsonLd(html, route, canonical) {
+    const problems = [];
+    const blocks = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+
+    if (blocks.length === 0) return problems;
+
+    const graphs = [];
+    for (const [, raw] of blocks) {
+        try {
+            graphs.push(JSON.parse(decodeEntities(raw)));
+        } catch (err) {
+            problems.push(`JSON-LD does not parse: ${err.message}`);
+        }
+    }
+
+    const serialized = JSON.stringify(graphs);
+
+    for (const name of FABRICATED) {
+        if (serialized.includes(name)) problems.push(`JSON-LD contains removed identity "${name}"`);
+    }
+
+    // A calculator page is not an Article.
+    const types = [...serialized.matchAll(/"@type":"([^"]+)"/g)].map((m) => m[1]);
+    const isGuide = route.includes('/ratgeber/') || route.includes('/guide/');
+    if (types.includes('Article') && !isGuide) {
+        problems.push(`Article schema on a non-editorial page (types: ${[...new Set(types)].join(', ')})`);
+    }
+
+    // FAQPage is reserved for hand-written Q&A; the generated pSEO FAQs must not carry it.
+    const isTemplatedFaqPage = /\/(addieren|differenz|add|difference)\/.+/.test(route);
+    if (types.includes('FAQPage') && isTemplatedFaqPage) {
+        problems.push('FAQPage schema on a template-generated FAQ');
+    }
+
+    // Every Question must be visible on the page.
+    for (const graph of graphs) {
+        for (const q of graph?.mainEntity ?? []) {
+            const name = q?.name;
+            if (name && !decodeEntities(html).includes(name)) {
+                problems.push(`FAQ question in schema is not visible on the page: "${name}"`);
+                break;
+            }
+        }
+    }
+
+    // BreadcrumbList must end at this page's canonical.
+    for (const graph of graphs) {
+        if (graph?.['@type'] !== 'BreadcrumbList') continue;
+        const items = graph.itemListElement ?? [];
+        const last = items[items.length - 1];
+        const lastUrl = last?.item?.['@id'] ?? last?.item;
+        if (canonical && lastUrl && lastUrl !== canonical) {
+            problems.push(`breadcrumb ends at ${lastUrl}, not the canonical ${canonical}`);
+        }
+        for (const it of items) {
+            const url = it?.item?.['@id'] ?? it?.item;
+            if (typeof url === 'string' && url !== BASE && url.endsWith('/')) {
+                problems.push(`breadcrumb item has a trailing slash: ${url}`);
+            }
+        }
+    }
+
+    return problems;
+}
+
 let failures = 0;
 let checked = 0;
 
@@ -156,6 +238,8 @@ for (const route of [...ROUTES, ...METADATA_ONLY_ROUTES]) {
     const h1Count = (html.match(/<h1[\s>]/gi) || []).length;
     if (h1Count === 0) problems.push('no h1');
     if (h1Count > 1) problems.push(`${h1Count} h1 elements`);
+
+    problems.push(...checkJsonLd(html, route, canonical));
 
     checked++;
     if (problems.length) {

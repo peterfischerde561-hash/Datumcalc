@@ -37,7 +37,6 @@ import { getTodayInTimeZone, zonedStartOfDayMs } from '@/lib/date/civil';
 import { formatLong } from '@/lib/date/format';
 import { calculateOffsetDate, TimeUnit } from '@/lib/calculator';
 import { getNextOccurrenceCivil } from '@/lib/events';
-import { ToolSchema } from '@/components/seo/ToolSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { CountdownTimer } from '@/components/countdown/CountdownTimer';
 import { RelatedEvents } from '@/components/countdown/RelatedEvents';
@@ -275,11 +274,13 @@ export default async function ProgrammaticPage({
     return (
         <main className="flex-1 w-full relative bg-white text-slate-800">
             <BreadcrumbSchema items={breadcrumbItems} />
-            <ToolSchema
-                name={displaySlug}
-                description={isDe ? `Präziser Datumsrechner für ${displaySlug}.` : `Precise date calculator for ${displaySlug}.`}
-                url={`${SITE_URL}${correctPath}`}
-            />
+            {/*
+              No per-page WebApplication node. The layout already declares the
+              site-level one (@id .../#webapp); emitting a second, id-less node
+              per URL described the same calculator repeatedly rather than a
+              distinct application. Breadcrumbs carry this page's place in the
+              hierarchy, which is what is actually page-specific here.
+            */}
             <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-12">
 
             <nav aria-label="Breadcrumb" className="flex text-sm text-slate-500 items-center space-x-2">
