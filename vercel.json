@@ -1,7 +1,6 @@
 {
   "crons": [
     {
-      "_comment": "23:00 UTC is 00:00 Berlin in winter (UTC+1) and 01:00 Berlin in summer (UTC+2), so it lands after the Berlin date boundary in both offsets. The handler determines the Berlin date itself and is idempotent.",
       "path": "/api/revalidate-daily",
       "schedule": "0 23 * * *"
     },

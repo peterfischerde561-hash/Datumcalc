@@ -7,11 +7,18 @@ export const dynamic = 'force-dynamic';
 /**
  * Refresh date-dependent pages when the Europe/Berlin calendar day changes.
  *
- * Scheduling note: Berlin is UTC+1 in winter and UTC+2 in summer, so no fixed
- * UTC time is "Berlin midnight" year-round. This runs at 23:00 UTC, which is
- * 00:00 Berlin in winter and 01:00 Berlin in summer — after the date boundary
- * in *both* offsets. The handler never assumes what day it is from the
- * schedule; it asks for the Berlin civil date itself.
+ * SCHEDULING — read before changing `crons` in vercel.json.
+ * Berlin is UTC+1 in winter and UTC+2 in summer, so no fixed UTC time is
+ * "Berlin midnight" year-round. The schedule is `0 23 * * *`: 23:00 UTC is
+ * 00:00 Berlin in winter and 01:00 Berlin in summer, the one hour that lands
+ * after the date boundary in *both* offsets. An earlier slot (e.g. 22:00 UTC)
+ * fires before Berlin midnight in winter and would refresh with yesterday's
+ * date. vercel.json cannot carry comments — Vercel rejects unknown keys — so
+ * this is the note that explains that number.
+ *
+ * The handler never assumes what day it is from the schedule; it asks for the
+ * Berlin civil date itself, so a changed schedule degrades timeliness, not
+ * correctness.
  *
  * The operation is idempotent: running it twice in one Berlin day revalidates
  * nothing the second time, and running it late simply refreshes with the
