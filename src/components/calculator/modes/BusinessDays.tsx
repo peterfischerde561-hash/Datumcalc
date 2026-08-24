@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { getBusinessDays } from '@/lib/calculator';
+import { parseCivilDate } from '@/lib/date/civil';
+import { formatDayMonth } from '@/lib/date/format';
 import { useRecentCalculations } from '@/hooks/useRecentCalculations';
 import { Share2, Check, BookmarkPlus } from 'lucide-react';
-import { format } from 'date-fns';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export function BusinessDays() {
     const t = useTranslations('Calculator');
+    const locale = useLocale();
     const [start, setStart] = useState<string>('');
     const [end, setEnd] = useState<string>('');
     const [copied, setCopied] = useState(false);
@@ -34,16 +36,18 @@ export function BusinessDays() {
 
     const calculate = () => {
         if (!start || !end) return null;
-        return getBusinessDays(new Date(start), new Date(end));
+        return getBusinessDays(start, end);
     };
 
     const result = calculate();
 
     const handleSave = () => {
-        if (result !== null) {
+        const s = parseCivilDate(start);
+        const e = parseCivilDate(end);
+        if (result !== null && s && e) {
             addCalculation({
                 type: 'business_days',
-                title: `${t('businessDays')}: ${format(new Date(start), 'dd.MM')} - ${format(new Date(end), 'dd.MM')}`,
+                title: `${t('businessDays')}: ${formatDayMonth(s, locale)} - ${formatDayMonth(e, locale)}`,
                 result: `${Math.abs(result)} ${t('days')}`
             });
         }

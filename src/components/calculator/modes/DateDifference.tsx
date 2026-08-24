@@ -2,17 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { calculateDateDifference } from '@/lib/calculator';
-import { format } from 'date-fns';
+import { parseCivilDate } from '@/lib/date/civil';
+import { formatMedium, formatNumeric } from '@/lib/date/format';
 import { useRecentCalculations } from '@/hooks/useRecentCalculations';
 import { TimelineVisualization } from '../TimelineVisualization';
 import { Share2, Check, BookmarkPlus } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
-import * as dateLocales from 'date-fns/locale';
 
 export function DateDifference() {
     const t = useTranslations('Calculator');
     const locale = useLocale();
-    const dateLocale = (dateLocales as any)[locale] || dateLocales.de;
 
     const [start, setStart] = useState<string>('');
     const [end, setEnd] = useState<string>('');
@@ -38,16 +37,18 @@ export function DateDifference() {
 
     const calculate = () => {
         if (!start || !end) return null;
-        return calculateDateDifference(new Date(start), new Date(end));
+        return calculateDateDifference(start, end);
     };
 
     const result = calculate();
 
     const handleSave = () => {
-        if (result) {
+        const s = parseCivilDate(start);
+        const e = parseCivilDate(end);
+        if (result && s && e) {
             addCalculation({
                 type: 'differenz',
-                title: `${format(new Date(start), 'dd.MM.yyyy')} - ${format(new Date(end), 'dd.MM.yyyy')}`,
+                title: `${formatNumeric(s, locale)} - ${formatNumeric(e, locale)}`,
                 result: `${Math.abs(result.totalDays)} ${t('days')}`
             });
         }
@@ -99,8 +100,8 @@ export function DateDifference() {
 
                     <TimelineVisualization
                         percentage={100}
-                        labelStart={format(new Date(start), 'dd. MMM yyyy', { locale: dateLocale })}
-                        labelEnd={format(new Date(end), 'dd. MMM yyyy', { locale: dateLocale })}
+                        labelStart={formatMedium(parseCivilDate(start)!, locale)}
+                        labelEnd={formatMedium(parseCivilDate(end)!, locale)}
                     />
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-blue-200">

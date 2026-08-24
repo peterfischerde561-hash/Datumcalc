@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { calculateAge } from '@/lib/calculator';
+import { getLocalToday, parseCivilDate } from '@/lib/date/civil';
+import { formatNumeric } from '@/lib/date/format';
 import { useRecentCalculations } from '@/hooks/useRecentCalculations';
 import { Share2, Check, BookmarkPlus } from 'lucide-react';
-import { format } from 'date-fns';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export function AgeCalculator() {
     const t = useTranslations('Calculator');
+    const locale = useLocale();
     const [birthdate, setBirthdate] = useState<string>('');
     const [copied, setCopied] = useState(false);
     const { addCalculation } = useRecentCalculations();
@@ -31,16 +33,17 @@ export function AgeCalculator() {
 
     const calculate = () => {
         if (!birthdate) return null;
-        return calculateAge(new Date(birthdate));
+        return calculateAge(birthdate, getLocalToday());
     };
 
     const result = calculate();
 
     const handleSave = () => {
-        if (result && birthdate) {
+        const dob = parseCivilDate(birthdate);
+        if (result && dob) {
             addCalculation({
                 type: 'age',
-                title: `${t('birthDate')}: ${format(new Date(birthdate), 'dd.MM.yyyy')}`,
+                title: `${t('birthDate')}: ${formatNumeric(dob, locale)}`,
                 result: `${result.years} ${t('years')}`
             });
         }

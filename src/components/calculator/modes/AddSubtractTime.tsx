@@ -2,16 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { calculateOffsetDate, TimeUnit, Operation } from '@/lib/calculator';
-import { format } from 'date-fns';
+import { parseCivilDate } from '@/lib/date/civil';
+import { formatDayMonth, formatLong, formatNumeric } from '@/lib/date/format';
 import { useRecentCalculations } from '@/hooks/useRecentCalculations';
 import { Share2, Check, BookmarkPlus } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
-import * as dateLocales from 'date-fns/locale';
 
 export function AddSubtractTime() {
     const t = useTranslations('Calculator');
     const locale = useLocale();
-    const dateLocale = (dateLocales as any)[locale] || dateLocales.de;
 
     const [baseDate, setBaseDate] = useState<string>('');
     const [amount, setAmount] = useState<number | ''>('');
@@ -43,17 +42,18 @@ export function AddSubtractTime() {
 
     const calculate = () => {
         if (!baseDate || amount === '' || isNaN(amount)) return null;
-        return calculateOffsetDate(new Date(baseDate), Number(amount), unit, operation);
+        return calculateOffsetDate(baseDate, Number(amount), unit, operation);
     };
 
     const result = calculate();
 
     const handleSave = () => {
-        if (result) {
+        const base = parseCivilDate(baseDate);
+        if (result && base) {
             addCalculation({
                 type: 'add_subtract',
-                title: `${format(new Date(baseDate), 'dd.MM')} ${operation === 'add' ? '+' : '-'} ${amount} ${t(unit)}`,
-                result: format(result, 'dd.MM.yyyy')
+                title: `${formatDayMonth(base, locale)} ${operation === 'add' ? '+' : '-'} ${amount} ${t(unit)}`,
+                result: formatNumeric(result, locale)
             });
         }
     };
@@ -105,7 +105,7 @@ export function AddSubtractTime() {
                         <div>
                             <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{t('result')}</h3>
                             <p className="text-3xl mt-2 font-bold text-blue-800">
-                                {format(result, 'EEEE, dd. MMMM yyyy', { locale: dateLocale })}
+                                {formatLong(result, locale)}
                             </p>
                         </div>
                         <div className="flex gap-2">
