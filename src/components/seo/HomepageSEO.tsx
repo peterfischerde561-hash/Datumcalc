@@ -146,7 +146,14 @@ const CONTENT: Record<string, any> = {
     }
 };
 
-export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
+export function HomepageSEO({
+    locale = 'de',
+    part = 'understand'
+}: {
+    locale?: string;
+    /** 'understand' explains the tool; 'explore' links away from it. */
+    part?: 'understand' | 'explore';
+}) {
     const loc = CONTENT[locale] ? locale : 'en';
     const c = CONTENT[loc];
 
@@ -209,21 +216,16 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
      * programmatic pages, which carry no markup.
      */
 
-    return (
-        <article className="w-full max-w-7xl mx-auto mt-24 mb-16 space-y-24">
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-
-            {/* ── 1. Trust Signals Bar ── */}
-            <section aria-label={loc === 'de' ? "Vertrauenssignale" : "Trust Signals"} className="flex flex-wrap justify-center gap-4 animate-slide-up-fade">
-                {c.trustSignals.map(({ icon: Icon, label, color }: any, i: number) => (
-                    <div key={i} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-medium text-slate-700">
-                        <Icon className={`w-4 h-4 shrink-0 ${color}`} aria-hidden="true" />
-                        {label}
-                    </div>
-                ))}
-            </section>
-
-            {/* ── 2. Internal Linking Mesh ── */}
+    /*
+     * Rendered in two parts so the page can put the guide content directly
+     * under the calculator and keep every "go somewhere else" block after
+     * it. As one component these were locked into a single position, which
+     * put the link mesh above the explanation of what the tool even is.
+     */
+    if (part === 'explore') {
+        return (
+            <article className="w-full max-w-7xl mx-auto mt-20 mb-16 space-y-24">
+{/* ── 4. Explore: related calculations and guides ── */}
             <nav aria-label={c.hero.title} className="space-y-10 animate-slide-up-fade">
                 <header className="border-b border-slate-200 pb-6 text-center md:text-left">
                     <h2 className="text-4xl font-extrabold tracking-tight">{c.hero.title}</h2>
@@ -291,7 +293,26 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                 </div>
             </nav>
 
-            {/* ── 3. SEO Content Block ── */}
+            
+{/* ── 5. Trust signals ── */}
+            <section aria-label={loc === 'de' ? "Vertrauenssignale" : "Trust Signals"} className="flex flex-wrap justify-center gap-4 animate-slide-up-fade">
+                {c.trustSignals.map(({ icon: Icon, label, color }: any, i: number) => (
+                    <div key={i} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-medium text-slate-700">
+                        <Icon className={`w-4 h-4 shrink-0 ${color}`} aria-hidden="true" />
+                        {label}
+                    </div>
+                ))}
+            </section>
+            </article>
+        );
+    }
+
+    return (
+        <article className="w-full max-w-7xl mx-auto mt-20 mb-16 space-y-24">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+
+
+            {/* ── 1. Understand: what the calculator does ── */}
             <section aria-labelledby="seo-content-heading" className="animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
                 <div className="prose max-w-4xl mx-auto bg-white rounded-2xl p-10 md:p-14 border border-slate-200 shadow-sm">
                     <header>
@@ -339,7 +360,8 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                 </div>
             </section>
 
-            {/* ── 4. How It Works ── */}
+            
+{/* ── 2. Understand: how it works ── */}
             <section aria-labelledby="howto-heading" className="max-w-4xl mx-auto animate-slide-up-fade" style={{ animationDelay: '0.15s' }}>
                 <header className="text-center mb-10">
                     <h2 id="howto-heading" className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">{c.howto.title}</h2>
@@ -361,7 +383,8 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                 </ol>
             </section>
 
-            {/* ── 5. FAQs ── */}
+            
+{/* ── 3. Understand: common questions ── */}
             <section aria-labelledby="faq-heading" className="max-w-4xl mx-auto space-y-6 animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
                 <header className="text-center mb-6">
                     <h2 id="faq-heading" className="text-4xl font-extrabold mb-3 tracking-tight">{c.faqHeading.title}</h2>

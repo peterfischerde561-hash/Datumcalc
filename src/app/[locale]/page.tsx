@@ -43,69 +43,70 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     const t = await getTranslations({ locale, namespace: 'Header' });
 
     return (
-        <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24 lg:pt-40 lg:pb-32">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-24">
-                {/* Left Column: Hero Content */}
-                <header className="lg:col-span-7 space-y-8 animate-slide-up-fade">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-bold uppercase tracking-widest text-blue-700 mb-2">
-                        <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" aria-hidden="true"></span>
-                        {locale === 'de' ? 'Gregorianischer Kalender' : 'Gregorian calendar'}
-                    </div>
-                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight leading-[0.95] max-w-2xl text-slate-900">
-                        {locale === 'de' ? (
-                            <>Präziser <span className="text-blue-700">Datumsrechner</span> für alle Fristen.</>
-                        ) : (
-                            <>Precise <span className="text-blue-700">Date Calculator</span> for every deadline.</>
-                        )}
-                    </h1>
-                    <p className="text-lg md:text-xl text-slate-600 max-w-xl font-medium leading-relaxed">
-                        {locale === 'de' 
-                            ? 'Berechnen Sie Zeitspannen, addieren Sie Tage oder ermitteln Sie Netto-Arbeitstage – mit vollständiger Schaltjahrregel und Kalenderwochen nach ISO 8601.'
-                            : 'Calculate time spans, add days or determine net business days – with the full leap-year rule and calendar weeks per ISO 8601.'}
-                    </p>
-
-                    {/* Smart Input Search integrated in Hero */}
-                    <div className="w-full max-w-2xl space-y-6">
-                        <SmartInputBar />
-                        <QuickShortcuts locale={locale} />
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-6 pt-4">
-                        <a href="#tools" className="px-8 py-4 rounded-xl bg-blue-700 text-white font-bold hover:bg-blue-800 transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                            {locale === 'de' ? 'Rechner starten' : 'Start Calculator'}
-                        </a>
-                        {/*
-                          A "2.4k+ Nutzer täglich" counter sat here beside three
-                          circles reading A, B, C — a placeholder avatar stack
-                          standing in for real users. Neither figure was
-                          measured, so both are gone rather than restyled.
-                        */}
-                        <Link
-                            href="/methodik"
-                            className="text-sm font-semibold text-blue-700 hover:text-blue-800 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
-                        >
-                            {locale === 'de' ? 'Wie wir rechnen' : 'How we calculate'}
-                        </Link>
-                    </div>
-                </header>
-
-                {/* Right Column: Visual Element */}
-                <div className="hidden lg:block lg:col-span-5 animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
-                    <LiveDatePreview locale={locale} />
-                </div>
-            </div>
-
-            {/* Smart Hero CTA Selector - Now below Search */}
+        <div className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24 lg:pt-32 lg:pb-32">
             {/*
-              The cards are h3s. Without this h2 the outline jumped h1 -> h3,
-              so anyone navigating by headings lost the level that says what the
-              list is. The section previously carried only an aria-label, which
-              names the region but does not appear in the heading outline.
+              Page order follows Solve -> Continue -> Understand -> Explore.
+              Previously the calculator was the fifth thing on the page, below a
+              search box, a chip row, an anchor button and four cards that all
+              linked away — four competing entry points, none of which was the
+              tool. Someone arriving to calculate a date had to choose a route
+              before they could do anything. The tool now comes first and the
+              routes come after it.
             */}
-            <h2 id="tools-heading" className="text-2xl font-bold text-slate-900 mb-6">
-                {locale === 'de' ? 'Rechner auswählen' : 'Choose a calculator'}
+
+            {/* ── Solve ─────────────────────────────────────────────── */}
+            <header className="space-y-6 animate-slide-up-fade">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-bold uppercase tracking-widest text-blue-700">
+                    <span className="w-2 h-2 rounded-full bg-blue-600" aria-hidden="true"></span>
+                    {locale === 'de' ? 'Gregorianischer Kalender' : 'Gregorian calendar'}
+                </div>
+
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.02] text-slate-900 text-balance">
+                    {locale === 'de' ? (
+                        <>Präziser <span className="text-blue-700">Datumsrechner</span> für alle Fristen.</>
+                    ) : (
+                        <>Precise <span className="text-blue-700">Date Calculator</span> for every deadline.</>
+                    )}
+                </h1>
+
+                <p className="text-lg md:text-xl text-slate-600 max-w-2xl leading-relaxed">
+                    {locale === 'de'
+                        ? 'Tage zwischen zwei Daten zählen, Tage zu einem Datum addieren, Netto-Arbeitstage ermitteln oder ein Alter bestimmen. Jede Berechnung folgt dem gregorianischen Kalender mit vollständiger Schaltjahrregel; Kalenderwochen nach ISO 8601.'
+                        : 'Count the days between two dates, add days to a date, work out net business days or determine an age. Every calculation follows the Gregorian calendar with the full leap-year rule; calendar weeks per ISO 8601.'}
+                </p>
+
+                <LiveDatePreview locale={locale} />
+            </header>
+
+            {/* The tool itself — first interactive element on the page. */}
+            <section
+                aria-labelledby="calculator-heading"
+                className="mt-10 w-full rounded-2xl border border-slate-200 bg-white p-5 md:p-8 shadow-lg animate-slide-up-fade"
+            >
+                <h2 id="calculator-heading" className="text-2xl font-bold text-slate-900 mb-1">
+                    {locale === 'de' ? 'Datum berechnen' : 'Calculate a date'}
+                </h2>
+                <p className="text-slate-600 mb-6">
+                    {locale === 'de'
+                        ? 'Rechner wählen, Daten eintragen – das Ergebnis erscheint sofort darunter.'
+                        : 'Pick a calculator, enter your dates – the result appears below straight away.'}
+                </p>
+                <CalculatorCore />
+            </section>
+
+            {/* ── Understand: what it does, how it works, common questions ── */}
+            <HomepageSEO locale={locale} part="understand" />
+
+            {/* ── Explore ───────────────────────────────────────────── */}
+            <h2 id="tools-heading" className="text-2xl font-bold text-slate-900 mt-20 mb-2">
+                {locale === 'de' ? 'Alle Rechner' : 'All calculators'}
             </h2>
-            <section id="tools" aria-labelledby="tools-heading" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-24 animate-slide-up-fade" style={{ animationDelay: '0.3s' }}>
+            <p className="text-slate-600 mb-6 max-w-2xl">
+                {locale === 'de'
+                    ? 'Jeder Rechner hat eine eigene Seite mit Erklärung und Beispielen.'
+                    : 'Each calculator has its own page with an explanation and examples.'}
+            </p>
+            <section id="tools" aria-labelledby="tools-heading" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 animate-slide-up-fade">
                 <Link href={ROUTES.differenz} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
                     <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
                         <SplitSquareHorizontal className="w-5 h-5" />
@@ -146,13 +147,29 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
 
 
-            {/* Core Calculator Hub */}
-            <section aria-label={locale === 'de' ? "Hauptrechner" : "Main Calculator"} className="w-full max-w-5xl mx-auto rounded-2xl border border-slate-200 bg-white p-6 md:p-10 min-h-[400px] shadow-2xl mb-24 animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
-                <CalculatorCore />
+            {/*
+              Prepared pages for the most-searched spans. These are navigation,
+              not a second calculator: each chip is a crawlable link to a page
+              that already states its answer. The free-text box sits here for
+              the same reason — it routes to a prepared page rather than
+              calculating, so it belongs beside the links and not above the tool.
+            */}
+            <section aria-labelledby="common-heading" className="mb-20 animate-slide-up-fade">
+                <h2 id="common-heading" className="text-2xl font-bold text-slate-900 mb-2">
+                    {locale === 'de' ? 'Häufige Berechnungen' : 'Common calculations'}
+                </h2>
+                <p className="text-slate-600 mb-6 max-w-2xl">
+                    {locale === 'de'
+                        ? 'Fertige Seiten mit Antwort, Wochentag und Kalenderwoche.'
+                        : 'Ready-made pages with the answer, weekday and calendar week.'}
+                </p>
+                <QuickShortcuts locale={locale} />
+                <div className="mt-8">
+                    <SmartInputBar />
+                </div>
             </section>
 
-            {/* Semantic SEO & Content Blocks */}
-            <HomepageSEO locale={locale} />
+            <HomepageSEO locale={locale} part="explore" />
         </div>
     );
 }
