@@ -262,13 +262,19 @@ export function generateSEOContent(
     const explanation = pickVariation(ADD_EXPLANATIONS[loc], seed)(num, nom, dat);
     const insight = num ? generateContextualInsight(num, nom.toLowerCase(), loc) : '';
 
-    const methodNote = isDe
-        ? `Die Berechnung folgt dem **gregorianischen Kalender**: Ein Normaljahr hat 365 Tage, ein Schaltjahr 366. Schaltjahre treten alle vier Jahre auf – außer in vollen Jahrhunderten, die nicht durch 400 teilbar sind. Diese Regel ist im Rechner fest hinterlegt, sodass auch lange Zeiträume korrekt abgebildet werden.`
-        : `The calculation follows the **Gregorian calendar**: a normal year has 365 days, a leap year 366. Leap years occur every four years – except in full centuries that are not divisible by 400. This rule is built into the calculator, so even long spans are mapped correctly.`;
-
-    // Indexable intervals lead with their bespoke context (unique per page);
-    // the generic rotating explanation is reserved for non-indexed variations.
-    const paragraphs = (ctx ? [ctx, insight, methodNote] : [explanation, insight, methodNote]).filter(Boolean);
+    /*
+     * A methodology paragraph used to sit here, identical on every page: the
+     * same four sentences about the Gregorian calendar and the leap-year rule,
+     * repeated across the whole inventory. That is the interchangeable filler
+     * the audit's unique-value test is aimed at — strip the substituted number
+     * and the remaining page was the same as every other.
+     *
+     * The methodology belongs on one page that explains it properly, linked
+     * from here, rather than duplicated into every URL. What stays is the
+     * material that is genuinely specific to this interval: its bespoke
+     * context and its computed comparison.
+     */
+    const paragraphs = (ctx ? [ctx, insight] : [explanation, insight]).filter(Boolean);
 
     const cases = ADD_USE_CASES[loc];
     const useCases = isAddIntent(intent)

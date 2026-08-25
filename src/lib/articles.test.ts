@@ -44,9 +44,26 @@ describe('article takeaways', () => {
     it('says something specific: the leap-year guide names the actual years', () => {
         const leap = articles.de.find((a) => a.slug === 'schaltjahre-erklaert')!;
         const joined = leap.takeaways.join(' ');
-        expect(joined).toContain('2028');
+        // 1900 and 2000 are settled history and stay true forever.
         expect(joined).toContain('1900');
         expect(joined).toContain('2000');
+    });
+
+    it('states no fact that expires', () => {
+        // "Das nächste Schaltjahr ist 2028" is correct until it isn't, and
+        // nothing fails when it stops being true. Time-relative answers are
+        // computed in guideFacts.ts and rendered above the takeaways; prose
+        // here must hold regardless of when it is read.
+        const decaying =
+            /\b(nächste|nächstes|next|kommende|upcoming)\b[^.]{0,40}\b(19|20|21)\d{2}\b|\b(dieses|diesem|this)\s+Jahr\b|\bin diesem Jahr\b/i;
+
+        const offenders: string[] = [];
+        for (const { locale, article } of allArticles) {
+            for (const point of article.takeaways) {
+                if (decaying.test(point)) offenders.push(`${locale}/${article.slug}: "${point}"`);
+            }
+        }
+        expect(offenders).toEqual([]);
     });
 });
 

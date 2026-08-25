@@ -6,11 +6,13 @@
 export const INTENT_TRANSLATIONS: Record<string, Record<string, string>> = {
     de: { 
         addieren: 'addieren', differenz: 'differenz', arbeitstage: 'arbeitstage', alter: 'alter', 
-        ratgeber: 'ratgeber', 'ueber-uns': 'ueber-uns', agb: 'agb', datenschutz: 'datenschutz', impressum: 'impressum', sitemap: 'sitemap' 
+        ratgeber: 'ratgeber', 'ueber-uns': 'ueber-uns', agb: 'agb', datenschutz: 'datenschutz', impressum: 'impressum', sitemap: 'sitemap',
+        methodik: 'wie-wir-rechnen'
     },
-    en: { 
-        addieren: 'add', differenz: 'difference', arbeitstage: 'business', alter: 'age', 
-        ratgeber: 'guide', 'ueber-uns': 'about-us', agb: 'terms', datenschutz: 'privacy', impressum: 'imprint', sitemap: 'sitemap' 
+    en: {
+        addieren: 'add', differenz: 'difference', arbeitstage: 'business', alter: 'age',
+        ratgeber: 'guide', 'ueber-uns': 'about-us', agb: 'terms', datenschutz: 'privacy', impressum: 'imprint', sitemap: 'sitemap',
+        methodik: 'how-we-calculate'
     }
 };
 

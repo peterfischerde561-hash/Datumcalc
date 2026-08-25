@@ -36,6 +36,8 @@ const METADATA_ONLY_ROUTES = [
     '/ratgeber',
     '/ratgeber/schaltjahre-erklaert',
     '/ratgeber/iso-8601-erklaert',
+    '/ratgeber/wochen-im-jahr',
+    '/wie-wir-rechnen',
     '/ueber-uns',
     '/impressum',
     '/datenschutz',

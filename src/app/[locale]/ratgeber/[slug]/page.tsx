@@ -8,10 +8,15 @@ import { ArticleSchema } from '@/components/seo/ArticleSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata, canonicalUrl } from '@/lib/seo/metadata';
+import { directAnswerFor } from '@/lib/seo/guideFacts';
 
 export const dynamic = 'force-static';
-export const revalidate = false; 
-export const dynamicParams = true; 
+// These guides now open with an answer computed from today's date (the next
+// leap year, this year's week count), so they are date-dependent and must not
+// freeze at build time. Hourly ISR bounds the staleness; the daily cron
+// refreshes them at the Europe/Berlin date boundary.
+export const revalidate = 3600;
+export const dynamicParams = true;
 
 export function generateStaticParams() {
     return locales.flatMap(locale => {
@@ -79,6 +84,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     const t = await getTranslations({ locale, namespace: 'Article' });
     const fullUrl = `${SITE_URL}${correctPath}`;
     const isDe = locale === 'de';
+    const directAnswer = directAnswerFor(slug, locale);
 
     // Breadcrumbs
     const breadcrumbItems = [
@@ -121,6 +127,24 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   against bylines instead of inventing a person to hold them.
                 */}
             </header>
+
+            {/*
+              Direct answer, above the article body.
+              The queries these guides rank for are time-relative ("wann ist das
+              nächste Schaltjahr"), so the answer is computed from today's date
+              rather than written — see guideFacts.ts. Guides whose subject does
+              not move with the calendar render nothing here rather than
+              manufacturing a hook.
+            */}
+            {directAnswer && (
+                <section
+                    aria-label={isDe ? 'Kurze Antwort' : 'Quick answer'}
+                    className="mb-12 rounded-xl border border-slate-200 bg-white p-6 md:p-8"
+                >
+                    <h2 className="text-xl font-bold text-slate-900 mb-3">{directAnswer.question}</h2>
+                    <p className="text-lg text-slate-700 leading-relaxed">{directAnswer.answer}</p>
+                </section>
+            )}
 
             {/* Key Takeaways */}
             <section className="mb-16 bg-blue-50 border border-blue-200 rounded-xl p-8 md:p-10">

@@ -19,6 +19,7 @@ export const routing = defineRouting({
         '/datenschutz': { de: '/datenschutz', en: '/privacy' },
         '/impressum': { de: '/impressum', en: '/imprint' },
         '/sitemap': { de: '/sitemap', en: '/sitemap' },
+        '/methodik': { de: '/wie-wir-rechnen', en: '/how-we-calculate' },
         '/addieren': { de: '/addieren', en: '/add' },
         '/differenz': { de: '/differenz', en: '/difference' },
         '/arbeitstage': { de: '/arbeitstage', en: '/business' },

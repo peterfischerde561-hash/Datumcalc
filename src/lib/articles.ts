@@ -27,8 +27,11 @@ export const articles: Record<string, Article[]> = {
             title: 'Schaltjahre erklärt – Warum gibt es den 29. Februar?',
             description: 'Was ist ein Schaltjahr und warum gibt es den 29. Februar? Alle Regeln, Beispiele und die Berechnung einfach erklärt.',
             readTime: '3 min',
+            // Rules, not dates: which year comes next is computed and shown in
+            // the direct answer above. A takeaway that names the next leap year
+            // would be wrong the year after it passes.
             takeaways: [
-                'Das nächste Schaltjahr ist 2028 – zuletzt hatte 2024 einen 29. Februar.',
+                'Ein Schaltjahr hat 366 Tage – der 29. Februar wird alle vier Jahre eingeschoben.',
                 '1900 war kein Schaltjahr, obwohl es durch 4 teilbar ist: volle Jahrhunderte fallen aus.',
                 '2000 war dagegen eines, weil die Ausnahme für durch 400 teilbare Jahre greift.'
             ],
@@ -125,7 +128,7 @@ export const articles: Record<string, Article[]> = {
             description: 'Everything you need to know about leap years. Learn why our calendar needs an extra day every four years and how it is calculated.',
             readTime: '3 min',
             takeaways: [
-                'The next leap year is 2028 – the most recent February 29 was in 2024.',
+                'A leap year has 366 days – February 29 is inserted every four years.',
                 '1900 was not a leap year despite being divisible by 4: full centuries are skipped.',
                 '2000 was one, because the exception for years divisible by 400 applies.'
             ],

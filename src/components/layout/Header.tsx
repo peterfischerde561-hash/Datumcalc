@@ -7,6 +7,7 @@ import { useParams, usePathname as useNextPathname, useRouter as useNextRouter }
 import { ROUTES } from '@/lib/routes';
 import { getLocalizedArticleSlug } from '@/lib/articles';
 import { translateSlug, reverseTranslateSlug, getCanonicalPath, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { routeLabel } from '@/lib/seo/routeLabels';
 import {
     CalendarDays,
     Menu,
@@ -60,11 +61,16 @@ export function Header() {
     }, [mobileMenuOpen]);
 
     const navLinks = [
-        { href: ROUTES.differenz, label: t('Nav.differenz'), icon: SplitSquareHorizontal, description: t('Nav.differenzDesc') },
-        { href: ROUTES.addieren,  label: t('Nav.addieren'),   icon: PlusSquare,             description: t('Nav.addierenDesc') },
-        { href: ROUTES.arbeitstage, label: t('Nav.arbeitstage'), icon: Briefcase,           description: t('Nav.arbeitstageDesc') },
-        { href: ROUTES.alter,     label: t('Nav.alter'),      icon: User,                   description: t('Nav.alterDesc') },
-        { href: ROUTES.ratgeber,  label: t('Nav.ratgeber'),   icon: BookOpen,               description: t('Nav.ratgeberDesc') },
+        // Labels come from routeLabels.ts, the same source the breadcrumbs, the
+        // homepage table and the related-links block use. The nav previously
+        // read them from the Nav.* i18n strings, which is how one URL ended up
+        // called "Differenz" here, "Tage Zählen" in the breadcrumb and
+        // "Datumsdifferenz" on the tool card.
+        { href: ROUTES.differenz, label: routeLabel('differenz', locale).label, icon: SplitSquareHorizontal, description: routeLabel('differenz', locale).description },
+        { href: ROUTES.addieren, label: routeLabel('addieren', locale).label, icon: PlusSquare, description: routeLabel('addieren', locale).description },
+        { href: ROUTES.arbeitstage, label: routeLabel('arbeitstage', locale).label, icon: Briefcase, description: routeLabel('arbeitstage', locale).description },
+        { href: ROUTES.alter, label: routeLabel('alter', locale).label, icon: User, description: routeLabel('alter', locale).description },
+        { href: ROUTES.ratgeber, label: routeLabel('ratgeber', locale).label, icon: BookOpen, description: routeLabel('ratgeber', locale).description },
     ];
 
     const handleLocaleChange = (newLocale: string) => {

@@ -39,6 +39,14 @@ export function TrustSignals({ locale = 'de' }: { locale?: string }) {
                     {isDe ? 'Zuletzt aktualisiert:' : 'Last updated:'} {lastUpdated}
                 </div>
                 <div className="hidden sm:flex items-center gap-4">
+                    <span className="w-1 h-1 rounded-full bg-slate-300" aria-hidden="true"></span>
+                    {/* The badges above state the calculation basis; this is where
+                        that basis is actually written down. */}
+                    <Link href="/methodik" className="hover:text-blue-700 hover:underline transition-colors">
+                        {isDe ? 'Wie wir rechnen' : 'How we calculate'}
+                    </Link>
+                </div>
+                <div className="hidden sm:flex items-center gap-4">
                     <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                     <Link href="/ueber-uns" className="hover:text-blue-700 hover:underline transition-colors">{isDe ? 'Über uns' : 'About us'}</Link>
                     <Link href="/datenschutz" className="hover:text-blue-700 hover:underline transition-colors">{isDe ? 'Datenschutz' : 'Privacy'}</Link>

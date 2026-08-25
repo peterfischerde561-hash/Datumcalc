@@ -3,6 +3,7 @@ import { ROUTES } from '@/lib/routes';
 import { ShieldCheck, Calculator, CalendarClock } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { routeLabel } from '@/lib/seo/routeLabels';
 
 export function Footer() {
     const locale = useLocale();
@@ -42,10 +43,12 @@ export function Footer() {
                             {isDe ? 'Werkzeuge' : 'Tools'}
                         </h3>
                         <ul className="space-y-3 text-sm text-slate-600">
-                            <li><Link href={ROUTES.differenz} className="hover:text-blue-700 transition-colors">{t('Nav.differenz')}</Link></li>
-                            <li><Link href={ROUTES.addieren} className="hover:text-blue-700 transition-colors">{t('Nav.addieren')}</Link></li>
-                            <li><Link href={ROUTES.arbeitstage} className="hover:text-blue-700 transition-colors">{t('Nav.arbeitstage')}</Link></li>
-                            <li><Link href={ROUTES.alter} className="hover:text-blue-700 transition-colors">{t('Nav.alter')}</Link></li>
+                            {/* Same labels as the nav, breadcrumbs and related
+                                links — see routeLabels.ts. */}
+                            <li><Link href={ROUTES.differenz} className="hover:text-blue-700 transition-colors">{routeLabel('differenz', locale).label}</Link></li>
+                            <li><Link href={ROUTES.addieren} className="hover:text-blue-700 transition-colors">{routeLabel('addieren', locale).label}</Link></li>
+                            <li><Link href={ROUTES.arbeitstage} className="hover:text-blue-700 transition-colors">{routeLabel('arbeitstage', locale).label}</Link></li>
+                            <li><Link href={ROUTES.alter} className="hover:text-blue-700 transition-colors">{routeLabel('alter', locale).label}</Link></li>
                         </ul>
                     </nav>
 
@@ -70,6 +73,9 @@ export function Footer() {
                     
                     <nav aria-label="Footer Legal" className="flex flex-wrap justify-center gap-x-6 gap-y-4 order-1 md:order-2 font-medium">
                         <Link href={ROUTES.about} className="hover:text-blue-700 transition-colors">{tCommon('titles.about')}</Link>
+                        <Link href={ROUTES.methodik} className="hover:text-blue-700 transition-colors">
+                            {isDe ? 'Wie wir rechnen' : 'How we calculate'}
+                        </Link>
                         <Link href={ROUTES.sitemap} className="hover:text-blue-700 transition-colors">{tCommon('titles.sitemap')}</Link>
                         <Link href={ROUTES.datenschutz} className="hover:text-blue-700 transition-colors">{tCommon('titles.privacy')}</Link>
                         <Link href={ROUTES.agb} className="hover:text-blue-700 transition-colors">{tCommon('titles.terms')}</Link>

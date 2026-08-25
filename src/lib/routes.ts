@@ -5,6 +5,7 @@ export const ROUTES = {
     datenschutz: '/datenschutz',
     impressum: '/impressum',
     sitemap: '/sitemap',
+    methodik: '/methodik',
     
     // Main Tools
     addieren: '/addieren',

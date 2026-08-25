@@ -81,7 +81,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                           measured, so both are gone rather than restyled.
                         */}
                         <Link
-                            href={ROUTES.ratgeber}
+                            href="/methodik"
                             className="text-sm font-semibold text-blue-700 hover:text-blue-800 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
                         >
                             {locale === 'de' ? 'Wie wir rechnen' : 'How we calculate'}

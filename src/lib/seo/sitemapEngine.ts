@@ -33,7 +33,7 @@ function getLocalizedUrl(path: string, locale: string) {
 }
 
 export function getCoreSitemapUrls() {
-    const internalPaths = ['', 'addieren', 'differenz', 'arbeitstage', 'alter', 'ratgeber', 'sitemap', 'ueber-uns', 'datenschutz', 'impressum', 'agb'];
+    const internalPaths = ['', 'addieren', 'differenz', 'arbeitstage', 'alter', 'ratgeber', 'methodik', 'sitemap', 'ueber-uns', 'datenschutz', 'impressum', 'agb'];
     const urls: any[] = [];
 
     indexableLocales.forEach(locale => {

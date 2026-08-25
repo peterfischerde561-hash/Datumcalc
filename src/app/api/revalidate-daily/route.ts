@@ -36,6 +36,8 @@ let lastProcessedBerlinDate: string | null = null;
 const DATE_DEPENDENT_ROUTES = [
     '/[locale]/[intent]/[...slug]',
     '/[locale]/[intent]',
+    // Guides open with a computed answer ("the next leap year is …").
+    '/[locale]/ratgeber/[slug]',
     '/[locale]'
 ] as const;
 
