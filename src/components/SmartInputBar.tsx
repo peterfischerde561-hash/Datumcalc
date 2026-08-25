@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Search } from 'lucide-react';
-import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { INTENT_TRANSLATIONS, translateSlug } from '@/lib/seo/translations';
+import { Link } from '@/i18n/routing';
 
 export function SmartInputBar() {
     const t = useTranslations('SmartInput');
@@ -58,8 +59,23 @@ export function SmartInputBar() {
                 </div>
                 <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-5 text-sm font-medium text-slate-500">
                     <span className="hidden sm:inline">{t('popular')}</span>
-                    <button type="button" onClick={() => setQuery(t('example1'))} className="hover:text-blue-700 transition-colors">{t('example1')}</button>
-                    <button type="button" onClick={() => setQuery(t('example2'))} className="hover:text-blue-700 transition-colors">{t('example2')}</button>
+                    {/*
+                  These two examples have real pages, so they are links rather
+                  than buttons that only prefill the box: a crawlable route from
+                  the homepage to two of its best-performing URLs.
+                */}
+                <Link
+                    href={{ pathname: '/addieren/[...slug]', params: { slug: [translateSlug('100-tage-ab-heute', locale)] } }}
+                    className="hover:text-blue-700 hover:underline transition-colors"
+                >
+                    {t('example1')}
+                </Link>
+                    <Link
+                    href={{ pathname: '/differenz/[...slug]', params: { slug: [translateSlug('tage-bis-weihnachten', locale)] } }}
+                    className="hover:text-blue-700 hover:underline transition-colors"
+                >
+                    {t('example2')}
+                </Link>
                     <button type="button" onClick={() => setQuery(t('example3').replace('2024', new Date().getFullYear().toString()))} className="hover:text-blue-700 transition-colors">
                         {t('example3').replace('2024', new Date().getFullYear().toString())}
                     </button>

@@ -50,6 +50,45 @@ describe('article takeaways', () => {
     });
 });
 
+describe('guide body links', () => {
+    it.each(allArticles.map(({ locale, article }) => [`${locale}/${article.slug}`, locale, article]))(
+        '%s links out to at least two calculators or guides',
+        (_name, _locale, article) => {
+            // A leap-year article that never links to the calculator implementing
+            // the rule is a dead end. Guides previously had no inline links at all.
+            const hrefs = [...article.content.matchAll(/<a href="([^"]+)"/g)].map((m) => m[1]);
+            expect(hrefs.length).toBeGreaterThanOrEqual(2);
+        }
+    );
+
+    it('points every body link at a real route, in the article\'s own locale', () => {
+        const KNOWN_DE = ['/alter', '/addieren', '/differenz', '/arbeitstage', '/ratgeber'];
+        const KNOWN_EN = ['/en/age', '/en/add', '/en/difference', '/en/business', '/en/guide'];
+        const bad: string[] = [];
+
+        for (const { locale, article } of allArticles) {
+            const known = locale === 'de' ? KNOWN_DE : KNOWN_EN;
+            for (const [, href] of article.content.matchAll(/<a href="([^"]+)"/g)) {
+                if (!known.some((prefix) => href === prefix || href.startsWith(`${prefix}/`))) {
+                    bad.push(`${locale}/${article.slug} -> ${href}`);
+                }
+            }
+        }
+
+        expect(bad).toEqual([]);
+    });
+
+    it('never links an article to itself', () => {
+        const selfLinks: string[] = [];
+        for (const { locale, article } of allArticles) {
+            for (const [, href] of article.content.matchAll(/<a href="([^"]+)"/g)) {
+                if (href.endsWith(`/${article.slug}`)) selfLinks.push(`${locale}/${article.slug}`);
+            }
+        }
+        expect(selfLinks).toEqual([]);
+    });
+});
+
 describe('route labels', () => {
     const keys = Object.keys(ROUTE_LABELS) as ToolKey[];
 

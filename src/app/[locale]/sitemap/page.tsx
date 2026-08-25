@@ -73,8 +73,11 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                         };
                         const expectedMode = intentToMode[internalIntent];
 
-                        const queries = Object.values(CANONICAL_QUERIES).filter((def) => 
-                            def.calcMode === expectedMode
+                        // Indexable only, and from the same source as section 03
+                        // below — the two sections previously disagreed about
+                        // which pages exist, on the same page.
+                        const queries = Object.values(CANONICAL_QUERIES).filter(
+                            (def) => def.calcMode === expectedMode && def.isIndexable
                         );
 
                         return (
@@ -132,27 +135,30 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                         <span className="text-neon">03.</span> {tSitemap('commonSpans')}
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                        {[30, 45, 60, 90, 100, 120, 150, 180, 200, 365, 500, 730, 1000].map(days => {
-                            let canonicalSlug = `${days}-tage-ab-heute`;
-                            if (days === 180) {
-                                canonicalSlug = '6-monate-ab-heute';
-                            } else if (days === 365) {
-                                canonicalSlug = '1-jahr-ab-heute';
-                            }
-                            const locSlug = translateSlug(canonicalSlug, locale);
-                            return (
-                                <Link 
-                                    key={days}
-                                    href={{
-                                        pathname: '/addieren/[...slug]',
-                                        params: { slug: [locSlug] }
-                                    }}
-                                    className="px-4 py-2 rounded-lg bg-white border border-slate-200 hover:border-blue-400 text-xs text-center text-slate-600 hover:text-blue-700 transition-all capitalize"
-                                >
-                                    {locSlug.replace(/-/g, ' ')}
-                                </Link>
-                            );
-                        })}
+                        {/*
+                          Derived from CANONICAL_QUERIES rather than a hardcoded
+                          list. The previous array named days (180, 365) that had
+                          to be mapped back to their canonical slugs by hand, and
+                          it drifted out of step with section 01 above — two
+                          arrays on one page disagreeing about the same URLs.
+                        */}
+                        {Object.values(CANONICAL_QUERIES)
+                            .filter((def) => def.calcMode === 'add_subtract' && def.isIndexable)
+                            .map((def) => {
+                                const locSlug = translateSlug(def.canonicalSlug, locale);
+                                return (
+                                    <Link
+                                        key={def.canonicalSlug}
+                                        href={{
+                                            pathname: '/addieren/[...slug]',
+                                            params: { slug: [locSlug] }
+                                        }}
+                                        className="px-4 py-2 rounded-lg bg-white border border-slate-200 hover:border-blue-400 text-xs text-center text-slate-600 hover:text-blue-700 transition-all capitalize"
+                                    >
+                                        {locSlug.replace(/-/g, ' ')}
+                                    </Link>
+                                );
+                            })}
                     </div>
                 </section>
 

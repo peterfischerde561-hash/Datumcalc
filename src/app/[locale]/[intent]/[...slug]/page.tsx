@@ -39,7 +39,6 @@ import { calculateOffsetDate, TimeUnit } from '@/lib/calculator';
 import { getNextOccurrenceCivil } from '@/lib/events';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { CountdownTimer } from '@/components/countdown/CountdownTimer';
-import { RelatedEvents } from '@/components/countdown/RelatedEvents';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string; slug: string[] }> }) {
     const { locale, intent, slug } = await params;
@@ -333,7 +332,14 @@ export default async function ProgrammaticPage({
                     </header>
 
                     <SEOContentBlock intent={intent} slug={slugStr} locale={locale} />
-                    <RelatedEvents locale={locale} currentEventKey={eventKey} />
+                    {/*
+                      Was RelatedEvents, which linked only to the other five
+                      countdowns — six pages passing authority around a closed
+                      ring with no route up to /differenz or across to
+                      /addieren. InternalLinksBlock keeps the sibling countdowns
+                      and adds the parent hub, two calculator pages and a guide.
+                    */}
+                    <InternalLinksBlock locale={locale} intent={intent} slug={canonicalSlugStr} />
                     <FAQBlock intent={intent} slug={slugStr} locale={locale} />
 
                     <section aria-label={isDe ? 'Datumsdifferenz-Rechner' : 'Date difference calculator'} className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
@@ -379,7 +385,7 @@ export default async function ProgrammaticPage({
 
                     <section aria-label="Detaillierte Informationen" className="space-y-10">
                         <SEOContentBlock intent={intent} slug={slugStr} locale={locale} />
-                        <InternalLinksBlock locale={locale} intent={intent} slug={slugStr} />
+                        <InternalLinksBlock locale={locale} intent={intent} slug={canonicalSlugStr} />
                         <FAQBlock intent={intent} slug={slugStr} locale={locale} />
                     </section>
 

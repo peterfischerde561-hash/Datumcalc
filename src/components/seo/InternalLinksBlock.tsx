@@ -1,94 +1,125 @@
-import { Link } from '@/i18n/routing';
-import { ROUTES } from '@/lib/routes';
-import { translateSlug, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
-import { routeLabel } from '@/lib/seo/routeLabels';
+import NextLink from 'next/link';
 import { useTranslations } from 'next-intl';
+import { translateSlug, getCanonicalPath } from '@/lib/seo/translations';
+import { relatedFor } from '@/lib/seo/relatedLinks';
+import { routeLabel, ToolKey } from '@/lib/seo/routeLabels';
 
-export function InternalLinksBlock({ locale, intent, slug }: { locale: string; intent: string; slug: string }) {
-    const t = useTranslations('Header.Nav');
+/**
+ * Related calculations for a programmatic page.
+ *
+ * Link selection lives in relatedLinks.ts; this component only renders it.
+ * The previous version hardcoded the same fourteen links on every page,
+ * including a link to the page itself.
+ */
+export function InternalLinksBlock({
+    locale,
+    intent,
+    slug
+}: {
+    locale: string;
+    intent: string;
+    slug: string;
+}) {
     const tEvents = useTranslations('Events');
-    
-    const links: { label: string; href: any; type: string }[] = [];
-    
-    const match = slug.match(/^(\d+)-/);
-    const numValue = match ? parseInt(match[1]) : 0;
-
     const isDe = locale === 'de';
-    
-    const allowedAddieren = [
-        '30-tage-ab-heute',
-        '60-tage-ab-heute',
-        '90-tage-ab-heute',
-        '100-tage-ab-heute',
-        '6-monate-ab-heute',
-        '1-jahr-ab-heute'
-    ];
 
-    allowedAddieren.forEach(s => {
-        const locSlug = translateSlug(s, locale);
-        const locLabel = locSlug.replace(/-/g, ' ');
-        links.push({ 
-            label: locLabel, 
-            href: ROUTES.getAddieren(locSlug), 
-            type: isDe ? 'Beliebt' : 'Popular' 
-        });
-    });
+    // `intent` arrives localized (/add vs /addieren); relatedFor keys on the
+    // internal name.
+    const internal = (
+        { add: 'addieren', difference: 'differenz', business: 'arbeitstage', age: 'alter' } as Record<string, string>
+    )[intent] ?? intent;
 
-    // Add more event & guide links
-    const events = [
-        { key: 'weihnachten', slug: 'tage-bis-weihnachten' },
-        { key: 'silvester', slug: 'tage-bis-silvester' },
-        { key: 'neujahr', slug: 'tage-bis-neujahr' },
-        { key: 'ostern', slug: 'tage-bis-ostern' },
-        { key: 'sommeranfang', slug: 'tage-bis-sommeranfang' },
-        { key: 'urlaub', slug: 'tage-bis-urlaub' }
-    ];
+    const links = relatedFor(internal as ToolKey, slug).map((link) => {
+        if (link.kind === 'hub') {
+            const label = routeLabel(link.slug as ToolKey, locale);
+            return {
+                href: getCanonicalPath(locale, link.slug),
+                label: label.label,
+                type: isDe ? 'Übersicht' : 'Overview'
+            };
+        }
 
-    events.forEach(e => {
-        const label = `${t('differenz')}: ${tEvents(e.key)}`;
-        links.push({ 
-            label, 
-            href: ROUTES.getDifferenz(translateSlug(e.slug, locale)), 
-            type: isDe ? 'Event' : 'Event' 
-        });
-    });
+        if (link.kind === 'guide') {
+            const guideSlug = translateSlug(link.slug, locale);
+            return {
+                href: getCanonicalPath(locale, 'ratgeber', guideSlug),
+                label: isDe ? guideLabelDe(link.slug) : guideLabelEn(link.slug),
+                type: isDe ? 'Ratgeber' : 'Guide'
+            };
+        }
 
-    // /arbeitstage is a calculator, not a guide — it was previously grouped and
-    // labelled as "Ratgeber", which mislabels the destination for users and
-    // dilutes the anchor.
-    links.push({
-        label: routeLabel('arbeitstage', locale).label,
-        href: '/arbeitstage',
-        type: isDe ? 'Rechner' : 'Calculator'
-    });
+        const locSlug = translateSlug(link.slug, locale);
+        if (link.kind === 'event') {
+            const key = link.slug.replace('tage-bis-', '');
+            let name = key;
+            try {
+                name = tEvents(key);
+            } catch {
+                /* fall back to the key */
+            }
+            return {
+                href: getCanonicalPath(locale, 'differenz', locSlug),
+                label: isDe ? `Tage bis ${name}` : `Days until ${name}`,
+                type: isDe ? 'Countdown' : 'Countdown'
+            };
+        }
 
-    links.push({
-        label: routeLabel('ratgeber', locale).label,
-        href: '/ratgeber',
-        type: isDe ? 'Ratgeber' : 'Guide'
+        return {
+            href: getCanonicalPath(locale, 'addieren', locSlug),
+            label: locSlug.replace(/-/g, ' '),
+            type: isDe ? 'Rechner' : 'Calculator'
+        };
     });
 
     return (
         <section className="bg-white border border-slate-200 rounded-xl p-6 md:p-8">
-            <h2 className="text-xl font-bold mb-6 text-slate-900">{isDe ? 'Verwandte Berechnungen & Themen' : 'Related Calculations'}</h2>
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {links.map((link, i) => (
-                    <li key={i}>
-                        <Link
+            <h2 className="text-xl font-bold mb-6 text-slate-900">
+                {isDe ? 'Verwandte Berechnungen & Themen' : 'Related Calculations'}
+            </h2>
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {links.map((link) => (
+                    <li key={link.href}>
+                        <NextLink
                             href={link.href}
                             className="block p-4 rounded-lg bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 transition-all group"
                         >
-                            <span className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2 block">{link.type}</span>
-                            <span className="text-slate-700 group-hover:text-slate-900 flex items-center gap-2">
+                            <span className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2 block">
+                                {link.type}
+                            </span>
+                            <span className="text-slate-700 group-hover:text-slate-900 flex items-center gap-2 first-letter:uppercase">
                                 {link.label}
-                                <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg
+                                    className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ml-auto shrink-0"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                 </svg>
                             </span>
-                        </Link>
+                        </NextLink>
                     </li>
                 ))}
             </ul>
         </section>
     );
+}
+
+function guideLabelDe(slug: string): string {
+    return {
+        'schaltjahre-erklaert': 'Schaltjahre erklärt',
+        'was-ist-ein-arbeitstag': 'Was ist ein Arbeitstag?',
+        'wochen-im-jahr': 'Wie viele Wochen hat ein Jahr?',
+        'iso-8601-erklaert': 'ISO 8601 erklärt'
+    }[slug] ?? slug.replace(/-/g, ' ');
+}
+
+function guideLabelEn(slug: string): string {
+    return {
+        'schaltjahre-erklaert': 'Leap years explained',
+        'was-ist-ein-arbeitstag': 'What is a business day?',
+        'wochen-im-jahr': 'How many weeks are in a year?',
+        'iso-8601-erklaert': 'ISO 8601 explained'
+    }[slug] ?? slug.replace(/-/g, ' ');
 }

@@ -226,7 +226,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                 <CalculatorCore />
             </section>
 
-            {(transactional.length > 0 || informational.length > 0 || internalIntent.toLowerCase() === 'arbeitstage' || internalIntent.toLowerCase() === 'alter') && (
+            {(transactional.length > 0 || informational.length > 0) && (
                 <div className="max-w-5xl mx-auto space-y-12">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         {/* Popular / Transactional */}
@@ -235,28 +235,14 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                 {locale === 'de' ? 'Häufige Berechnungen' : 'Popular Calculations'}
                             </h2>
                             <ul className="space-y-3">
-                                {internalIntent.toLowerCase() === 'arbeitstage' && isDe && (
-                                    <>
-                                        {['Januar 2026', 'Februar 2026', 'Q1 2026', 'Q2 2026', 'Mai 2026', 'Juni 2026'].map(label => (
-                                            <li key={label}>
-                                                <div className="text-slate-700 flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-default">
-                                                    <span>Arbeitstage im {label}</span>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </>
-                                )}
-                                {internalIntent.toLowerCase() === 'alter' && isDe && (
-                                    <>
-                                        {[1990, 2000, 1985, 2005].map(year => (
-                                            <li key={year}>
-                                                <div className="text-slate-700 flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50 cursor-default">
-                                                    <span>Wie alt bin ich wenn ich {year} geboren wurde?</span>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </>
-                                )}
+                                {/*
+                                  /arbeitstage listed six months and quarters,
+                                  and /alter four birth years, as plain divs with
+                                  cursor-default — text shaped like links with no
+                                  pages behind them. Removed rather than left as
+                                  dead ends; they belong here once the pages exist
+                                  and pass the Phase 12 demand check.
+                                */}
                                 {transactional.map((def) => {
                                     const locSlug = translateSlug(def.canonicalSlug, locale);
                                     const href = getCanonicalPath(locale, internalIntent!, locSlug);
