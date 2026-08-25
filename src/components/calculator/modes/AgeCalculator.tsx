@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
 import { calculateAge } from '@/lib/calculator';
 import { getLocalToday, parseCivilDate } from '@/lib/date/civil';
 import { formatNumeric } from '@/lib/date/format';
@@ -15,6 +15,7 @@ export function AgeCalculator() {
     const [birthdate, setBirthdate] = useState<string>('');
     const [copied, setCopied] = useState(false);
     const { addCalculation } = useRecentCalculations();
+    const fieldId = useId();
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -62,11 +63,12 @@ export function AgeCalculator() {
         <div className="space-y-6 animate-in fade-in duration-300">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label className={labelClass}>{t('birthDate')}</label>
-                    <input type="date" value={birthdate} onChange={(e) => setBirthdate(e.target.value)} className={inputClass} />
+                    <label htmlFor={`${fieldId}-dob`} className={labelClass}>{t('birthDate')}</label>
+                    <input id={`${fieldId}-dob`} type="date" value={birthdate} onChange={(e) => setBirthdate(e.target.value)} className={inputClass} />
                 </div>
             </div>
 
+            <div role="status" aria-live="polite">
             {result && (
                 <div className="mt-8 p-6 rounded-lg bg-blue-50 border border-blue-200 space-y-6">
                     <div className="flex justify-between items-start">
@@ -76,12 +78,12 @@ export function AgeCalculator() {
                                 {result.years} {t('years')}
                             </p>
                         </div>
-                        <div className="flex gap-2">
-                            <button onClick={handleSave} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors" title={t('save')}>
-                                <BookmarkPlus className="w-5 h-5 text-blue-700" />
+                        <div className="flex gap-2 shrink-0">
+                            <button type="button" onClick={handleSave} aria-label={t('save')} title={t('save')} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                <BookmarkPlus className="w-5 h-5 text-blue-700" aria-hidden="true" />
                             </button>
-                            <button onClick={shareUrl} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors" title={t('share')}>
-                                {copied ? <Check className="w-5 h-5 text-green-600" /> : <Share2 className="w-5 h-5 text-blue-700" />}
+                            <button type="button" onClick={shareUrl} aria-label={t('share')} title={t('share')} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                {copied ? <Check className="w-5 h-5 text-green-600" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-blue-700" aria-hidden="true" />}
                             </button>
                         </div>
                     </div>
@@ -96,12 +98,16 @@ export function AgeCalculator() {
                             <p className="font-semibold text-slate-900">{result.days}</p>
                         </div>
                         <div className="col-span-2">
-                            <p className="text-sm text-slate-500">Total Life Days</p>
+                            {/* Was the untranslated "Total Life Days" on both locales. */}
+                            <p className="text-sm text-slate-500">
+                                {locale === 'de' ? 'Gelebte Tage insgesamt' : 'Total days lived'}
+                            </p>
                             <p className="font-semibold text-slate-900">{result.totalDays} {t('days')}</p>
                         </div>
                     </div>
                 </div>
             )}
+            </div>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useId } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Search } from 'lucide-react';
@@ -10,6 +10,7 @@ import { Link } from '@/i18n/routing';
 export function SmartInputBar() {
     const t = useTranslations('SmartInput');
     const [query, setQuery] = useState('');
+    const searchId = useId();
     const router = useRouter();
     const params = useParams();
     const locale = (params?.locale as string) || 'de';
@@ -42,8 +43,18 @@ export function SmartInputBar() {
         <div className="w-full max-w-3xl mx-auto mb-16 px-4 md:px-0">
             <form onSubmit={handleSearch} className="relative group">
                 <div className="relative flex items-center bg-white rounded-2xl border border-slate-300 p-2 shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/30 transition-all">
-                    <Search className="w-6 h-6 text-slate-400 ml-3" />
+                    <Search className="w-6 h-6 text-slate-400 ml-3" aria-hidden="true" />
+                    {/*
+                      A placeholder is not a label: it disappears on the first
+                      keystroke and is not reliably announced. The visible label
+                      is the surrounding design, so this one is for assistive
+                      technology only.
+                    */}
+                    <label htmlFor={searchId} className="sr-only">
+                        {t('placeholder')}
+                    </label>
                     <input
+                        id={searchId}
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}

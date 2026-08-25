@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify:routes": "node scripts/verify-routes.mjs",
+    "verify:a11y": "node scripts/verify-a11y.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

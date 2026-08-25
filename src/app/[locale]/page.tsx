@@ -96,7 +96,16 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             </div>
 
             {/* Smart Hero CTA Selector - Now below Search */}
-            <section id="tools" aria-label={locale === 'de' ? "Tools" : "Tools"} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-24 animate-slide-up-fade" style={{ animationDelay: '0.3s' }}>
+            {/*
+              The cards are h3s. Without this h2 the outline jumped h1 -> h3,
+              so anyone navigating by headings lost the level that says what the
+              list is. The section previously carried only an aria-label, which
+              names the region but does not appear in the heading outline.
+            */}
+            <h2 id="tools-heading" className="text-2xl font-bold text-slate-900 mb-6">
+                {locale === 'de' ? 'Rechner auswählen' : 'Choose a calculator'}
+            </h2>
+            <section id="tools" aria-labelledby="tools-heading" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-24 animate-slide-up-fade" style={{ animationDelay: '0.3s' }}>
                 <Link href={ROUTES.differenz} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
                     <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
                         <SplitSquareHorizontal className="w-5 h-5" />
