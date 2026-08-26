@@ -43,7 +43,8 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <div className="mb-12 space-y-4">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-                    {isDe ? 'Ratgeber & Guides' : 'Expert Guides & Tutorials'}
+                    {/* Was "Ratgeber & Guides" — half German, half English, on the German page. */}
+                {isDe ? 'Ratgeber zu Datum und Zeit' : 'Guides to Dates and Time'}
                 </h1>
                 <p className="text-lg text-slate-600 max-w-2xl">
                     {isDe

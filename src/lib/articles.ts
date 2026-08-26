@@ -24,8 +24,14 @@ export const articles: Record<string, Article[]> = {
     de: [
         {
             slug: 'schaltjahre-erklaert',
-            title: 'Schaltjahre erklärt – Warum gibt es den 29. Februar?',
-            description: 'Was ist ein Schaltjahr und warum gibt es den 29. Februar? Alle Regeln, Beispiele und die Berechnung einfach erklärt.',
+            // Was "Schaltjahre erklärt – Warum gibt es den 29. Februar?", which
+            // answers *why*. Every query GSC records for this page asks *when*:
+            // "wann ist das nächste schaltjahr", "nächstes schaltjahr", "wann
+            // ist schaltjahr". The ranking pages all title it as the question.
+            // The article still explains the rule; the heading now matches what
+            // people came to find out.
+            title: 'Wann ist das nächste Schaltjahr?',
+            description: 'Wann ist das nächste Schaltjahr und warum gibt es den 29. Februar? Die vollständige Schaltjahrregel mit Beispielen – und welche Jahre trotz Teilbarkeit durch 4 keine Schaltjahre sind.',
             readTime: '3 min',
             // Rules, not dates: which year comes next is computed and shown in
             // the direct answer above. A takeaway that names the next leap year
@@ -76,7 +82,7 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'wochen-im-jahr',
-            title: 'Wie viele Wochen hat ein Jahr? – 52 oder 53 Wochen?',
+            title: 'Wie viele Wochen hat ein Jahr?',
             description: 'Hat ein Jahr immer 52 Wochen? Erfahre alles über ISO-Kalenderwochen und warum manche Jahre 53 Wochen haben.',
             readTime: '2 min',
             takeaways: [
@@ -124,8 +130,8 @@ export const articles: Record<string, Article[]> = {
     en: [
         {
             slug: 'leap-years-explained',
-            title: 'Leap Years Explained: Why February 29th Exists',
-            description: 'Everything you need to know about leap years. Learn why our calendar needs an extra day every four years and how it is calculated.',
+            title: 'When Is the Next Leap Year?',
+            description: 'When is the next leap year, and why does February 29 exist? The full leap-year rule with examples – including which years are skipped despite being divisible by 4.',
             readTime: '3 min',
             takeaways: [
                 'A leap year has 366 days – February 29 is inserted every four years.',

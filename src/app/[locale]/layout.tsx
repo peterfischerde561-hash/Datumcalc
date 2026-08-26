@@ -42,7 +42,9 @@ export async function generateMetadata(
     return {
         title: {
             default: defaultTitle,
-            template: `%s – Datumsrechner`
+            // The brand suffix follows the page's language. It was hardcoded to
+            // the German name, so every English title ended "– Datumsrechner".
+            template: locale === 'de' ? '%s – Datumsrechner' : '%s – Date Calculator'
         },
         description: defaultDescription,
         metadataBase: new URL(SITE_URL),

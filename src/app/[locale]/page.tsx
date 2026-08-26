@@ -20,9 +20,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     setRequestLocale(locale);
     const siteUrl = SITE_URL;
     
-    const title = locale === 'de' 
-        ? 'Datumsrechner – Differenz, Arbeitstage & Alter online berechnen' 
-        : 'Date Calculator – Count Days, Add Dates & Business Days';
+    // The homepage uses the layout's `default` title, so no brand suffix is
+    // appended here — this string stands alone and must carry the brand itself.
+    const title = locale === 'de'
+        ? 'Datumsrechner – Tage berechnen, addieren & Arbeitstage'
+        : 'Date Calculator – Days Between Dates, Add & Subtract';
     
     const description = locale === 'de' 
         ? 'Datumsrechner online: Datumsdifferenz, Arbeitstage & Alter kostenlos berechnen. Mit vollständiger Schaltjahrregel und Kalenderwochen nach ISO 8601. Ohne Anmeldung.'

@@ -6,10 +6,14 @@ import { setRequestLocale } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 
-export const revalidate = 86400; // 24 hours
+// The titles carry the current year, computed from the Berlin date, so these
+// pages are date-dependent and must not be frozen for a day at the year
+// boundary. Already covered by the daily Berlin-boundary cron.
+export const revalidate = 3600;
 export const dynamicParams = false;
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata } from '@/lib/seo/metadata';
+import { getTodayInTimeZone } from '@/lib/date/civil';
 import { HUB_CONTENT } from '@/lib/seo/hubContent';
 import { SITE_URL } from '@/lib/constants';
 
@@ -30,45 +34,65 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const canonicalPath = getCanonicalPath(locale, finalIntent);
     const fullUrl = `${SITE_URL}${canonicalPath}`;
 
+    /*
+     * The year is computed, not written into the string — but only where a
+     * year is genuinely part of how people search.
+     *
+     * Competing pages carry it ("Arbeitstage-Rechner 2026") because it reads as
+     * current in a result list, and theirs goes stale on 1 January. Ours comes
+     * from the canonical Berlin date, so it stays right. That is only worth
+     * doing where the query itself is year-bound: "Arbeitstage 2026" is a real
+     * search, "Datum addieren 2026" is not. Sprinkling a year across every
+     * title is freshness theatre.
+     *
+     * Note the layout appends " – Datumsrechner", so titles here must not
+     * repeat the brand or the word Rechner.
+     */
+    const year = getTodayInTimeZone().year;
+
     const metaData: Record<string, { title: string; description: string }> = {
         'differenz': {
             de: {
+                // Leads with the query itself: GSC records "tage zwischen zwei
+                // daten", not "datumsdifferenz", and every ranking page titles
+                // it the long way.
                 title: 'Tage zwischen zwei Daten berechnen',
-                description: 'Berechnen Sie exakt wie viele Tage, Wochen oder Monate zwischen zwei Daten liegen. Kostenlos, präzise & sofort – mit Kalenderwochen nach ISO 8601.'
+                description: `Wie viele Tage liegen zwischen zwei Daten? Der Tagerechner zählt Tage, Wochen und Monate exakt – mit Schaltjahren und Kalenderwochen nach ISO 8601. Kostenlos und ohne Anmeldung.`
             },
             en: {
-                title: 'Calculate Days Between Two Dates',
-                description: 'Calculate exactly how many days, weeks or months lie between two dates. Free, precise & instant – with calendar weeks per ISO 8601.'
+                title: 'Days Between Two Dates',
+                description: `How many days lie between two dates? Counts days, weeks and months exactly – including leap years and ISO 8601 calendar weeks. Free, no registration.`
             }
         },
         'addieren': {
             de: {
                 title: 'Datum addieren & subtrahieren',
-                description: 'Datum addieren oder subtrahieren: Welches Datum ist in X Tagen, Wochen oder Monaten? Sofortige Berechnung – kostenlos & ohne Anmeldung.'
+                description: `Welches Datum ist in 30, 90 oder 100 Tagen? Tage, Wochen, Monate oder Jahre zu einem Datum addieren oder davon abziehen – mit Wochentag und Kalenderwoche.`
             },
             en: {
-                title: 'Add & Subtract Dates Online',
-                description: 'Add or subtract dates: which date is in X days, weeks or months? Instant calculation – free & no registration.'
+                title: 'Add or Subtract Days from a Date',
+                description: `What date is 30, 90 or 100 days from now? Add or subtract days, weeks, months or years from any date – with the weekday and calendar week.`
             }
         },
         'arbeitstage': {
             de: {
-                title: 'Arbeitstage & Werktage berechnen',
-                description: 'Netto-Arbeitstage zwischen zwei Daten berechnen – ohne Wochenenden. Kostenlos, präzise und sofort verfügbar.'
+                title: `Arbeitstage & Werktage berechnen ${year}`,
+                description: `Wie viele Arbeitstage liegen zwischen zwei Daten? Der Rechner zählt Montag bis Freitag und filtert Wochenenden heraus. Unterschied zu Werktagen erklärt.`
             },
             en: {
-                title: 'Calculate Business & Working Days',
-                description: 'Calculate net business days between two dates – without weekends. Free, precise and instantly available.'
+                title: `Business & Working Days ${year}`,
+                description: `How many business days lie between two dates? Counts Monday to Friday and filters out weekends. The difference from calendar days explained.`
             }
         },
         'alter': {
             de: {
-                title: 'Altersrechner – Alter berechnen',
-                description: 'Berechnen Sie Ihr genaues Alter in Jahren, Monaten, Wochen und Tagen. Kostenloser Altersrechner – ohne Anmeldung.'
+                // "wie alt bin ich" is the phrasing the ranking pages carry.
+                title: 'Wie alt bin ich? Alter exakt berechnen',
+                description: 'Wie alt bin ich genau? Geburtsdatum eingeben und das Alter in Jahren, Monaten und Tagen berechnen – inklusive der gelebten Tage insgesamt.'
             },
             en: {
-                title: 'Age Calculator – Calculate Age',
-                description: 'Calculate your exact age in years, months, weeks and days. Free age calculator – no registration.'
+                title: 'How Old Am I? Calculate Your Exact Age',
+                description: 'How old am I exactly? Enter a date of birth to get the age in years, months and days – including the total number of days lived.'
             }
         }
     }[finalIntent.toLowerCase()] || {
@@ -133,13 +157,16 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     const textMapping: Record<string, { de: { h1: string, sub: string, intro?: string }, en: { h1: string, sub: string, intro?: string } }> = {
         'differenz': {
             de: {
-                h1: "Datumsdifferenz berechnen",
-                sub: "Berechnen Sie exakt wie viele Tage, Wochen oder Monate zwischen zwei Daten liegen.",
+                // Was "Datumsdifferenz berechnen". GSC records the demand as
+                // "tage zwischen zwei daten" and "tage berechnen"; nobody
+                // searches for the word Datumsdifferenz.
+                h1: "Tage zwischen zwei Daten berechnen",
+                sub: "Start- und Enddatum eingeben – der Rechner zeigt die Spanne in Tagen, Wochen und Monaten, inklusive Kalenderwoche.",
                 intro: "Mit unserem Rechner zur Datumsdifferenz können Sie Zeitspannen mühelos ermitteln. Egal ob Sie Projektfristen planen oder Countdowns für Events erstellen, Sie erhalten stets präzise Ergebnisse unter Berücksichtigung von Schaltjahren."
             },
             en: {
-                h1: "Calculate Date Difference",
-                sub: "Calculate exactly how many days, weeks or months lie between two dates.",
+                h1: "Days Between Two Dates",
+                sub: "Enter a start and end date – the calculator shows the span in days, weeks and months, including the calendar week.",
                 intro: "With our date difference calculator, you can easily determine time spans. Whether you are planning project deadlines or creating countdowns for events, you always get precise results taking leap years into account."
             }
         },
@@ -157,8 +184,8 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
         },
         'arbeitstage': {
             de: {
-                h1: "Arbeitstage berechnen – Netto-Werktage zwischen zwei Daten",
-                sub: "Berechnen Sie exakt wie viele Werktage zwischen zwei Daten liegen – ohne Wochenenden."
+                h1: "Arbeitstage und Werktage berechnen",
+                sub: "Der Rechner zählt Montag bis Freitag zwischen zwei Daten. Gesetzliche Feiertage sind nicht abgezogen – sie unterscheiden sich je nach Bundesland."
             },
             en: {
                 h1: "Calculate Business Days",
@@ -167,12 +194,12 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
         },
         'alter': {
             de: {
-                h1: "Altersrechner – Alter in Jahren, Monaten & Tagen berechnen",
-                sub: "Berechnen Sie Ihr genaues Alter oder das Alter einer anderen Person – auf den Tag genau."
+                h1: "Wie alt bin ich? Alter exakt berechnen",
+                sub: "Geburtsdatum eingeben – der Rechner zeigt das Alter in Jahren, Monaten und Tagen sowie die insgesamt gelebten Tage."
             },
             en: {
-                h1: "Age Calculator – Calculate Age Precisely",
-                sub: "Calculate your exact age in years, months, weeks and days."
+                h1: "How Old Am I? Calculate Your Exact Age",
+                sub: "Enter a date of birth – the calculator shows the age in years, months and days, plus the total days lived."
             }
         }
     };
