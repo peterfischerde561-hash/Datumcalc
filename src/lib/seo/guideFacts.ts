@@ -75,6 +75,48 @@ export function getLeapYearFacts(today: CivilDate = getTodayInTimeZone()): LeapY
     };
 }
 
+export type LeapYearRow = {
+    year: number;
+    isLeap: boolean;
+    /** Why it is or is not a leap year, in the terms of the rule. */
+    reason: 'divisible-by-4' | 'century-skipped' | 'century-kept' | 'not-divisible';
+};
+
+/**
+ * A window of years around today, each classified by the rule.
+ *
+ * The point is not a list of leap years — anyone can produce that. It is
+ * showing the rule doing its work on the years the reader can see, including
+ * the ones that look like leap years and are not.
+ */
+export function leapYearTable(
+    today: CivilDate = getTodayInTimeZone(),
+    span = 12
+): LeapYearRow[] {
+    const rows: LeapYearRow[] = [];
+    for (let year = today.year; year < today.year + span; year++) {
+        const leap = isLeapYear(year);
+        let reason: LeapYearRow['reason'];
+        if (year % 4 !== 0) reason = 'not-divisible';
+        else if (year % 400 === 0) reason = 'century-kept';
+        else if (year % 100 === 0) reason = 'century-skipped';
+        else reason = 'divisible-by-4';
+        rows.push({ year, isLeap: leap, reason });
+    }
+    return rows.filter((r) => r.isLeap || r.reason === 'century-skipped');
+}
+
+/** The next few century years that are skipped despite being divisible by 4. */
+export function skippedCenturies(today: CivilDate = getTodayInTimeZone(), count = 3): number[] {
+    const out: number[] = [];
+    let year = Math.ceil((today.year + 1) / 100) * 100;
+    while (out.length < count) {
+        if (!isLeapYear(year)) out.push(year);
+        year += 100;
+    }
+    return out;
+}
+
 export type WeekFacts = {
     currentYear: number;
     weeksThisYear: number;

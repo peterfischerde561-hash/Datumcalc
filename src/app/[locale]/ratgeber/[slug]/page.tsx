@@ -9,6 +9,7 @@ import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata, canonicalUrl } from '@/lib/seo/metadata';
 import { directAnswerFor } from '@/lib/seo/guideFacts';
+import { GuideFacts } from '@/components/seo/GuideFacts';
 
 export const dynamic = 'force-static';
 // These guides now open with an answer computed from today's date (the next
@@ -141,7 +142,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     aria-label={isDe ? 'Kurze Antwort' : 'Quick answer'}
                     className="mb-12 rounded-xl border border-slate-200 bg-white p-6 md:p-8"
                 >
-                    <h2 className="text-xl font-bold text-slate-900 mb-3">{directAnswer.question}</h2>
+                    {/*
+                      Only re-ask the question when the H1 is not already asking
+                      it. Since the titles were aligned to search intent, most
+                      guide H1s *are* the question, and repeating it verbatim as
+                      an H2 gave the page two identical headings in a row.
+                    */}
+                    {directAnswer.question !== article.title && (
+                        <h2 className="text-xl font-bold text-slate-900 mb-3">{directAnswer.question}</h2>
+                    )}
                     <p className="text-lg text-slate-700 leading-relaxed">{directAnswer.answer}</p>
                 </section>
             )}
@@ -149,7 +158,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             {/* Key Takeaways */}
             <section className="mb-16 bg-blue-50 border border-blue-200 rounded-xl p-8 md:p-10">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900">
-                    <span className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700 text-sm">✓</span>
+                    {/* Decorative: it was being read as part of the heading text. */}
+                    <span aria-hidden="true" className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700 text-sm">✓</span>
                     {t('takeaways')}
                 </h2>
                 <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-700">
@@ -164,6 +174,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 className="prose prose-lg md:prose-xl max-w-none prose-headings:text-slate-900 prose-h2:text-4xl prose-h2:tracking-tight prose-h2:mb-8 prose-h2:mt-16 prose-a:text-blue-700 hover:prose-a:text-blue-800 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-900"
                 dangerouslySetInnerHTML={{ __html: article.content }}
             />
+
+            {/*
+              Computed sections, after the rule the body explains. The article
+              carries what does not change; this carries the years, which do.
+            */}
+            <GuideFacts slug={slug} locale={locale} />
 
             {/* In-Article Calculator CTA */}
             <section aria-label="Ausprobieren" className="mt-20 bg-white rounded-xl p-6 md:p-10 border border-slate-200 shadow-sm">

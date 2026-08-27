@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { directAnswerFor, getLeapYearFacts, getWeekFacts } from './guideFacts';
+import {
+    directAnswerFor,
+    getLeapYearFacts,
+    getWeekFacts,
+    leapYearTable,
+    skippedCenturies
+} from './guideFacts';
 import { CivilDate, isLeapYear, isoWeeksInYear } from '@/lib/date/civil';
 
 const d = (year: number, month: number, day: number): CivilDate => ({ year, month, day });
@@ -67,6 +73,55 @@ describe('week facts', () => {
 
     it('reports the current year when it already has 53 weeks', () => {
         expect(getWeekFacts(d(2026, 1, 1)).next53WeekYear).toBe(2026);
+    });
+});
+
+describe('leap year table', () => {
+    it('starts at the current year and lists only leap years plus skipped centuries', () => {
+        const rows = leapYearTable(d(2026, 8, 27), 24);
+        expect(rows.every((r) => r.isLeap || r.reason === 'century-skipped')).toBe(true);
+        expect(rows.map((r) => r.year)).toEqual([2028, 2032, 2036, 2040, 2044, 2048]);
+    });
+
+    it('classifies each year by the rule that decided it', () => {
+        const rows = leapYearTable(d(2096, 1, 1), 12);
+        const byYear = Object.fromEntries(rows.map((r) => [r.year, r]));
+        expect(byYear[2096].reason).toBe('divisible-by-4');
+        // 2100 is divisible by 4 but skipped — the case the rule exists for.
+        expect(byYear[2100].isLeap).toBe(false);
+        expect(byYear[2100].reason).toBe('century-skipped');
+    });
+
+    it('keeps a century that is divisible by 400', () => {
+        const rows = leapYearTable(d(2396, 1, 1), 10);
+        const y2400 = rows.find((r) => r.year === 2400)!;
+        expect(y2400.isLeap).toBe(true);
+        expect(y2400.reason).toBe('century-kept');
+    });
+
+    it('never lists a year before today', () => {
+        for (const year of [2026, 2030, 2099, 2400]) {
+            for (const r of leapYearTable(d(year, 6, 1), 12)) {
+                expect(r.year).toBeGreaterThanOrEqual(year);
+            }
+        }
+    });
+});
+
+describe('skipped centuries', () => {
+    it('names the next centuries that are not leap years', () => {
+        expect(skippedCenturies(d(2026, 1, 1), 3)).toEqual([2100, 2200, 2300]);
+    });
+
+    it('skips 2400, which is divisible by 400', () => {
+        expect(skippedCenturies(d(2301, 1, 1), 2)).toEqual([2500, 2600]);
+    });
+
+    it('only ever returns non-leap years', () => {
+        for (const y of skippedCenturies(d(2026, 1, 1), 6)) {
+            expect(isLeapYear(y)).toBe(false);
+            expect(y % 100).toBe(0);
+        }
     });
 });
 
