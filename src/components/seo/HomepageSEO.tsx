@@ -10,26 +10,41 @@ const dateModified = new Date().toISOString().split('T')[0];
 
 const CONTENT: Record<string, any> = {
     de: {
+        /*
+         * These answer the things people actually get wrong about date
+         * arithmetic, not the things a site likes being asked. "Kann ich den
+         * Rechner kostenlos nutzen?" had no search value and no confusion
+         * behind it; the inclusive/exclusive question is the reason two
+         * calculators disagree and is the single most common misunderstanding
+         * in this category.
+         *
+         * They carry FAQPage markup, so every answer has to be true of the
+         * implementation. Check them against /wie-wir-rechnen when it changes.
+         */
         faqs: [
             {
-                question: 'Sind die Berechnungen zeitzonenunabhängig?',
-                answer: 'Ja. Die interne Logik unseres Datumsrechners greift auf lokalisierte und neutralisierte UTC-Zeitstempel zurück. Die Dauer zwischen zwei Daten bleibt unabhängig von Ihrer aktuellen Zeitzone exakt identisch.',
+                question: 'Wird der Starttag mitgezählt?',
+                answer: 'Standardmäßig nicht. Der Rechner zählt die vollen Tage zwischen zwei Daten: Vom 1. bis zum 3. März sind es 2 Tage. Wenn Sie beide Endtage einschließen möchten (inklusive Zählweise), addieren Sie einen Tag hinzu – für Aufenthaltsdauern wie Hotelnächte ist meist die exklusive Zählweise gemeint.',
             },
             {
-                question: 'Werden Feiertage bei den Arbeitstagen berücksichtigt?',
-                answer: 'In der aktuellen Version werden reguläre Wochenenden (Samstag und Sonntag) sicher herausgefiltert. Eine automatische Berücksichtigung von gesetzlichen Feiertagen wird derzeit nicht nativ unterstützt, diese müssen manuell abgezogen werden.',
+                question: 'Warum zeigen zwei Datumsrechner unterschiedliche Ergebnisse?',
+                answer: 'Fast immer wegen der Zählweise. Zählt ein Rechner beide Endtage mit (inklusive) und ein anderer nur die vollen Tage dazwischen (exklusive), unterscheiden sich die Ergebnisse um genau einen Tag. Beide sind richtig – sie beantworten nur unterschiedliche Fragen. Dieser Rechner zählt exklusiv und schreibt das auf jeder Seite dazu.',
+            },
+            {
+                question: 'Zählen Wochenenden und Feiertage mit?',
+                answer: 'Bei der Datumsdifferenz und beim Addieren zählen alle Kalendertage, also auch Samstag und Sonntag. Der Arbeitstage-Rechner filtert Wochenenden heraus. Gesetzliche Feiertage werden dort abgezogen, sobald Sie ein Bundesland auswählen – ohne Auswahl bleiben sie im Ergebnis, weil ohne Bundesland nicht feststeht, welche Feiertage gelten.',
+            },
+            {
+                question: 'Was ist der Unterschied zwischen Kalendertagen, Werktagen und Arbeitstagen?',
+                answer: 'Kalendertage sind alle Tage. Werktage sind nach dem Bundesurlaubsgesetz alle Tage außer Sonn- und gesetzlichen Feiertagen – der Samstag zählt also mit. Arbeitstage meinen üblicherweise die 5-Tage-Woche von Montag bis Freitag. Steht in einem Vertrag „Werktage“ statt „Arbeitstage“, verkürzt sich eine Frist dadurch spürbar.',
             },
             {
                 question: 'Werden Schaltjahre wie der 29. Februar korrekt berechnet?',
-                answer: 'Ja. Der Rechner bildet den gregorianischen Kalender mit der vollständigen Schaltjahrregel ab (alle 4 Jahre, außer in vollen Jahrhunderten, die nicht durch 400 teilbar sind) und berücksichtigt die unterschiedlichen Monatslängen auf den Tag genau.',
+                answer: 'Ja. Der Rechner bildet den gregorianischen Kalender mit der vollständigen Schaltjahrregel ab: alle vier Jahre, außer in vollen Jahrhunderten, die nicht durch 400 teilbar sind. Deshalb war 2000 ein Schaltjahr und 1900 keines. Fällt ein 29. Februar in einen Zeitraum, wird er automatisch mitgezählt.',
             },
             {
-                question: 'Wie viele Tage hat ein Jahr?',
-                answer: 'Ein Normaljahr hat 365 Tage. Ein Schaltjahr hat 366 Tage und tritt alle vier Jahre auf (mit Ausnahmen für säkulare Jahre). Unser Rechner berücksichtigt dies automatisch.',
-            },
-            {
-                question: 'Kann ich den Datumsrechner kostenlos nutzen?',
-                answer: 'Ja, der Datumsrechner ist vollständig kostenlos und ohne Anmeldung nutzbar. Alle Berechnungen – Datumsdifferenz, Datum addieren und Arbeitstage – stehen unbegrenzt zur Verfügung.',
+                question: 'Hängt das Ergebnis von meiner Zeitzone ab?',
+                answer: 'Nein. Die Berechnung läuft auf ganzen Kalendertagen, nicht auf Zeitstempeln – eine Zeitumstellung kann ein Ergebnis daher nicht um einen Tag verschieben. Als „heute“ gilt der laufende Kalendertag in der Zeitzone Europe/Berlin, damit jede Seite für alle Besucher dieselbe Antwort nennt.',
             },
         ],
         // ISO 8601 defines how dates are *represented*; it does not certify
@@ -83,24 +98,28 @@ const CONTENT: Record<string, any> = {
     en: {
         faqs: [
             {
-                question: 'Are the calculations time zone independent?',
-                answer: 'Yes. The internal logic of our date calculator uses localized and neutralized UTC timestamps. The duration between two dates remains exactly identical regardless of your current time zone.',
+                question: 'Is the start day counted?',
+                answer: 'Not by default. The calculator counts the full days between two dates: from 1 March to 3 March is 2 days. To include both endpoints (inclusive counting), add one day – for stays such as hotel nights the exclusive count is usually what is meant.',
             },
             {
-                question: 'Are public holidays taken into account for business days?',
-                answer: 'In the current version, regular weekends (Saturday and Sunday) are safely filtered out. Automatic consideration of public holidays is not natively supported at this time; they must be subtracted manually.',
+                question: 'Why do two date calculators give different results?',
+                answer: 'Almost always because of the counting method. If one counts both endpoints (inclusive) and another counts only the full days between them (exclusive), the results differ by exactly one day. Both are correct – they answer different questions. This calculator counts exclusively and says so on every page.',
             },
             {
-                question: 'Are leap years like February 29th calculated correctly?',
-                answer: 'Yes. The calculator maps the Gregorian calendar with the full leap-year rule (every 4 years, except full centuries not divisible by 400) and accounts for the different month lengths down to the exact day.',
+                question: 'Are weekends and public holidays included?',
+                answer: 'For date differences and for adding days, every calendar day counts, including Saturday and Sunday. The business-day calculator filters weekends out. Public holidays are deducted there as soon as you select a German state – without one they stay in the result, because which holidays apply is undetermined.',
             },
             {
-                question: 'How many days does a year have?',
-                answer: 'A normal year has 365 days. A leap year has 366 days and occurs every four years (with exceptions for secular years). Our calculator takes this into account automatically.',
+                question: 'What is the difference between calendar days, Werktage and Arbeitstage?',
+                answer: 'Calendar days are every day. Under the German Federal Leave Act, Werktage are all days except Sundays and public holidays, so Saturday counts. Arbeitstage usually mean the Monday-to-Friday working week. A contract that says "Werktage" rather than "Arbeitstage" shortens a deadline noticeably.',
             },
             {
-                question: 'Can I use the date calculator for free?',
-                answer: 'Yes, the date calculator is completely free and can be used without registration. All calculations – date difference, adding dates and business days – are available unlimitedly.',
+                question: 'Are leap years like February 29 calculated correctly?',
+                answer: 'Yes. The calculator maps the Gregorian calendar with the full leap-year rule: every four years, except full centuries not divisible by 400. That is why 2000 was a leap year and 1900 was not. A February 29 falling inside a span is counted automatically.',
+            },
+            {
+                question: 'Does the result depend on my time zone?',
+                answer: 'No. The calculation runs on whole calendar days rather than timestamps, so a daylight-saving change cannot shift a result by a day. "Today" means the current calendar day in the Europe/Berlin time zone, so every page states one answer for all visitors.',
             },
         ],
         trustSignals: [
@@ -395,7 +414,7 @@ export function HomepageSEO({
                         <details key={i} className="bg-white border border-slate-200 rounded-xl px-6 py-5 group cursor-pointer hover:border-blue-300 transition-all">
                             <summary className="font-semibold text-lg list-none flex justify-between items-center text-slate-800 group-hover:text-blue-700">
                                 <dt className="inline">{faq.question}</dt>
-                                <span className="ml-4 shrink-0 text-neon group-open:rotate-180 transition-transform">▼</span>
+                                <span aria-hidden="true" className="ml-4 shrink-0 text-neon group-open:rotate-180 transition-transform">▼</span>
                             </summary>
                             <dd className="mt-4 border-l-2 border-neon-blue/30 pl-4">
                                 <p className="text-slate-700 leading-relaxed text-base">

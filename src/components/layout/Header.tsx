@@ -273,6 +273,17 @@ export function Header() {
                 role="dialog"
                 aria-modal="true"
                 aria-label={t('Nav.mobileNavLabel')}
+                /*
+                 * The drawer stays mounted so it can animate, and it was hidden
+                 * with opacity and pointer-events alone. pointer-events-none
+                 * stops the mouse but not the keyboard: tabbing through a
+                 * closed page walked into invisible links inside a dialog
+                 * marked aria-modal, with no way to see where focus had gone.
+                 *
+                 * `inert` takes the whole subtree out of the tab order and the
+                 * accessibility tree while leaving the transition intact.
+                 */
+                inert={!mobileMenuOpen}
                 className={`fixed inset-0 z-40 lg:hidden flex flex-col transition-all duration-500 ease-in-out ${
                     mobileMenuOpen
                         ? 'opacity-100 pointer-events-auto'
