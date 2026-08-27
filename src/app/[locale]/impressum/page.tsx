@@ -41,9 +41,9 @@ export default async function ImprintPage({ params }: { params: Promise<{ locale
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">Angaben gemäß § 5 DDG</h2>
                     <p className="text-slate-700 leading-relaxed font-bold">
                         Betreiber der Website:<br />
-                        Sheikh Farooq <br />
-                        [Deine Straße / Hausnummer] <br />
-                        [Deine PLZ / Stadt]
+                        Leon Fischer <br />
+                        Opernplatz 14 <br />
+                        60313 Frankfurt am Main
                     </p>
                 </section>
 
@@ -80,8 +80,8 @@ export default async function ImprintPage({ params }: { params: Promise<{ locale
                 <section>
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
                     <p className="text-slate-700 leading-relaxed">
-                        Sheikh Farooq <br />
-                        [Adresse siehe oben]
+                        Leon Fischer <br />
+                        Opernplatz 14, 60313 Frankfurt am Main
                     </p>
                 </section>
 
