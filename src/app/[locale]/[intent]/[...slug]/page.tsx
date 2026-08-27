@@ -64,11 +64,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const correctSlug = translateSlug(canonicalSlug || canonicalSlugStr, locale);
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
 
-    // STRICT ENFORCEMENT: Redirect only if the SLUG part is non-canonical.
-    // next-intl middleware handles the localized intent segment (e.g. /add/ vs /addieren/)
-    if (slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
-        permanentRedirect(correctPath); 
-    }
+    /*
+     * No redirect anywhere in this route. Middleware normalizes the URL before
+     * render, so anything reaching here is already canonical — and a duplicate
+     * Location header becomes structurally impossible rather than merely
+     * unlikely. See src/middleware.ts.
+     */
+    if (!isExact) return {};
 
     const correctUrl = `${SITE_URL}${correctPath}`;
 
@@ -177,30 +179,34 @@ export default async function ProgrammaticPage({
     // an offset the metadata already refused.
     if (exceedsOffsetLimit(canonicalSlugStr)) notFound();
 
-    const correctSlug = translateSlug(canonicalSlugStr, locale);
-    const displaySlug = correctSlug.replace(/-/g, ' ');
-    const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
-
-    // STRICT ENFORCEMENT: Redirect only if the SLUG part is non-canonical.
-    if (slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
-        permanentRedirect(correctPath);
-    }
-
     if (!mode) {
         notFound();
     }
 
     const { canonicalSlug, isExact } = resolveCanonicalQuery(canonicalSlugStr);
-    
+
     if (!canonicalSlug) {
         notFound();
     }
 
-    if (!isExact && canonicalSlug) {
-        const locSlug = translateSlug(canonicalSlug, locale);
-        const targetPath = getCanonicalPath(locale, internalIntent, locSlug);
-        permanentRedirect(targetPath);
-    } 
+    /*
+     * No redirect in this component — generateMetadata owns it.
+     *
+     * Both used to redirect. generateMetadata runs first and threw, so the page
+     * body never ran and only one Location header was emitted; the duplication
+     * was latent. Moving the redirect here alone exposed it: the page component
+     * can execute more than once for a single request, and each execution threw
+     * its own redirect, so Next emitted two Location headers. A client joins
+     * them into "/a, /a", which is not a valid URL — and Search Console counts
+     * that as a "Redirect error".
+     *
+     * generateMetadata runs exactly once per request, before render, which
+     * makes it the only safe place to throw a redirect. By the time this
+     * component runs, the slug is canonical.
+     */
+    const correctSlug = translateSlug(canonicalSlug, locale);
+    const displaySlug = correctSlug.replace(/-/g, ' ');
+    const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
 
     const tEvents = await getTranslations({ locale, namespace: 'Events' });
 

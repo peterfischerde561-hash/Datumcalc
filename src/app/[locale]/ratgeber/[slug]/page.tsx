@@ -35,17 +35,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const article = getArticleBySlug(slug, locale);
     const siteUrl = SITE_URL;
 
+    /*
+     * No redirect here — the page component owns it.
+     *
+     * This block used to call permanentRedirect() while the page body did the
+     * same for the same request, so both could fire and Next emitted two
+     * Location headers. The joined value is not a valid URL, and Search Console
+     * reports it as "Redirect error". Returning empty metadata is correct: the
+     * page redirects, so nothing renders and no metadata is used.
+     */
     if (!article) {
-        for (const loc of locales) {
-            if (loc !== locale) {
-                const altArticle = getArticleBySlug(slug, loc);
-                if (altArticle) {
-                    const locSlug = getLocalizedArticleSlug(slug, loc, locale);
-                    const targetPath = getCanonicalPath(locale, 'ratgeber', locSlug);
-                    permanentRedirect(targetPath);
-                }
-            }
-        }
         return {};
     }
 
