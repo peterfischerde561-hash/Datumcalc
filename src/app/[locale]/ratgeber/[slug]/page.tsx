@@ -1,4 +1,4 @@
-import { getArticleBySlug, articles, getArticles, getLocalizedArticleSlug } from '@/lib/articles';
+import { getArticleBySlug, articles, getArticles, getLocalizedArticleSlug, readingTimeMinutes } from '@/lib/articles';
 import { notFound, redirect, permanentRedirect } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
@@ -108,7 +108,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
             <header className="mb-12 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 border border-blue-200 text-xs font-bold tracking-widest uppercase text-blue-700">
-                    {article.readTime} {t('readTime')}
+                    {readingTimeMinutes(article.content)} min {t('readTime')}
                 </div>
 
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900">

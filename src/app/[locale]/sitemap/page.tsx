@@ -3,6 +3,7 @@ import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata } from '@/lib/seo/metadata';
+import { PlusSquare, SplitSquareHorizontal, Briefcase, User } from 'lucide-react';
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { getArticles } from '@/lib/articles';
 import { Link } from '@/i18n/routing';
@@ -36,11 +37,19 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
     const tSitemap = await getTranslations({ locale, namespace: 'Sitemap' });
     const isDe = locale === 'de';
 
+    /*
+     * Icons, not emoji. The four intents were marked with a plus sign, a
+     * calendar, a briefcase and a birthday cake as literal characters, which
+     * render in the reader's system emoji font at a size and colour nothing on
+     * the page controls, and are announced by screen readers as their Unicode
+     * names. These are the same lucide icons the nav and tool cards already
+     * use, so one URL now carries one mark everywhere.
+     */
     const calculatorIntents = [
-        { id: 'addieren', icon: '➕' },
-        { id: 'differenz', icon: '📅' },
-        { id: 'arbeitstage', icon: '💼' },
-        { id: 'alter', icon: '🎂' }
+        { id: 'addieren', Icon: PlusSquare },
+        { id: 'differenz', Icon: SplitSquareHorizontal },
+        { id: 'arbeitstage', Icon: Briefcase },
+        { id: 'alter', Icon: User }
     ] as const;
 
     const legalRoutes = ['ueber-uns', 'agb', 'datenschutz', 'impressum'] as const;
@@ -83,7 +92,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                         return (
                             <div key={intent.id} className="space-y-4">
                                 <Link href={(`/${internalIntent}` as any)} className="text-lg font-bold hover:text-blue-700 flex items-center gap-2 text-slate-900">
-                                    <span>{intent.icon}</span>
+                                    <intent.Icon className="w-5 h-5 text-blue-700 shrink-0" aria-hidden="true" />
                                     <span className="capitalize">{tNav(internalIntent)}</span>
                                 </Link>
                                 <ul className="pl-8 space-y-2 border-l border-slate-200">

@@ -8,7 +8,7 @@ import { FAQBlock } from '@/components/seo/FAQBlock';
 import { InternalLinksBlock } from '@/components/seo/InternalLinksBlock';
 import { ConversionTools } from '@/components/seo/ConversionTools';
 import { TrustSignals } from '@/components/seo/TrustSignals';
-import { resolveCanonicalQuery, CANONICAL_QUERIES } from '@/lib/seo/queryModel';
+import { resolveCanonicalQuery, CANONICAL_QUERIES, exceedsOffsetLimit } from '@/lib/seo/queryModel';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
@@ -57,8 +57,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     if (!internalIntent) return {}; // Let it 404 if truly unknown
 
     const canonicalSlugStr = reverseTranslateSlug(slugStr, locale);
+    if (exceedsOffsetLimit(canonicalSlugStr)) notFound();
     const { canonicalSlug, isExact, def } = resolveCanonicalQuery(canonicalSlugStr);
-    
+
     // NORMALIZE: Ensure we always point to the strictly correct localized URL
     const correctSlug = translateSlug(canonicalSlug || canonicalSlugStr, locale);
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
@@ -172,10 +173,14 @@ export default async function ProgrammaticPage({
     const slugStr = slug.join('-');
     const canonicalSlugStr = reverseTranslateSlug(slugStr, locale);
     
+    // Must match the guard in generateMetadata, or the page body would render
+    // an offset the metadata already refused.
+    if (exceedsOffsetLimit(canonicalSlugStr)) notFound();
+
     const correctSlug = translateSlug(canonicalSlugStr, locale);
     const displaySlug = correctSlug.replace(/-/g, ' ');
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
-    
+
     // STRICT ENFORCEMENT: Redirect only if the SLUG part is non-canonical.
     if (slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
         permanentRedirect(correctPath);

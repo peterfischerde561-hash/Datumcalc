@@ -1,8 +1,25 @@
+/**
+ * Reading time, derived from the article body.
+ *
+ * It used to be typed into each article: `schaltjahre-erklaert` carried
+ * "3 min" for 221 words, which is about 60 seconds of reading. A claim the
+ * reader can check in ten seconds, and get wrong, costs more trust than it
+ * buys — and like every hand-typed fact it drifts the moment the body is
+ * edited. 200 wpm is the usual German prose estimate; the floor is 1.
+ */
+export function readingTimeMinutes(content: string): number {
+    const words = content
+        .replace(/<[^>]+>/g, ' ')
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean).length;
+    return Math.max(1, Math.round(words / 200));
+}
+
 export interface Article {
     slug: string;
     title: string;
     description: string;
-    readTime: string;
     /**
      * The specific things this article establishes — required, and specific to
      * this article. These previously came from the shared `Article.takeaways*`
@@ -32,7 +49,6 @@ export const articles: Record<string, Article[]> = {
             // people came to find out.
             title: 'Wann ist das nächste Schaltjahr?',
             description: 'Wann ist das nächste Schaltjahr und warum gibt es den 29. Februar? Die vollständige Schaltjahrregel mit Beispielen – und welche Jahre trotz Teilbarkeit durch 4 keine Schaltjahre sind.',
-            readTime: '3 min',
             // Rules, not dates: which year comes next is computed and shown in
             // the direct answer above. A takeaway that names the next leap year
             // would be wrong the year after it passes.
@@ -63,7 +79,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'was-ist-ein-arbeitstag',
             title: 'Was ist ein Arbeitstag? Definition & Gesetz',
             description: 'Was ist ein Arbeitstag? Definition, Unterschied zu Werktagen und was bei gesetzlichen Fristen zu beachten ist – einfach erklärt.',
-            readTime: '3 min',
             takeaways: [
                 'Arbeitstag meint in der Regel die 5-Tage-Woche von Montag bis Freitag.',
                 'Werktag ist weiter gefasst: Nach dem Bundesurlaubsgesetz zählt auch der Samstag dazu.',
@@ -84,7 +99,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'wochen-im-jahr',
             title: 'Wie viele Wochen hat ein Jahr?',
             description: 'Hat ein Jahr immer 52 Wochen? Erfahre alles über ISO-Kalenderwochen und warum manche Jahre 53 Wochen haben.',
-            readTime: '2 min',
             takeaways: [
                 'Ein Gemeinjahr hat 52 Wochen und einen Resttag, ein Schaltjahr 52 Wochen und zwei.',
                 'Deshalb verschiebt sich der Wochentag eines Datums jedes Jahr um eins – nach einem Schaltjahr um zwei.',
@@ -109,7 +123,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'iso-8601-erklaert',
             title: 'ISO 8601 einfach erklärt (Datum & Zeit)',
             description: 'ISO 8601 einfach erklärt: Der internationale Standard für Datum und Zeit – Aufbau, Beispiele und warum er wichtig ist.',
-            readTime: '4 min',
             takeaways: [
                 'ISO 8601 schreibt absteigend Jahr-Monat-Tag: 2026-08-24.',
                 'Dadurch entfällt die Verwechslung zwischen US-Format (MM/DD/YYYY) und deutschem Format (DD.MM.YYYY).',
@@ -132,7 +145,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'leap-years-explained',
             title: 'When Is the Next Leap Year?',
             description: 'When is the next leap year, and why does February 29 exist? The full leap-year rule with examples – including which years are skipped despite being divisible by 4.',
-            readTime: '3 min',
             takeaways: [
                 'A leap year has 366 days – February 29 is inserted every four years.',
                 '1900 was not a leap year despite being divisible by 4: full centuries are skipped.',
@@ -160,7 +172,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'what-is-a-business-day',
             title: 'What is a Business Day? Definition & Rules',
             description: 'Learn everything about the term business day, how it differs from a working day and what to consider for deadlines.',
-            readTime: '3 min',
             takeaways: [
                 'A business day normally means the Monday-to-Friday working week.',
                 'Weekends and public holidays are excluded, which is what separates it from a calendar day.',
@@ -181,7 +192,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'weeks-in-a-year',
             title: 'How Many Weeks Are in a Year?',
             description: 'Does a year always have 52 weeks? Find out more about ISO weeks, leap years, and why some years have 53 weeks.',
-            readTime: '2 min',
             takeaways: [
                 'A common year is 52 weeks plus one day; a leap year is 52 weeks plus two.',
                 'That leftover day is why a given date shifts one weekday each year, and two after a leap year.',
@@ -204,7 +214,6 @@ export const articles: Record<string, Article[]> = {
             slug: 'iso-8601-explained',
             title: 'ISO 8601 Standard Explained: Date & Time',
             description: 'Why ISO 8601 is the most important standard for digital time measurement and how to apply it correctly.',
-            readTime: '4 min',
             takeaways: [
                 'ISO 8601 writes dates largest unit first: 2026-08-24.',
                 'That removes the ambiguity between the US format (MM/DD/YYYY) and the European one (DD.MM.YYYY).',

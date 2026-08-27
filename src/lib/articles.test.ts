@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { articles } from './articles';
+import { articles, readingTimeMinutes } from './articles';
+import { CANONICAL_QUERIES, exceedsOffsetLimit } from './seo/queryModel';
 import { ROUTE_LABELS, ToolKey, routeLabel } from './seo/routeLabels';
 import { isIndexableLocale } from './seo/indexPolicy';
 
@@ -141,6 +142,58 @@ describe('route labels', () => {
         for (const key of keys) {
             expect(routeLabel(key, 'de').label).not.toBe(routeLabel(key, 'en').label);
         }
+    });
+});
+
+describe('reading time', () => {
+    it('is derived from the body, not typed in', () => {
+        // The leap-year guide claimed "3 min" for 221 words, roughly a minute.
+        const leap = articles.de.find((a) => a.slug === 'schaltjahre-erklaert')!;
+        expect(readingTimeMinutes(leap.content)).toBeLessThanOrEqual(2);
+    });
+
+    it('never claims less than a minute', () => {
+        expect(readingTimeMinutes('<p>kurz</p>')).toBe(1);
+    });
+
+    it('scales with length and ignores markup', () => {
+        const words = Array(600).fill('Wort').join(' ');
+        expect(readingTimeMinutes(`<p>${words}</p>`)).toBe(3);
+    });
+});
+
+describe('offset URL bound', () => {
+    it('allows every canonical page', () => {
+        for (const def of Object.values(CANONICAL_QUERIES)) {
+            expect(exceedsOffsetLimit(def.canonicalSlug)).toBe(false);
+        }
+    });
+
+    it.each([
+        ['36500-tage-ab-heute', false], // exactly a century, still served
+        ['36501-tage-ab-heute', true],
+        ['77777-tage-ab-heute', true],
+        ['999999-tage-ab-heute', true],
+        ['1200-monate-ab-heute', false],
+        ['1201-monate-ab-heute', true],
+        ['100-jahre-ab-heute', false],
+        ['101-jahre-ab-heute', true]
+    ])('%s exceeds limit: %s', (slug, expected) => {
+        expect(exceedsOffsetLimit(slug)).toBe(expected);
+    });
+
+    it('keeps long spans that people actually searched', () => {
+        // GSC recorded a click on /de/addieren/21128-tage-ab-heute — about 58
+        // years. The bound exists to make the space finite, not to second-guess
+        // a request someone genuinely made, so anything inside a century stays.
+        for (const slug of ['21128-tage-ab-heute', '22200-tage-ab-heute', '12888-tage-ab-heute']) {
+            expect(exceedsOffsetLimit(slug)).toBe(false);
+        }
+    });
+
+    it('ignores slugs that carry no offset', () => {
+        expect(exceedsOffsetLimit('tage-bis-weihnachten')).toBe(false);
+        expect(exceedsOffsetLimit('irgendwas')).toBe(false);
     });
 });
 
