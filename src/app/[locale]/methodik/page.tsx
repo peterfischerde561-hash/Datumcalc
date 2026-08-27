@@ -93,10 +93,12 @@ export default async function MethodologyPage({ params }: { params: Promise<{ lo
                   ]
               },
               {
-                  h: 'Arbeitstage',
+                  h: 'Arbeitstage und Feiertage',
                   body: [
                       'Als Arbeitstage gelten Montag bis Freitag. Samstage und Sonntage werden herausgefiltert.',
-                      'Gesetzliche Feiertage werden nicht automatisch abgezogen. Sie unterscheiden sich je nach Bundesland, und der Rechner trifft dazu bewusst keine Annahme – rechnen Sie regionale Feiertage selbst heraus.'
+                      'Gesetzliche Feiertage werden nur abgezogen, wenn Sie ein Bundesland auswählen – ohne Auswahl bleiben sie im Ergebnis, weil ohne Bundesland nicht feststeht, welche Feiertage gelten. Fällt ein Feiertag auf ein Wochenende, wird er nicht doppelt abgezogen.',
+                      'Die Feiertagsdaten werden berechnet, nicht jahrweise gepflegt: feste Termine aus Monat und Tag, bewegliche aus dem Osterdatum. Karfreitag liegt zwei Tage vor Ostersonntag, Christi Himmelfahrt 39 Tage danach, Fronleichnam 60. Der Buß- und Bettag ist der Mittwoch vor dem 23. November.',
+                      'Nicht abgebildet sind Feiertage, die innerhalb eines Bundeslandes auf Gemeindeebene gelten: Fronleichnam in Teilen von Sachsen und Thüringen sowie Mariä Himmelfahrt in überwiegend katholischen Gemeinden Bayerns. Diese Fälle lassen sich am Bundesland allein nicht entscheiden, deshalb zählt der Rechner sie nicht als Feiertag.'
                   ]
               },
               {
@@ -157,10 +159,12 @@ export default async function MethodologyPage({ params }: { params: Promise<{ lo
                   ]
               },
               {
-                  h: 'Business days',
+                  h: 'Business days and public holidays',
                   body: [
                       'Business days are Monday to Friday. Saturdays and Sundays are filtered out.',
-                      'Public holidays are not deducted automatically. They differ by region, and the calculator deliberately makes no assumption – subtract regional holidays yourself.'
+                      'Public holidays are deducted only when you select a German state – without one they stay in the result, because which holidays apply is undetermined. A holiday falling on a weekend is not deducted twice.',
+                      'Holiday dates are computed rather than maintained year by year: fixed ones from their month and day, movable ones from Easter. Good Friday is two days before Easter Sunday, Ascension 39 days after, Corpus Christi 60. Buß- und Bettag is the Wednesday before 23 November.',
+                      'Not modelled: holidays that apply at municipality level within a state – Corpus Christi in parts of Saxony and Thuringia, and Assumption Day in predominantly Catholic municipalities of Bavaria. Neither can be decided from the state alone, so the calculator does not treat them as holidays.'
                   ]
               },
               {

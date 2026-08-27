@@ -250,7 +250,14 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
             </div>
 
             <section aria-label={isDe ? "Rechner" : "Calculator"} className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 mb-16 shadow-sm">
-                <CalculatorCore />
+                {/*
+                  The hub opened on whatever CalculatorCore defaults to, which is
+                  the date-difference tab — so /arbeitstage, /alter and /addieren
+                  each landed the visitor on a different calculator than the one
+                  the page is about. The programmatic pages already passed their
+                  mode; the hubs never did.
+                */}
+                <CalculatorCore initialMode={calcMode as 'difference' | 'add_subtract' | 'business_days' | 'age'} />
             </section>
 
             {(transactional.length > 0 || informational.length > 0) && (
