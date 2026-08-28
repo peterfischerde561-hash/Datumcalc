@@ -50,13 +50,27 @@ const git = (...args) => execFileSync(GIT, args, { encoding: 'utf8', maxBuffer: 
  * Returns the source region belonging to one article: from its `slug:` line up
  * to the next article's `slug:` line. Crude, but it tracks exactly what we want
  * — a change inside one article's own object — without parsing TypeScript.
+ *
+ * The last article needs the end of the `articles` object as its boundary, not
+ * the end of the file. Without it the final block swallowed every helper
+ * declared below the array, so editing an unrelated validation function counted
+ * as modifying the last article and reported it stale.
  */
+function articlesEnd(lines) {
+    const start = lines.findIndex((l) => /^export const articles/.test(l));
+    if (start === -1) return lines.length;
+    for (let i = start + 1; i < lines.length; i++) {
+        if (/^\};/.test(lines[i])) return i;
+    }
+    return lines.length;
+}
+
 function articleBlock(source, slug) {
     const lines = source.split(/\r?\n/);
     const start = lines.findIndex((l) => l.includes(`slug: '${slug}'`));
     if (start === -1) return null;
-    let end = lines.length;
-    for (let i = start + 1; i < lines.length; i++) {
+    let end = articlesEnd(lines);
+    for (let i = start + 1; i < end; i++) {
         if (/^\s*slug: '/.test(lines[i])) { end = i; break; }
     }
     return lines
