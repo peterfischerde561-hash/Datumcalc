@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useId } from 'react';
+import { useState, useEffect } from 'react';
 import { getBusinessDays } from '@/lib/calculator';
 import { parseCivilDate, formatCivilDate } from '@/lib/date/civil';
 import { formatDayMonth, formatNumeric } from '@/lib/date/format';
@@ -15,6 +15,9 @@ import { useRecentCalculations } from '@/hooks/useRecentCalculations';
 import { Share2, Check, BookmarkPlus } from 'lucide-react';
 
 import { useTranslations, useLocale } from 'next-intl';
+import { InputField, SelectField, FieldRow } from '@/components/ui/Field';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 
 export function BusinessDays() {
     const t = useTranslations('Calculator');
@@ -28,7 +31,6 @@ export function BusinessDays() {
     const [state, setState] = useState<string>('');
     const [copied, setCopied] = useState(false);
     const { addCalculation } = useRecentCalculations();
-    const fieldId = useId();
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -76,21 +78,22 @@ export function BusinessDays() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const inputClass = "w-full bg-white border border-slate-300 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors [color-scheme:light]";
-    const labelClass = "block text-sm font-semibold text-slate-700 mb-1.5";
-
     return (
         <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label htmlFor={`${fieldId}-start`} className={labelClass}>{t('startDate')}</label>
-                    <input id={`${fieldId}-start`} type="date" value={start} onChange={(e) => setStart(e.target.value)} className={inputClass} />
-                </div>
-                <div>
-                    <label htmlFor={`${fieldId}-end`} className={labelClass}>{t('endDate')}</label>
-                    <input id={`${fieldId}-end`} type="date" value={end} onChange={(e) => setEnd(e.target.value)} className={inputClass} />
-                </div>
-            </div>
+            <FieldRow columns={2}>
+                <InputField
+                    label={t('startDate')}
+                    type="date"
+                    value={start}
+                    onChange={(e) => setStart(e.target.value)}
+                />
+                <InputField
+                    label={t('endDate')}
+                    type="date"
+                    value={end}
+                    onChange={(e) => setEnd(e.target.value)}
+                />
+            </FieldRow>
 
             {/*
               Optional, and it defaults to off. Public holidays differ by
@@ -99,14 +102,10 @@ export function BusinessDays() {
               removed. Choosing a state is the user telling us which rules apply.
             */}
             <div className="max-w-sm">
-                <label htmlFor={`${fieldId}-bl`} className={labelClass}>
-                    {isDe ? 'Bundesland (optional)' : 'German state (optional)'}
-                </label>
-                <select
-                    id={`${fieldId}-bl`}
+                <SelectField
+                    label={isDe ? 'Bundesland (optional)' : 'German state (optional)'}
                     value={state}
                     onChange={(ev) => setState(ev.target.value)}
-                    className={inputClass}
                 >
                     <option value="">
                         {isDe ? 'Ohne Feiertage – nur Wochenenden' : 'No holidays – weekends only'}
@@ -116,16 +115,16 @@ export function BusinessDays() {
                             {BUNDESLAENDER[code]}
                         </option>
                     ))}
-                </select>
+                </SelectField>
             </div>
 
             <div role="status" aria-live="polite">
                 {result !== null && (
-                    <div className="mt-8 p-6 rounded-lg bg-blue-50 border border-blue-200 space-y-4">
+                    <Card tone="accent" className="mt-8 space-y-4">
                         <div className="flex justify-between items-start gap-4">
                             <div>
                                 <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{t('businessDays')}</h3>
-                                <p className="text-3xl mt-2 font-bold text-blue-800">
+                                <p className="mt-2 text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight">
                                     {Math.abs(result)} {t('days')}
                                 </p>
                                 {/* Says what was actually excluded, which now depends on the state. */}
@@ -140,12 +139,12 @@ export function BusinessDays() {
                                 </p>
                             </div>
                             <div className="flex gap-2 shrink-0">
-                                <button type="button" onClick={handleSave} aria-label={t('save')} title={t('save')} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                <Button variant="secondary" iconOnly onClick={handleSave} aria-label={t('save')} title={t('save')}>
                                     <BookmarkPlus className="w-5 h-5 text-blue-700" aria-hidden="true" />
-                                </button>
-                                <button type="button" onClick={shareUrl} aria-label={t('share')} title={t('share')} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                </Button>
+                                <Button variant="secondary" iconOnly onClick={shareUrl} aria-label={t('share')} title={t('share')}>
                                     {copied ? <Check className="w-5 h-5 text-green-600" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-blue-700" aria-hidden="true" />}
-                                </button>
+                                </Button>
                             </div>
                         </div>
 
@@ -173,7 +172,7 @@ export function BusinessDays() {
                                 </ul>
                             </div>
                         )}
-                    </div>
+                    </Card>
                 )}
             </div>
         </div>

@@ -1,18 +1,51 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens.
+ *
+ * There were six: two of them, --color-neon and --color-neon-blue, held the
+ * same hex. HomepageSEO used them as two *different* accents to tell two
+ * columns apart, so a distinction the code made deliberately rendered as none.
+ * Both are gone; there is one accent, named for its role rather than for a
+ * palette this site abandoned.
+ *
+ * The tokens are semantic on purpose. `--color-accent` can be changed once;
+ * `blue-700` scattered across 78 call sites cannot. Everything below is
+ * referenced through the primitives in components/ui, which is what keeps the
+ * set this small -- an audit of the pre-token codebase counted 42 distinct
+ * padding values, 18 backgrounds and the same card written 15 different ways.
+ */
 @theme inline {
   --color-background: #f8fafc;
   --color-foreground: #0f172a;
-  /* Accent tokens repurposed to a single professional blue (gov-style). */
-  --color-neon: #1d4ed8;
-  --color-neon-blue: #1d4ed8;
-  --color-glass: #ffffff;
-  --color-glass-border: #e2e8f0;
+
+  /* Surfaces */
+  --color-surface: #ffffff;
+  --color-surface-sunken: #f8fafc;
+  --color-surface-accent: #eff6ff;   /* blue-50  */
+
+  /* Lines */
+  --color-line: #e2e8f0;             /* slate-200 */
+  --color-line-strong: #cbd5e1;      /* slate-300 */
+  --color-line-accent: #bfdbfe;      /* blue-200  */
+
+  /* Text */
+  --color-ink: #0f172a;              /* slate-900 */
+  --color-ink-muted: #475569;        /* slate-600, 7:1 on white */
+  --color-ink-subtle: #64748b;       /* slate-500, 4.8:1 -- the floor */
+
+  /* One accent. */
+  --color-accent: #1d4ed8;           /* blue-700, 7:1 on white */
+  --color-accent-hover: #1e40af;     /* blue-800 */
+
   --font-sans: var(--font-inter);
 
-  /* Semantic spacing adjustments */
-  --spacing-128: 32rem;
-  --spacing-144: 36rem;
+  /*
+   * Two radii, not six. Controls and cards were using rounded-md, -lg, -xl and
+   * -2xl interchangeably, sometimes within one component.
+   */
+  --radius-control: 0.5rem;
+  --radius-card: 0.75rem;
 }
 
 :root {

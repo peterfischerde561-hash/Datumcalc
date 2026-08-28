@@ -39,7 +39,7 @@ export function Footer() {
                     {/* Cluster 1 */}
                     <nav aria-label="Footer Beliebte Rechner">
                         <h3 className="text-slate-900 font-bold mb-4 flex items-center gap-2">
-                            <Calculator className="w-4 h-4 text-neon-blue" />
+                            <Calculator className="w-4 h-4 text-accent" />
                             {isDe ? 'Werkzeuge' : 'Tools'}
                         </h3>
                         <ul className="space-y-3 text-sm text-slate-600">

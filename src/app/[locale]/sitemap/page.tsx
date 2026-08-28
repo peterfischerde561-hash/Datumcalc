@@ -84,7 +84,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                 {/* 1. Calculator Categories & Tools */}
                 <section className="space-y-8">
                     <h2 className="text-2xl font-bold border-b border-slate-200 pb-4 mb-6 flex items-center gap-3 text-slate-900">
-                        <span className="text-neon">01.</span> {tSitemap('calculators')}
+                        <span className="text-accent">01.</span> {tSitemap('calculators')}
                     </h2>
                     {calculatorIntents.map(intent => {
                         const internalIntent = intent.id;
@@ -133,7 +133,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                 {/* 2. Guides & Articles */}
                 <section className="space-y-8">
                     <h2 className="text-2xl font-bold border-b border-slate-200 pb-4 mb-6 flex items-center gap-3 text-slate-900">
-                        <span className="text-neon">02.</span> {tNav('ratgeber')}
+                        <span className="text-accent">02.</span> {tNav('ratgeber')}
                     </h2>
                     <ul className="space-y-4">
                         {getArticles(locale).map(article => (
@@ -156,7 +156,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                 {/* 3. Numeric Variations Directory */}
                 <section className="space-y-8 lg:col-span-3">
                     <h2 className="text-2xl font-bold border-b border-slate-200 pb-4 mb-6 flex items-center gap-3 text-slate-900">
-                        <span className="text-neon">03.</span> {tSitemap('commonSpans')}
+                        <span className="text-accent">03.</span> {tSitemap('commonSpans')}
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                         {/*
@@ -189,7 +189,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                 {/* 4. Legal */}
                 <section className="space-y-8">
                     <h2 className="text-2xl font-bold border-b border-slate-200 pb-4 mb-6 flex items-center gap-3 text-slate-900">
-                        <span className="text-neon">04.</span> {tSitemap('legal')}
+                        <span className="text-accent">04.</span> {tSitemap('legal')}
                     </h2>
                     <ul className="space-y-3">
                         {legalRoutes.map(route => {

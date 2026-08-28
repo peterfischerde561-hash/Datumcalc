@@ -57,8 +57,8 @@ const CONTENT: Record<string, any> = {
         // numbering — rather than as a blanket badge.
         trustSignals: [
             { icon: CalendarCheck2, label: 'Gregorianischer Kalender', color: 'text-green-600' },
-            { icon: CheckCircle2, label: 'Vollständige Schaltjahrregel', color: 'text-neon-blue' },
-            { icon: Clock4, label: 'Kalenderwochen nach ISO 8601', color: 'text-neon' },
+            { icon: CheckCircle2, label: 'Vollständige Schaltjahrregel', color: 'text-accent' },
+            { icon: Clock4, label: 'Kalenderwochen nach ISO 8601', color: 'text-accent' },
             { icon: ShieldCheck, label: 'Kostenlos, ohne Anmeldung', color: 'text-slate-700' },
         ],
         hero: {
@@ -132,8 +132,8 @@ const CONTENT: Record<string, any> = {
         ],
         trustSignals: [
             { icon: CalendarCheck2, label: 'Gregorian calendar', color: 'text-green-600' },
-            { icon: CheckCircle2, label: 'Full leap-year rule', color: 'text-neon-blue' },
-            { icon: Clock4, label: 'ISO 8601 calendar weeks', color: 'text-neon' },
+            { icon: CheckCircle2, label: 'Full leap-year rule', color: 'text-accent' },
+            { icon: Clock4, label: 'ISO 8601 calendar weeks', color: 'text-accent' },
             { icon: ShieldCheck, label: 'Free, no registration', color: 'text-slate-700' },
         ],
         hero: {
@@ -261,7 +261,7 @@ export function HomepageSEO({
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Fristen */}
                     <div className="bg-white p-7 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all duration-300">
-                        <h3 className="text-neon font-bold text-xl mb-5 flex items-center gap-2">
+                        <h3 className="text-accent font-bold text-xl mb-5 flex items-center gap-2">
                             <CalendarCheck2 className="w-5 h-5" aria-hidden="true" />
                             {c.hero.fristen}
                         </h3>
@@ -269,7 +269,7 @@ export function HomepageSEO({
                             {topQueries.map((q, i) => (
                                 <li key={i}>
                                     <Link href={q.href as any} className="text-slate-700 hover:text-blue-700 transition-colors flex items-center gap-2 group text-sm">
-                                        <span className="text-neon/40 group-hover:text-neon text-xs" aria-hidden="true">▶</span>
+                                        <span className="text-accent/40 group-hover:text-accent text-xs" aria-hidden="true">▶</span>
                                         {q.title}
                                     </Link>
                                 </li>
@@ -278,7 +278,7 @@ export function HomepageSEO({
                     </div>
                     {/* Ereignisse */}
                     <div className="bg-white p-7 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all duration-300">
-                        <h3 className="text-neon-blue font-bold text-xl mb-5 flex items-center gap-2">
+                        <h3 className="text-accent font-bold text-xl mb-5 flex items-center gap-2">
                             <Clock4 className="w-5 h-5" aria-hidden="true" />
                             {c.hero.ereignisse}
                         </h3>
@@ -286,7 +286,7 @@ export function HomepageSEO({
                             {eventQueries.map((q, i) => (
                                 <li key={i}>
                                     <Link href={q.href as any} className="text-slate-700 hover:text-blue-700 transition-colors flex items-center gap-2 group text-sm">
-                                        <span className="text-neon-blue/40 group-hover:text-neon-blue text-xs" aria-hidden="true">▶</span>
+                                        <span className="text-accent/40 group-hover:text-accent text-xs" aria-hidden="true">▶</span>
                                         {q.title}
                                     </Link>
                                 </li>
@@ -363,7 +363,7 @@ export function HomepageSEO({
                             <tbody className="text-slate-700 divide-y divide-slate-100">
                                 {([
                                     { key: 'addieren', href: '/addieren', useCase: c.seo.case1, tone: 'text-blue-700' },
-                                    { key: 'arbeitstage', href: '/arbeitstage', useCase: c.seo.case2, tone: 'text-neon-blue' },
+                                    { key: 'arbeitstage', href: '/arbeitstage', useCase: c.seo.case2, tone: 'text-accent' },
                                     { key: 'differenz', href: '/differenz', useCase: c.seo.case3, tone: 'text-purple-600' },
                                     { key: 'alter', href: '/alter', useCase: c.seo.case4, tone: 'text-green-600' }
                                 ] as const).map((row) => {
@@ -422,9 +422,9 @@ export function HomepageSEO({
                         <details key={i} className="bg-white border border-slate-200 rounded-xl px-6 py-5 group cursor-pointer hover:border-blue-300 transition-all">
                             <summary className="font-semibold text-lg list-none flex justify-between items-center text-slate-800 group-hover:text-blue-700">
                                 <dt className="inline">{faq.question}</dt>
-                                <span aria-hidden="true" className="ml-4 shrink-0 text-neon group-open:rotate-180 transition-transform">▼</span>
+                                <span aria-hidden="true" className="ml-4 shrink-0 text-accent group-open:rotate-180 transition-transform">▼</span>
                             </summary>
-                            <dd className="mt-4 border-l-2 border-neon-blue/30 pl-4">
+                            <dd className="mt-4 border-l-2 border-accent/30 pl-4">
                                 <p className="text-slate-700 leading-relaxed text-base">
                                     {faq.answer}
                                 </p>

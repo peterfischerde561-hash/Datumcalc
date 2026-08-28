@@ -1,12 +1,15 @@
 'use client';
 
-import { useState, useEffect, useId } from 'react';
+import { useState, useEffect } from 'react';
 import { calculateOffsetDate, TimeUnit, Operation } from '@/lib/calculator';
 import { parseCivilDate } from '@/lib/date/civil';
 import { formatDayMonth, formatLong, formatNumeric } from '@/lib/date/format';
 import { useRecentCalculations } from '@/hooks/useRecentCalculations';
 import { Share2, Check, BookmarkPlus } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
+import { InputField, SelectField, FieldRow } from '@/components/ui/Field';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 
 export function AddSubtractTime() {
     const t = useTranslations('Calculator');
@@ -18,9 +21,6 @@ export function AddSubtractTime() {
     const [operation, setOperation] = useState<Operation>('add');
     const [copied, setCopied] = useState(false);
     const { addCalculation } = useRecentCalculations();
-    // A page can embed more than one calculator (an article renders one below
-    // the prose), so ids must not collide across instances.
-    const fieldId = useId();
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -67,40 +67,52 @@ export function AddSubtractTime() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const inputClass = "w-full bg-white border border-slate-300 rounded-md px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors [color-scheme:light]";
-    const labelClass = "block text-sm font-semibold text-slate-700 mb-1.5";
-
     return (
         <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div>
-                    <label htmlFor={`${fieldId}-op`} className={labelClass}>{t('action')}</label>
-                    <select id={`${fieldId}-op`} value={operation} onChange={(e) => setOperation(e.target.value as Operation)} className={inputClass}>
-                        <option value="add">{t('add')}</option>
-                        <option value="subtract">{t('subtract')}</option>
-                    </select>
-                </div>
+            {/*
+              The label/control wiring is Field's job now. This used to be four
+              hand-built pairs sharing two class strings copied into all four
+              modes, with the caller responsible for generating an id and
+              matching it in htmlFor -- wiring that fails silently, because the
+              control still works and only screen readers notice.
+            */}
+            <FieldRow columns={4}>
+                <SelectField
+                    label={t('action')}
+                    value={operation}
+                    onChange={(e) => setOperation(e.target.value as Operation)}
+                >
+                    <option value="add">{t('add')}</option>
+                    <option value="subtract">{t('subtract')}</option>
+                </SelectField>
 
-                <div>
-                    <label htmlFor={`${fieldId}-amount`} className={labelClass}>{t('amount')}</label>
-                    <input id={`${fieldId}-amount`} type="number" inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value === '' ? '' : parseInt(e.target.value))} min="0" className={inputClass} />
-                </div>
+                <InputField
+                    label={t('amount')}
+                    type="number"
+                    inputMode="numeric"
+                    min="0"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value === '' ? '' : parseInt(e.target.value))}
+                />
 
-                <div>
-                    <label htmlFor={`${fieldId}-unit`} className={labelClass}>{t('unit')}</label>
-                    <select id={`${fieldId}-unit`} value={unit} onChange={(e) => setUnit(e.target.value as TimeUnit)} className={inputClass}>
-                        <option value="days">{t('days')}</option>
-                        <option value="weeks">{t('weeks')}</option>
-                        <option value="months">{t('months')}</option>
-                        <option value="years">{t('years')}</option>
-                    </select>
-                </div>
+                <SelectField
+                    label={t('unit')}
+                    value={unit}
+                    onChange={(e) => setUnit(e.target.value as TimeUnit)}
+                >
+                    <option value="days">{t('days')}</option>
+                    <option value="weeks">{t('weeks')}</option>
+                    <option value="months">{t('months')}</option>
+                    <option value="years">{t('years')}</option>
+                </SelectField>
 
-                <div>
-                    <label htmlFor={`${fieldId}-base`} className={labelClass}>{t('startDate')}</label>
-                    <input id={`${fieldId}-base`} type="date" value={baseDate} onChange={(e) => setBaseDate(e.target.value)} className={inputClass} />
-                </div>
-            </div>
+                <InputField
+                    label={t('startDate')}
+                    type="date"
+                    value={baseDate}
+                    onChange={(e) => setBaseDate(e.target.value)}
+                />
+            </FieldRow>
 
             {/*
               The result appears as soon as the inputs are valid — there is no
@@ -110,24 +122,26 @@ export function AddSubtractTime() {
             */}
             <div role="status" aria-live="polite">
                 {result && (
-                    <div className="mt-8 p-6 rounded-lg bg-blue-50 border border-blue-200 space-y-4">
+                    <Card tone="accent" className="mt-8">
                         <div className="flex justify-between items-start gap-4">
                             <div>
                                 <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{t('result')}</h3>
-                                <p className="text-3xl mt-2 font-bold text-blue-800">
+                                {/* The answer is the reason the page exists, so
+                                    it outranks the surrounding chrome. */}
+                                <p className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
                                     {formatLong(result, locale)}
                                 </p>
                             </div>
                             <div className="flex gap-2 shrink-0">
-                                <button type="button" onClick={handleSave} aria-label={t('save')} title={t('save')} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                <Button variant="secondary" iconOnly onClick={handleSave} aria-label={t('save')} title={t('save')}>
                                     <BookmarkPlus className="w-5 h-5 text-blue-700" aria-hidden="true" />
-                                </button>
-                                <button type="button" onClick={shareUrl} aria-label={t('share')} title={t('share')} className="bg-white hover:bg-slate-100 border border-slate-300 p-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                </Button>
+                                <Button variant="secondary" iconOnly onClick={shareUrl} aria-label={t('share')} title={t('share')}>
                                     {copied ? <Check className="w-5 h-5 text-green-600" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-blue-700" aria-hidden="true" />}
-                                </button>
+                                </Button>
                             </div>
                         </div>
-                    </div>
+                    </Card>
                 )}
             </div>
         </div>

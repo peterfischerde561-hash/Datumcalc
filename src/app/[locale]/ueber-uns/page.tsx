@@ -48,9 +48,9 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
             />
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-12 tracking-tight text-center">
                 {locale === 'de' ? (
-                    <>Wir machen Zeit <span className="text-neon underline decoration-neon/20">berechenbar</span>.</>
+                    <>Wir machen Zeit <span className="text-accent underline decoration-accent/20">berechenbar</span>.</>
                 ) : (
-                    <>We make time <span className="text-neon underline decoration-neon/20">calculable</span>.</>
+                    <>We make time <span className="text-accent underline decoration-accent/20">calculable</span>.</>
                 )}
             </h1>
 
@@ -130,7 +130,7 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                 </section>
 
                 {/* EEAT Signals */}
-                <section className="border-l-4 border-neon pl-10 space-y-6">
+                <section className="border-l-4 border-accent pl-10 space-y-6">
                     <h2 className="text-3xl font-bold text-slate-900">
                         {locale === 'de' ? 'Transparenz & Qualität' : 'Transparency & Quality'}
                     </h2>
