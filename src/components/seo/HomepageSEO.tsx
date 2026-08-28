@@ -66,10 +66,13 @@ const CONTENT: Record<string, any> = {
         seo: {
             headline: 'Datumsrechner für Fristen, Arbeitstage und Countdowns',
             u1: 'Egal ob Sie Projektfristen planen, Ihr genaues Alter in Tagen berechnen oder wissen möchten, an welchem Wochentag ein bestimmtes Datum liegt – unser <strong>Datumsrechner</strong> liefert sekundenschnelle, präzise Antworten. Die Ergebnisse sind perfekt für Kalender, Countdowns und rechtliche Fristen.',
-            // The site is ad- and affiliate-funded (see /ueber-uns), so the
-            // previous "keine Werbung" claim contradicted it. This states only
-            // what remains true once ads are live: no account, and the dates you
-            // type into the calculator are processed in your browser.
+            // This line used to read "keine Werbung", which contradicted a
+            // funding claim on /ueber-uns. That claim has since been removed as
+            // false — the site currently carries no ads and no affiliate links.
+            //
+            // The wording still avoids "werbefrei" on purpose. It would be true
+            // today and silently false the day an ad script ships, and nobody
+            // would notice. What it says instead holds either way.
             u2: 'Mit unserem Tool können Sie <strong>Tage zwischen zwei Daten berechnen</strong>, <strong>Datum addieren oder subtrahieren</strong> sowie <strong>Netto-Arbeitstage</strong> ermitteln – alles in einem einzigen, intuitiven Interface. Keine Anmeldung, keine Datenweitergabe: Ihre Eingaben im Rechner verlassen den Browser nicht.',
             tableTitle: 'Anwendungsfälle im Überblick',
             th1: 'Anwendungsfall',

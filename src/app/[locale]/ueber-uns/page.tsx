@@ -121,10 +121,25 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                     <h2 className="text-3xl font-bold text-slate-900">
                         {locale === 'de' ? 'Transparenz & Qualität' : 'Transparency & Quality'}
                     </h2>
-                    <p className="text-slate-700 leading-relaxed italic text-lg">
+                    {/*
+                      This claimed the project was funded by "dezente
+                      Werbeanzeigen und Affiliate-Links". There are none: no ad
+                      network is loaded and no affiliate link is rendered
+                      anywhere on the site. It was the only page asserting a
+                      monetization that does not exist, and it is what the
+                      homepage's removed "keine Werbung" line was contradicting.
+                      The contradiction is resolved by deleting the false half.
+
+                      Deliberately no replacement claim about funding. "Derzeit
+                      werbefrei" would be true today and silently false the day
+                      an ad script ships — the same decay this codebase keeps
+                      removing elsewhere. What is stated below is only what the
+                      code does, which stays true either way.
+                    */}
+                    <p className="text-slate-700 leading-relaxed text-lg">
                         {locale === 'de'
-                            ? 'Wir finanzieren dieses Projekt durch dezente Werbeanzeigen und Affiliate-Links, um den Dienst für unsere Nutzer dauerhaft kostenlos zu halten. Dabei legen wir größten Wert auf den Schutz Ihrer Privatsphäre und die Einhaltung höchster technischer Standards.'
-                            : 'We finance this project through subtle advertisements and affiliate links in order to keep the service permanently free for our users. In doing so, we place the highest value on protecting your privacy and complying with the highest technical standards.'}
+                            ? 'Der Datumsrechner ist ohne Anmeldung nutzbar. Die Daten, die Sie in den Rechner eingeben, werden im Browser verarbeitet und nicht an uns übertragen. Wie jede Berechnung zustande kommt, steht offen dokumentiert unter „Wie wir rechnen“ – einschließlich der Fälle, die der Rechner bewusst nicht abdeckt.'
+                            : 'The date calculator works without registration. The dates you type into it are processed in your browser and are not transmitted to us. How every calculation is produced is documented openly under “How we calculate” – including the cases the calculator deliberately does not cover.'}
                     </p>
                 </section>
 
