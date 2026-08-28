@@ -32,7 +32,7 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
 
     return (
-        <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <Breadcrumbs
                 className="mb-8"
                 items={[
@@ -106,7 +106,7 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
                     </p>
                 </section>
             </div>
-        </main>
+        </div>
     );
 }
 

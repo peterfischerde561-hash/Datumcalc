@@ -1,15 +1,14 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Link, usePathname, useRouter, routing, locales } from '@/i18n/routing';
+import { Link, usePathname, routing, locales } from '@/i18n/routing';
 import NextLink from 'next/link';
-import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
+import { useParams, useRouter as useNextRouter } from 'next/navigation';
 import { ROUTES } from '@/lib/routes';
 import { getLocalizedArticleSlug } from '@/lib/articles';
-import { translateSlug, reverseTranslateSlug, getCanonicalPath, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { translateSlug, reverseTranslateSlug, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 import { routeLabel } from '@/lib/seo/routeLabels';
 import {
-    CalendarDays,
     Menu,
     X,
     SplitSquareHorizontal,
@@ -27,21 +26,28 @@ export function Header() {
     const t = useTranslations('Header');
     const tCommon = useTranslations('Common.languages');
     const locale = useLocale();
-    const router = useRouter();
     const pathname = usePathname();
     const params = useParams();
-    const nextPathname = useNextPathname();
     const nextRouter = useNextRouter();
-    const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [langOpen, setLangOpen] = useState(false);
     const langRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 60);
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    /*
+     * The header was `fixed` and shrank from py-5 to py-3 past 60px of scroll,
+     * driven by a scroll listener and a state update.
+     *
+     * Being fixed took it out of flow, and nothing put the space back: the
+     * layout's <main> has no top offset, so every page had to pad its own top
+     * to clear it. Only the homepage did (pt-28). On the other ten routes the
+     * first ~80px of content sat underneath the header.
+     *
+     * `sticky` occupies its space and then follows the scroll, so the offset
+     * problem cannot exist. The height is now constant, which is also what
+     * makes sticky safe -- a header that resizes while stuck reflows the
+     * document under it. That removes the scroll listener and the re-render
+     * with it.
+     */
 
     // Close lang dropdown on outside click
     useEffect(() => {
@@ -118,22 +124,22 @@ export function Header() {
     return (
         <>
             {/* ── Skip-to-content link (SEO + A11y) ── */}
-            <a
-                href="#main-content"
-                id="skip-nav"
-                className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-5 focus:py-2.5 focus:rounded-xl focus:bg-neon focus:text-white focus:font-bold focus:text-sm focus:shadow-[0_0_20px_rgba(255,0,85,0.5)] focus:outline-none"
-            >
+            {/*
+              Styled entirely by #skip-nav in globals.css. It previously carried
+              that CSS *and* a stack of Tailwind focus utilities implementing a
+              second, different reveal (absolute/top:-100% versus
+              sr-only/focus:fixed). The Tailwind version also painted a hot-pink
+              glow, rgba(255,0,85,0.5), left over from a neon theme this palette
+              replaced.
+            */}
+            <a href="#main-content" id="skip-nav">
                 {t('skipToContent')}
             </a>
 
             {/* ── Main Header ── */}
             <header
                 role="banner"
-                className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ease-in-out ${
-                    isScrolled
-                        ? 'bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-sm py-3'
-                        : 'bg-white/80 backdrop-blur-sm border-b border-transparent py-5'
-                }`}
+                className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-slate-200 py-3"
             >
                 <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between gap-4">
@@ -162,9 +168,14 @@ export function Header() {
                         {/* ── Desktop Navigation ── */}
                         <nav
                             aria-label={t('Nav.ariaLabel')}
+                            /*
+                              No SiteNavigationElement microdata. Structured
+                              data is JSON-LD everywhere else after the schema
+                              audit, and this was the last microdata island --
+                              a second, weaker vocabulary describing navigation
+                              the sitemap and internal links already express.
+                            */
                             className="hidden lg:flex lg:flex-row items-center gap-1 bg-slate-100 px-2 py-1.5 rounded-2xl border border-slate-200"
-                            itemScope
-                            itemType="https://schema.org/SiteNavigationElement"
                         >
                             {navLinks.map((link) => {
                                 const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
@@ -174,7 +185,6 @@ export function Header() {
                                         href={link.href}
                                         aria-current={isActive ? 'page' : undefined}
                                         title={link.description}
-                                        itemProp="url"
                                         className={`relative flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-200 group overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                                             isActive
                                                 ? 'text-blue-700 bg-blue-50'
@@ -187,11 +197,15 @@ export function Header() {
                                             }`}
                                             aria-hidden="true"
                                         />
-                                        <span itemProp="name">{link.label}</span>
+                                        <span>{link.label}</span>
+                                        {/* Was bg-neon-blue with a cyan glow,
+                                            rgba(0,210,255,0.7) -- the other
+                                            surviving artefact of the neon
+                                            theme, on a navy palette. */}
                                         {isActive && (
                                             <span
                                                 aria-hidden="true"
-                                                className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-[2px] bg-neon-blue rounded-t-full shadow-[0_-2px_8px_rgba(0,210,255,0.7)]"
+                                                className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-[2px] bg-blue-700 rounded-full"
                                             />
                                         )}
                                     </Link>
@@ -210,7 +224,10 @@ export function Header() {
                                     aria-expanded={langOpen}
                                     aria-label={t('Nav.languageLabel')}
                                     onClick={() => setLangOpen(!langOpen)}
-                                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-slate-900 px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                                    /* h-11 = 44px, the minimum comfortable
+                                       target. Was px-3 py-2 on text-xs, which
+                                       came out around 32px. */
+                                    className="flex items-center gap-1.5 h-11 px-4 text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-slate-900 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                                 >
                                     <Globe className="w-3.5 h-3.5" aria-hidden="true" />
                                     {locale.toUpperCase()}
@@ -244,7 +261,7 @@ export function Header() {
                             {/* CTA */}
                             <NextLink
                                 href={locale === 'de' ? '/#tools' : `/${locale}#tools`}
-                                className="group flex items-center gap-2 bg-blue-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-blue-800 transition-all duration-200 shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                className="group flex items-center gap-2 h-11 bg-blue-700 text-white font-bold text-sm px-5 rounded-xl hover:bg-blue-800 transition-all duration-200 shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                             >
                                 {t('Nav.cta')}
                                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
@@ -257,7 +274,7 @@ export function Header() {
                             aria-expanded={mobileMenuOpen}
                             aria-label={mobileMenuOpen ? t('Nav.closeMenu') : t('Nav.openMenu')}
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="lg:hidden relative z-50 p-2.5 rounded-xl text-slate-600 hover:text-slate-900 bg-white border border-slate-300 hover:bg-slate-100 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                            className="lg:hidden relative z-50 flex items-center justify-center h-11 w-11 rounded-xl text-slate-600 hover:text-slate-900 bg-white border border-slate-300 hover:bg-slate-100 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                         >
                             <span aria-hidden="true">
                                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -311,8 +328,6 @@ export function Header() {
 
                     <nav
                         aria-label={t('Nav.mobileNavLabel')}
-                        itemScope
-                        itemType="https://schema.org/SiteNavigationElement"
                         className="flex flex-col gap-2 flex-1"
                     >
                         {navLinks.map((link) => {
@@ -321,7 +336,6 @@ export function Header() {
                                 <Link
                                     key={link.href}
                                     href={link.href}
-                                    itemProp="url"
                                     aria-current={isActive ? 'page' : undefined}
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={`flex items-center gap-4 px-6 py-5 rounded-2xl text-xl font-bold transition-all duration-200 ${
@@ -331,12 +345,12 @@ export function Header() {
                                     }`}
                                 >
                                     <link.icon
-                                        className={`w-6 h-6 shrink-0 ${isActive ? 'text-blue-700' : 'text-slate-400'}`}
+                                        className={`w-6 h-6 shrink-0 ${isActive ? 'text-blue-700' : 'text-slate-500'}`}
                                         aria-hidden="true"
                                     />
-                                    <span itemProp="name">{link.label}</span>
+                                    <span>{link.label}</span>
                                     {isActive && (
-                                        <span aria-hidden="true" className="ml-auto w-2 h-2 rounded-full bg-neon-blue animate-pulse shrink-0" />
+                                        <span aria-hidden="true" className="ml-auto w-2 h-2 rounded-full bg-blue-700 shrink-0" />
                                     )}
                                 </Link>
                             );
@@ -355,7 +369,9 @@ export function Header() {
 
                     {/* Mobile Language Switcher */}
                     <div className="border-t border-slate-200 pt-6">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-4 px-2">
+                        {/* Was text-slate-400: 2.79:1 on white, under the 4.5:1
+                            floor, on 12px uppercase text. slate-600 is 7:1. */}
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600 mb-4 px-2">
                             {t('Nav.languageLabel')}
                         </p>
                         <div className="flex flex-col gap-2">
@@ -371,7 +387,7 @@ export function Header() {
                                     }`}
                                 >
                                     <span className="capitalize">{tCommon(loc)}</span>
-                                    <span className="text-[10px] opacity-40 uppercase tracking-widest">{loc}</span>
+                                    <span className="text-xs text-slate-500 uppercase tracking-widest">{loc}</span>
                                 </button>
                             ))}
                         </div>

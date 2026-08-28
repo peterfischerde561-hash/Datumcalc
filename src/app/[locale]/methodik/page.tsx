@@ -190,7 +190,7 @@ export default async function MethodologyPage({ params }: { params: Promise<{ lo
           ];
 
     return (
-        <main className="flex-1 w-full bg-white text-slate-800">
+        <div className="flex-1 w-full bg-white text-slate-800">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
                 <BreadcrumbSchema items={breadcrumbItems} />
 
@@ -227,6 +227,6 @@ export default async function MethodologyPage({ params }: { params: Promise<{ lo
                     ))}
                 </div>
             </div>
-        </main>
+        </div>
     );
 }

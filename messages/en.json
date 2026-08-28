@@ -62,7 +62,8 @@
         "example2": "Days until Christmas",
         "example3": "Business days 2024",
         "history": "Recent Calculations",
-        "clearHistory": "Clear History"
+        "clearHistory": "Clear History",
+        "removeEntry": "Remove entry"
     },
     "Calculator": {
         "startDate": "Start Date",

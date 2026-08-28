@@ -80,7 +80,7 @@ export function BusinessDays() {
     const labelClass = "block text-sm font-semibold text-slate-700 mb-1.5";
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-300">
+        <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label htmlFor={`${fieldId}-start`} className={labelClass}>{t('startDate')}</label>

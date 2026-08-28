@@ -46,7 +46,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     const t = await getTranslations({ locale, namespace: 'Header' });
 
     return (
-        <div className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24 lg:pt-32 lg:pb-32">
+        <div className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            {/* pt-28 lg:pt-32 stood here to clear a fixed header. The header is
+                sticky now and occupies its own space, so this is ordinary page
+                padding rather than a manual offset the other ten routes
+                forgot. */}
             {/* The homepage is the calculator, so it declares the application. */}
             <WebApplicationSchema locale={locale} />
             {/*

@@ -33,7 +33,7 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
 
     return (
-        <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             {/*
               No WebApplicationSchema here. The page embeds a CalculatorCore as
               a demonstration, but the page is about the project — the
@@ -163,7 +163,7 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                     </div>
                 </section>
             </div>
-        </main>
+        </div>
     );
 }
 

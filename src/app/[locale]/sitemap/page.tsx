@@ -56,7 +56,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
     const legalRoutes = ['ueber-uns', 'agb', 'datenschutz', 'impressum'] as const;
 
     return (
-        <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
             <Breadcrumbs
 
@@ -225,6 +225,6 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                     </div>
                 </section>
             </div>
-        </main>
+        </div>
     );
 }

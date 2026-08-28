@@ -283,7 +283,7 @@ export default async function ProgrammaticPage({
     }
 
     return (
-        <main className="flex-1 w-full relative bg-white text-slate-800">
+        <div className="flex-1 w-full relative bg-white text-slate-800">
             <BreadcrumbSchema items={breadcrumbItems} />
             {/*
               One WebApplication entity, not one per URL. This used to say the
@@ -407,7 +407,7 @@ export default async function ProgrammaticPage({
                 </>
             )}
             </article>
-        </main>
+        </div>
     );
 }
 

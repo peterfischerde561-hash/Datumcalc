@@ -62,7 +62,8 @@
         "example2": "Tage bis Weihnachten",
         "example3": "Arbeitstage 2024",
         "history": "Letzte Berechnungen",
-        "clearHistory": "Verlauf löschen"
+        "clearHistory": "Verlauf löschen",
+        "removeEntry": "Eintrag entfernen"
     },
     "Calculator": {
         "startDate": "Startdatum",

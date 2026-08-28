@@ -46,7 +46,7 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
     ];
 
     return (
-        <main className="flex-1 w-full bg-white text-slate-800">
+        <div className="flex-1 w-full bg-white text-slate-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <Breadcrumbs items={breadcrumbItems} className="mb-8" />
             <ItemListSchema
@@ -89,7 +89,7 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
                 ))}
             </div>
           </div>
-        </main>
+        </div>
     );
 }
 

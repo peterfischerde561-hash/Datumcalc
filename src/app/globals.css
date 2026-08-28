@@ -69,13 +69,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     animation: slide-up-fade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Glassmorphism helpers */
-.glass-panel {
-    background: var(--color-glass);
-    backdrop-filter: blur(24px);
-    border: 1px solid var(--color-glass-border);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
+/*
+ * .glass-panel was defined here and used by nothing -- zero references in the
+ * entire codebase. Removed rather than kept "in case": an unused style is a
+ * design decision nobody can see, and it invites reuse of a look this palette
+ * abandoned.
+ */
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {

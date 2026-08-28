@@ -91,9 +91,43 @@ function checks(html, route) {
         problems.push('calculator present but no live region for the result');
     }
 
-    // 8. A skip link exists.
-    if (!/sr-only[^"]*focus:not-sr-only/.test(html)) {
-        problems.push('no skip link');
+    /*
+     * 8. A skip link exists and points at the main landmark.
+     *
+     * This matched the Tailwind classes `sr-only ... focus:not-sr-only`, which
+     * described one particular implementation rather than the requirement. The
+     * skip link is now styled solely by #skip-nav in globals.css, and the check
+     * would have failed a working link. Assert the contract instead: a link to
+     * #main-content, and a target with that id.
+     */
+    if (!/<a[^>]*href="#main-content"/i.test(html)) {
+        problems.push('no skip link to #main-content');
+    }
+    if (!/id="main-content"/.test(html)) {
+        problems.push('skip-link target #main-content does not exist');
+    }
+
+    /*
+     * 9. Exactly one <main>.
+     *
+     * The layout rendered <main id="main-content"> and every page rendered a
+     * second <main> inside it -- invalid HTML on 20 of 21 routes, and it left
+     * the skip target ambiguous. Nothing here caught it, because every other
+     * check looked at elements rather than landmarks.
+     */
+    const mains = (html.match(/<main[\s>]/gi) || []).length;
+    if (mains !== 1) problems.push(`${mains} <main> elements (expected exactly 1)`);
+
+    const banners = (html.match(/role="banner"/g) || []).length;
+    if (banners > 1) problems.push(`${banners} banner landmarks`);
+
+    // 10. Tabs carry the state that makes them tabs.
+    for (const [, attrs] of html.matchAll(/<button\b([^>]*role="tab"[^>]*)>/gi)) {
+        if (!/aria-selected=/.test(attrs)) problems.push('role="tab" without aria-selected');
+        if (!/aria-controls=/.test(attrs)) problems.push('role="tab" without aria-controls');
+    }
+    if (/role="tab"/.test(html) && !/role="tabpanel"/.test(html)) {
+        problems.push('role="tab" present but no tabpanel');
     }
 
     return problems;
