@@ -24,6 +24,7 @@ import {
 } from '@/lib/date/format';
 import { EVENT_NAMES } from '@/lib/events';
 import { ResultValue } from './ResultValue';
+import { Card } from '@/components/ui/Card';
 
 const DE_WEEKDAYS = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
 
@@ -40,13 +41,22 @@ function AnswerFrame({
     headline: React.ReactNode;
     detail: React.ReactNode;
 }) {
+    /*
+     * The answer outranks the question.
+     *
+     * These pages exist to answer one thing, and the h1 restating that question
+     * was rendering larger than the answer to it -- text-4xl md:text-5xl over a
+     * block that topped out at md:text-4xl. The answer now leads the page
+     * visually, which is the only hierarchy that makes sense on a page someone
+     * arrived at by asking exactly this.
+     */
     return (
-        <div className="rounded-xl border border-blue-200 bg-blue-50 px-6 py-8 sm:py-10">
-            <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 leading-snug">
+        <Card tone="accent" padding="none" className="px-6 py-8 sm:px-8 sm:py-10">
+            <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight text-balance">
                 {headline}
             </p>
             <p className="mt-4 text-base sm:text-lg text-slate-700">{detail}</p>
-        </div>
+        </Card>
     );
 }
 

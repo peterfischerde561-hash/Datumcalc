@@ -6,6 +6,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { WebApplicationSchema } from '@/components/seo/WebApplicationSchema';
+import { Card } from '@/components/ui/Card';
 
 // The titles carry the current year, computed from the Berlin date, so these
 // pages are date-dependent and must not be frozen for a day at the year
@@ -251,7 +252,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                 )}
             </div>
 
-            <section aria-label={isDe ? "Rechner" : "Calculator"} className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 mb-16 shadow-sm">
+            <Card as="section" aria-label={isDe ? 'Rechner' : 'Calculator'} className="mb-16">
                 {/*
                   The hub opened on whatever CalculatorCore defaults to, which is
                   the date-difference tab — so /arbeitstage, /alter and /addieren
@@ -260,13 +261,13 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                   mode; the hubs never did.
                 */}
                 <CalculatorCore initialMode={calcMode as 'difference' | 'add_subtract' | 'business_days' | 'age'} />
-            </section>
+            </Card>
 
             {(transactional.length > 0 || informational.length > 0) && (
                 <div className="max-w-5xl mx-auto space-y-12">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         {/* Popular / Transactional */}
-                        <div className="bg-white border border-slate-200 p-8 rounded-xl">
+                        <Card>
                             <h2 className="text-2xl font-bold mb-6 text-blue-700">
                                 {locale === 'de' ? 'Häufige Berechnungen' : 'Popular Calculations'}
                             </h2>
@@ -294,11 +295,11 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                     );
                                 })}
                             </ul>
-                        </div>
+                        </Card>
 
                         {/* Events / Informational */}
                         {informational.length > 0 && (
-                            <div className="bg-white border border-slate-200 p-8 rounded-xl">
+                            <Card>
                                 <h2 className="text-2xl font-bold mb-6 text-blue-700">
                                     {locale === 'de' ? 'Meilensteine & Events' : 'Milestones & Events'}
                                 </h2>
@@ -318,7 +319,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                         );
                                     })}
                                 </ul>
-                            </div>
+                            </Card>
                         )}
                     </div>
 
@@ -328,14 +329,14 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
             {/* Category-specific explainer + FAQ (unique per tool) */}
             {hub && (
                 <div className="max-w-5xl mx-auto space-y-12 mt-16">
-                    <section aria-label={hub.explainerHeading} className="bg-white border border-slate-200 p-8 md:p-10 rounded-xl">
+                    <Card as="section" padding="roomy" aria-label={hub.explainerHeading}>
                         <h2 className="text-2xl font-bold text-slate-900 mb-6">{hub.explainerHeading}</h2>
                         <div className="space-y-4 text-slate-700 leading-relaxed text-lg">
                             {hub.explainer.map((p, i) => <p key={i}>{p}</p>)}
                         </div>
-                    </section>
+                    </Card>
 
-                    <section aria-label={isDe ? 'Häufige Fragen' : 'Frequently asked questions'} className="bg-white border border-slate-200 p-8 md:p-10 rounded-xl">
+                    <Card as="section" padding="roomy" aria-label={isDe ? 'Häufige Fragen' : 'Frequently asked questions'}>
                         <h2 className="text-2xl font-bold text-slate-900 mb-8">{isDe ? 'Häufige Fragen' : 'Frequently asked questions'}</h2>
                         {hubFaqJsonLd && (
                             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubFaqJsonLd) }} />
@@ -348,7 +349,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                 </div>
                             ))}
                         </div>
-                    </section>
+                    </Card>
                 </div>
             )}
           </div>

@@ -10,6 +10,8 @@ import { SplitSquareHorizontal, PlusSquare, Briefcase, User } from 'lucide-react
 import { LiveDatePreview } from '@/components/hero/LiveDatePreview';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 import { QuickShortcuts } from '@/components/hero/QuickShortcuts';
+import { routeLabel } from '@/lib/seo/routeLabels';
+import { Card, CardLink } from '@/components/ui/Card';
 
 // The hero states today's date, ordinal day and ISO week, so this page is
 // date-dependent. Hourly ISR bounds staleness; the daily cron refreshes it at
@@ -88,9 +90,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             </header>
 
             {/* The tool itself — first interactive element on the page. */}
-            <section
+            <Card
+                as="section"
                 aria-labelledby="calculator-heading"
-                className="mt-10 w-full rounded-2xl border border-slate-200 bg-white p-5 md:p-8 shadow-lg animate-slide-up-fade"
+                className="mt-10 animate-slide-up-fade"
             >
                 <h2 id="calculator-heading" className="text-2xl font-bold text-slate-900 mb-1">
                     {locale === 'de' ? 'Datum berechnen' : 'Calculate a date'}
@@ -101,7 +104,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                         : 'Pick a calculator, enter your dates – the result appears below straight away.'}
                 </p>
                 <CalculatorCore />
-            </section>
+            </Card>
 
             {/* ── Understand: what it does, how it works, common questions ── */}
             <HomepageSEO locale={locale} part="understand" />
@@ -115,43 +118,43 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     ? 'Jeder Rechner hat eine eigene Seite mit Erklärung und Beispielen.'
                     : 'Each calculator has its own page with an explanation and examples.'}
             </p>
+            {/*
+              Four near-identical cards written out four times, each retyping a
+              label and description that routeLabels.ts already owns — the same
+              source the nav, breadcrumbs, footer and related links read. That
+              is exactly how one URL came to be called "Differenz" in the nav,
+              "Tage Zählen" in the breadcrumb and "Datumsdifferenz" here.
+
+              The icon chips were purple, blue, sky and green: four arbitrary
+              hues carrying no meaning, and the source of several of the
+              one-off colours the audit found. One accent now.
+            */}
             <section id="tools" aria-labelledby="tools-heading" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 animate-slide-up-fade">
-                <Link href={ROUTES.differenz} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
-                        <SplitSquareHorizontal className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <h3 className="text-slate-900 font-bold text-lg mb-1">{locale === 'de' ? 'Datumsdifferenz' : 'Date Difference'}</h3>
-                        <p className="text-slate-600 text-sm leading-snug">{locale === 'de' ? 'Tage zwischen zwei Daten berechnen' : 'Calculate days between two dates'}</p>
-                    </div>
-                </Link>
-                <Link href={ROUTES.addieren} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-700 group-hover:scale-110 transition-transform">
-                        <PlusSquare className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <h3 className="text-slate-900 font-bold text-lg mb-1">{locale === 'de' ? 'Datum addieren' : 'Add to Date'}</h3>
-                        <p className="text-slate-600 text-sm leading-snug">{locale === 'de' ? 'Tage addieren oder abziehen' : 'Add or subtract days from a date'}</p>
-                    </div>
-                </Link>
-                <Link href={ROUTES.arbeitstage} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center text-sky-600 group-hover:scale-110 transition-transform">
-                        <Briefcase className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <h3 className="text-slate-900 font-bold text-lg mb-1">{locale === 'de' ? 'Arbeitstage' : 'Business Days'}</h3>
-                        <p className="text-slate-600 text-sm leading-snug">{locale === 'de' ? 'Netto-Arbeitstage ermitteln' : 'Calculate net business days'}</p>
-                    </div>
-                </Link>
-                <Link href={ROUTES.alter} className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all shadow-sm text-left flex flex-col gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600 group-hover:scale-110 transition-transform">
-                        <User className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <h3 className="text-slate-900 font-bold text-lg mb-1">{locale === 'de' ? 'Alter berechnen' : 'Age Calculator'}</h3>
-                        <p className="text-slate-600 text-sm leading-snug">{locale === 'de' ? 'Genaues Alter in Tagen & Jahren' : 'Exact age in days and years'}</p>
-                    </div>
-                </Link>
+                {([
+                    { key: 'differenz', href: ROUTES.differenz, Icon: SplitSquareHorizontal },
+                    { key: 'addieren', href: ROUTES.addieren, Icon: PlusSquare },
+                    { key: 'arbeitstage', href: ROUTES.arbeitstage, Icon: Briefcase },
+                    { key: 'alter', href: ROUTES.alter, Icon: User }
+                ] as const).map(({ key, href, Icon }) => {
+                    const label = routeLabel(key, locale);
+                    return (
+                        <CardLink key={key} className="group">
+                            <Link href={href} className="flex flex-col gap-3 p-5 text-left outline-none">
+                                <span className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-700 shrink-0">
+                                    <Icon className="w-5 h-5" aria-hidden="true" />
+                                </span>
+                                <span>
+                                    <h3 className="text-slate-900 font-bold text-lg mb-1 group-hover:text-blue-700 transition-colors">
+                                        {label.label}
+                                    </h3>
+                                    <span className="block text-slate-600 text-sm leading-snug">
+                                        {label.description}
+                                    </span>
+                                </span>
+                            </Link>
+                        </CardLink>
+                    );
+                })}
             </section>
 
 

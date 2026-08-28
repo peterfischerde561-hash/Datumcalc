@@ -1,6 +1,7 @@
 import NextLink from 'next/link';
 import { getTodayInTimeZone, isLeapYear } from '@/lib/date/civil';
 import { getLeapYearFacts, leapYearTable, skippedCenturies } from '@/lib/seo/guideFacts';
+import { Card } from '@/components/ui/Card';
 
 /**
  * Computed sections for the guides.
@@ -29,7 +30,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
     return (
         <div className="not-prose my-12 space-y-10">
             {/* Answers "Ist 2026 ein Schaltjahr?" — the query, with the year computed. */}
-            <section className="rounded-xl border border-slate-200 bg-white p-6 md:p-8">
+            <Card as="section">
                 <h2 className="text-2xl font-bold text-slate-900 mb-3">
                     {isDe
                         ? `Ist ${today.year} ein Schaltjahr?`
@@ -60,7 +61,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                         </>
                     )}
                 </p>
-            </section>
+            </Card>
 
             {/* The rule applied to years the reader can actually see. */}
             <section>

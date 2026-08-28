@@ -8,6 +8,7 @@ import {
 } from '@/lib/date/civil';
 import { formatLong } from '@/lib/date/format';
 import { ResultValue } from '@/components/seo/ResultValue';
+import { Card } from '@/components/ui/Card';
 
 /**
  * Today's date, ordinal day and ISO week, from the canonical Europe/Berlin date.
@@ -32,7 +33,7 @@ export function LiveDatePreview({ locale }: { locale: string }) {
     const val = 'text-sm font-bold text-slate-900 tabular-nums';
 
     return (
-        <div className="rounded-xl border border-slate-200 bg-white px-5 py-4">
+        <Card padding="none" className="px-5 py-4">
             <div className="flex flex-wrap items-baseline gap-x-8 gap-y-3">
                 <div className={cell}>
                     <span className={key}>{isDe ? 'Heute' : 'Today'}</span>
@@ -76,6 +77,6 @@ export function LiveDatePreview({ locale }: { locale: string }) {
                     </span>
                 </div>
             </div>
-        </div>
+        </Card>
     );
 }

@@ -1,4 +1,5 @@
 import { generateDynamicFAQs } from '@/lib/seo/contentEngine';
+import { Card } from '@/components/ui/Card';
 
 /**
  * Visible FAQ for the programmatic calculator pages.
@@ -24,7 +25,7 @@ export function FAQBlock({ intent, slug, locale }: { intent: string; slug: strin
     const faqs = generateDynamicFAQs(intent, slug, locale, numValue);
 
     return (
-        <section className="bg-white border border-slate-200 rounded-xl p-6 md:p-8">
+        <Card as="section">
             <h2 className="text-2xl font-bold mb-8 text-slate-900">
                 {locale === 'de' ? 'Häufig gestellte Fragen (FAQ)' : 'Frequently Asked Questions (FAQ)'}
             </h2>
@@ -37,6 +38,6 @@ export function FAQBlock({ intent, slug, locale }: { intent: string; slug: strin
                     </div>
                 ))}
             </div>
-        </section>
+        </Card>
     );
 }

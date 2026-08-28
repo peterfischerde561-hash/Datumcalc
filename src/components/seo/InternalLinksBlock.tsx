@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { translateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import { relatedFor } from '@/lib/seo/relatedLinks';
 import { routeLabel, ToolKey } from '@/lib/seo/routeLabels';
+import { Card } from '@/components/ui/Card';
 
 /**
  * Related calculations for a programmatic page.
@@ -72,7 +73,7 @@ export function InternalLinksBlock({
     });
 
     return (
-        <section className="bg-white border border-slate-200 rounded-xl p-6 md:p-8">
+        <Card as="section">
             <h2 className="text-xl font-bold mb-6 text-slate-900">
                 {isDe ? 'Verwandte Berechnungen & Themen' : 'Related Calculations'}
             </h2>
@@ -102,7 +103,7 @@ export function InternalLinksBlock({
                     </li>
                 ))}
             </ul>
-        </section>
+        </Card>
     );
 }
 

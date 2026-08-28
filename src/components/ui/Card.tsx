@@ -42,7 +42,8 @@ export function Card({
 }: {
     tone?: CardTone;
     padding?: CardPadding;
-    as?: 'div' | 'section' | 'article' | 'aside';
+    /** `li` is here so ordered/unordered lists keep valid children. */
+    as?: 'div' | 'section' | 'article' | 'aside' | 'li';
     className?: string;
     children: React.ReactNode;
 } & React.HTMLAttributes<HTMLElement>) {

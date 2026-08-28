@@ -8,6 +8,7 @@ import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { Card } from '@/components/ui/Card';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -57,7 +58,7 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
             <div className="prose prose-lg max-w-4xl mx-auto space-y-16 mt-16 leading-relaxed">
 
                 {/* Mission Section */}
-                <section className="bg-white border border-slate-200 p-10 rounded-2xl shadow-sm">
+                <Card as="section" padding="roomy">
                     <h2 className="text-3xl font-bold text-slate-900 mb-6">
                         {locale === 'de' ? 'Unsere Mission' : 'Our Mission'}
                     </h2>
@@ -66,10 +67,10 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                             ? 'In einer digitalisierten Welt sind exakte Zeitspannen und Fristen oft entscheidend – sei es für berufliche Projekte, rechtliche Zeitrahmen oder persönliche Meilensteine. Unsere Mission ist es, komplexe Datumsberechnungen für jeden zugänglich, schnell und mathematisch präzise zu machen. \n\nWas als kleines Tool für den Eigenbedarf begann, hat sich zu einer umfassenden Plattform für Zeitmanagement-Tools entwickelt. Wir glauben fest daran, dass Präzision kein Privileg von Experten sein sollte, sondern ein Standard für alle Internetnutzer.'
                             : 'In a digitized world, exact time spans and deadlines are often crucial – whether for professional projects, legal timeframes, or personal milestones. Our mission is to make complex date calculations accessible to everyone, fast and mathematically precise. \n\nWhat began as a small tool for our own use has developed into a comprehensive platform for time management tools. We firmly believe that precision should not be a privilege of experts, but a standard for all internet users.'}
                     </p>
-                </section>
+                </Card>
 
                 {/* Team & Author Section */}
-                <section className="bg-white border border-slate-200 p-10 rounded-2xl shadow-sm flex flex-col md:flex-row items-center gap-8">
+                <Card as="section" padding="roomy" className="flex flex-col md:flex-row items-center gap-8">
                     {/*
                       A profile for "Felix Schmidt" stood here, described as
                       "Lead Developer & Kalender-Experte" while the same name
@@ -88,7 +89,7 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                                 : 'Every calculation runs through one shared calendar library: date arithmetic works on whole calendar days rather than timestamps, so a daylight-saving change cannot shift a date by a day. The leap-year rule, month lengths and ISO 8601 calendar weeks are covered by automated tests, including the edge cases around February 29 and the turn of the year.'}
                         </p>
                     </div>
-                </section>
+                </Card>
 
                 {/* Authority & Trust Section */}
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -104,7 +105,7 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                     </div>
                     {/* "100% Mathematisch exakt" was here — a claim no
                         implementation can support. States the actual basis instead. */}
-                    <div className="bg-blue-50 border border-blue-200 p-8 rounded-2xl flex flex-col justify-center gap-3">
+                    <Card tone="accent" className="flex flex-col justify-center gap-3">
                         <span className="text-sm font-bold uppercase tracking-widest text-slate-500">
                             {locale === 'de' ? 'Rechengrundlage' : 'Calculation basis'}
                         </span>
@@ -114,7 +115,7 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                             <li>{locale === 'de' ? 'Kalenderwochen nach ISO 8601' : 'Calendar weeks per ISO 8601'}</li>
                             <li>{locale === 'de' ? 'Stichtag in der Zeitzone Europe/Berlin' : 'Reference day in the Europe/Berlin timezone'}</li>
                         </ul>
-                    </div>
+                    </Card>
                 </section>
 
                 {/* Technical Vision */}

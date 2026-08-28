@@ -39,6 +39,7 @@ import { calculateOffsetDate, TimeUnit } from '@/lib/calculator';
 import { getNextOccurrenceCivil } from '@/lib/events';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { WebApplicationSchema } from '@/components/seo/WebApplicationSchema';
+import { Card } from '@/components/ui/Card';
 import { CountdownTimer } from '@/components/countdown/CountdownTimer';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string; slug: string[] }> }) {
@@ -356,12 +357,12 @@ export default async function ProgrammaticPage({
                     <InternalLinksBlock locale={locale} intent={intent} slug={canonicalSlugStr} />
                     <FAQBlock intent={intent} slug={slugStr} locale={locale} />
 
-                    <section aria-label={isDe ? 'Datumsdifferenz-Rechner' : 'Date difference calculator'} className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
+                    <Card as="section" aria-label={isDe ? 'Datumsdifferenz-Rechner' : 'Date difference calculator'}>
                         <h2 className="text-2xl font-bold text-slate-900 mb-6">
                             {isDe ? 'Anderes Datum berechnen' : 'Calculate another date'}
                         </h2>
                         <CalculatorCore initialMode={mode as any} />
-                    </section>
+                    </Card>
 
                     <TrustSignals locale={locale} />
                 </>
@@ -393,9 +394,9 @@ export default async function ProgrammaticPage({
                         </div>
                     </header>
 
-                    <section aria-label="Interaktiver Rechner" className="w-full rounded-xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
+                    <Card as="section" aria-label={isDe ? 'Interaktiver Rechner' : 'Interactive calculator'}>
                         <CalculatorCore initialMode={mode as any} />
-                    </section>
+                    </Card>
 
                     <section aria-label="Detaillierte Informationen" className="space-y-10">
                         <SEOContentBlock intent={intent} slug={slugStr} locale={locale} />

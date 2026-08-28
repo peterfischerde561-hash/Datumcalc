@@ -9,6 +9,7 @@ import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { ItemListSchema } from '@/components/seo/ItemListSchema';
+import { CardLink } from '@/components/ui/Card';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -70,8 +71,8 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
 
             <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
                 {articles.map((article) => (
-                    <article key={article.slug} className="bg-white border border-slate-200 p-6 rounded-xl hover:border-blue-400 hover:shadow-sm transition-all group">
-                        <Link href={{ pathname: '/ratgeber/[slug]', params: { slug: article.slug } }} className="block">
+                    <CardLink key={article.slug} className="group">
+                        <Link href={{ pathname: '/ratgeber/[slug]', params: { slug: article.slug } }} className="block p-6 outline-none">
                             <h2 className="text-xl font-bold mb-4 text-slate-900 group-hover:text-blue-700 transition-colors">
                                 {article.title}
                             </h2>
@@ -85,7 +86,7 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
                                 </svg>
                             </span>
                         </Link>
-                    </article>
+                    </CardLink>
                 ))}
             </div>
           </div>

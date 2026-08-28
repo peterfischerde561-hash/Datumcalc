@@ -10,6 +10,7 @@ import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata, canonicalUrl } from '@/lib/seo/metadata';
 import { directAnswerFor } from '@/lib/seo/guideFacts';
 import { GuideFacts } from '@/components/seo/GuideFacts';
+import { Card } from '@/components/ui/Card';
 
 export const dynamic = 'force-static';
 // These guides now open with an answer computed from today's date (the next
@@ -139,9 +140,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               manufacturing a hook.
             */}
             {directAnswer && (
-                <section
+                <Card
                     aria-label={isDe ? 'Kurze Antwort' : 'Quick answer'}
-                    className="mb-12 rounded-xl border border-slate-200 bg-white p-6 md:p-8"
+                    className="mb-12"
+                    as="section"
                 >
                     {/*
                       Only re-ask the question when the H1 is not already asking
@@ -153,11 +155,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         <h2 className="text-xl font-bold text-slate-900 mb-3">{directAnswer.question}</h2>
                     )}
                     <p className="text-lg text-slate-700 leading-relaxed">{directAnswer.answer}</p>
-                </section>
+                </Card>
             )}
 
             {/* Key Takeaways */}
-            <section className="mb-16 bg-blue-50 border border-blue-200 rounded-xl p-8 md:p-10">
+            <Card as="section" tone="accent" padding="roomy" className="mb-16">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900">
                     {/* Decorative: it was being read as part of the heading text. */}
                     <span aria-hidden="true" className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700 text-sm">✓</span>
@@ -168,7 +170,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         <li key={point}>{point}</li>
                     ))}
                 </ul>
-            </section>
+            </Card>
 
             {/* Main Article Content */}
             <div

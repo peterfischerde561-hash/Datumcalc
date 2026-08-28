@@ -3,6 +3,7 @@ import { ROUTES } from '@/lib/routes';
 import { CheckCircle2, CalendarCheck2, Clock4, ShieldCheck } from 'lucide-react';
 import { translateSlug } from '@/lib/seo/translations';
 import { routeLabel } from '@/lib/seo/routeLabels';
+import { Card } from '@/components/ui/Card';
 
 /*
  * `siteUrl` and a module-scope `dateModified` stood here, left over from the
@@ -396,16 +397,16 @@ export function HomepageSEO({
                 </header>
                 <ol className="grid md:grid-cols-3 gap-6">
                     {c.howto.steps.map((step: any, i: number) => (
-                        <li key={i} className={`relative p-7 rounded-2xl bg-white border border-slate-200 shadow-sm`}>
-                            <span className={`text-5xl font-black text-slate-200 absolute top-4 right-6 select-none leading-none`}>
-                                {i + 1}
-                            </span>
-                            <span className={`inline-flex items-center justify-center w-9 h-9 rounded-xl text-sm font-black text-blue-700 bg-blue-50 border border-blue-100 mb-4`}>
+                        <Card key={i} as="li" className="relative">
+                            {/* The step number was rendered twice: once as a
+                                giant slate-200 watermark and once as a badge,
+                                both reading "1". The watermark is gone. */}
+                            <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl text-sm font-black text-blue-700 bg-blue-50 border border-blue-100 mb-4">
                                 {i + 1}
                             </span>
                             <h3 className="text-slate-900 font-bold text-lg mb-2">{step.title}</h3>
                             <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
-                        </li>
+                        </Card>
                     ))}
                 </ol>
             </section>
@@ -419,8 +420,8 @@ export function HomepageSEO({
                 </header>
                 <dl className="space-y-3">
                     {c.faqs.map((faq: any, i: number) => (
-                        <details key={i} className="bg-white border border-slate-200 rounded-xl px-6 py-5 group cursor-pointer hover:border-blue-300 transition-all">
-                            <summary className="font-semibold text-lg list-none flex justify-between items-center text-slate-800 group-hover:text-blue-700">
+                        <details key={i} className="bg-white border border-slate-200 rounded-xl px-6 py-5 group hover:border-blue-300 transition-colors">
+                            <summary className="font-semibold text-lg list-none flex justify-between items-center text-slate-800 group-hover:text-blue-700 cursor-pointer min-h-11 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
                                 <dt className="inline">{faq.question}</dt>
                                 <span aria-hidden="true" className="ml-4 shrink-0 text-accent group-open:rotate-180 transition-transform">▼</span>
                             </summary>

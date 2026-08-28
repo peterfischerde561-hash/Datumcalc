@@ -1,4 +1,5 @@
 import { generateSEOContent } from '@/lib/seo/contentEngine';
+import { Card } from '@/components/ui/Card';
 
 export function SEOContentBlock({ intent, slug, locale }: { intent: string; slug: string; locale: string }) {
     const match = slug.match(/^(\d+)-/);
@@ -7,7 +8,7 @@ export function SEOContentBlock({ intent, slug, locale }: { intent: string; slug
     const isDe = locale === 'de';
 
     return (
-        <section className="bg-white border border-slate-200 rounded-xl p-6 md:p-8">
+        <Card as="section">
             <h2 className="text-2xl font-bold mb-6 text-slate-900">
                 {content.heading}
             </h2>
@@ -76,6 +77,6 @@ export function SEOContentBlock({ intent, slug, locale }: { intent: string; slug
                     </ul>
                 </div>
             )}
-        </section>
+        </Card>
     );
 }
