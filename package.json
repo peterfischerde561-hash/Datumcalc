@@ -11,6 +11,8 @@
     "test:watch": "vitest",
     "verify:routes": "node scripts/verify-routes.mjs",
     "verify:a11y": "node scripts/verify-a11y.mjs",
+    "verify:redirects": "node scripts/verify-redirects.mjs",
+    "verify": "node scripts/verify-all.mjs",
     "verify:redirects": "node scripts/verify-redirects.mjs"
   },
   "dependencies": {

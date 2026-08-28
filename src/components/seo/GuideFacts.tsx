@@ -149,16 +149,17 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                         <p>
                             {isDe ? (
                                 <>
-                                    „Ein Monat ab dem 31. Januar" endet nicht am 31. Februar – den gibt es
-                                    nicht. Der{' '}
+                                    {/* German quotation marks, and escaped: a bare " in JSX text is a lint error. */}
+                                    &bdquo;Ein Monat ab dem 31. Januar&ldquo; endet nicht am 31. Februar – den
+                                    gibt es nicht. Der{' '}
                                     <NextLink href="/addieren" className="text-blue-700 hover:underline">Datumsrechner</NextLink>{' '}
                                     begrenzt auf den letzten Tag des Zielmonats: auf den 28. Februar, in
                                     einem Schaltjahr auf den 29.
                                 </>
                             ) : (
                                 <>
-                                    "One month from January 31" does not end on February 31 – there is no
-                                    such date. The{' '}
+                                    &ldquo;One month from January 31&rdquo; does not end on February 31 –
+                                    there is no such date. The{' '}
                                     <NextLink href="/en/add" className="text-blue-700 hover:underline">date calculator</NextLink>{' '}
                                     clamps to the last day of the target month: February 28, or the 29th
                                     in a leap year.

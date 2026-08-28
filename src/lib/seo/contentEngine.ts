@@ -8,8 +8,9 @@
  */
 
 import { reverseTranslateSlug } from './translations';
-import { EVENT_NAMES, getEventDateUTC } from '../events';
-import { formatNumber } from '@/lib/date/format';
+import { EVENT_NAMES, getEventCivilDate } from '../events';
+import { formatNumber, formatDayMonthLong, formatWeekday } from '@/lib/date/format';
+import { getTodayInTimeZone } from '@/lib/date/civil';
 
 type Locale = string;
 
@@ -137,17 +138,19 @@ function isDiffIntent(intent: string) {
 // undefined for events without a meaningful fixed date (e.g. "vacation").
 function buildWeekdayTable(eventKey: string, locale: string): { year: number; date: string; weekday: string }[] | undefined {
     if (eventKey === 'urlaub') return undefined;
-    const intlLoc = locale === 'de' ? 'de-DE' : 'en-US';
-    const currentYear = new Date().getFullYear();
+    // Berlin's year, not the server's. `new Date().getFullYear()` reads the
+    // machine clock, so on 31 December a server running behind Berlin would
+    // start this table on the wrong year.
+    const currentYear = getTodayInTimeZone().year;
     const rows: { year: number; date: string; weekday: string }[] = [];
     for (let i = 0; i < 5; i++) {
         const year = currentYear + i;
-        const d = getEventDateUTC(eventKey, year);
-        if (!d) return undefined;
+        const date = getEventCivilDate(eventKey, year);
+        if (!date) return undefined;
         rows.push({
             year,
-            date: new Intl.DateTimeFormat(intlLoc, { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(d),
-            weekday: new Intl.DateTimeFormat(intlLoc, { weekday: 'long', timeZone: 'UTC' }).format(d),
+            date: formatDayMonthLong(date, locale),
+            weekday: formatWeekday(date, locale),
         });
     }
     return rows;

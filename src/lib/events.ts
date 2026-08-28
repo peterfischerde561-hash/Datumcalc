@@ -53,25 +53,18 @@ export function eventMonthDay(eventKey: string, year: number): { month: number; 
     }
 }
 
-// UTC date for stable weekday/date formatting in server-rendered tables.
-export function getEventDateUTC(eventKey: string, year: number): Date | null {
-    const md = eventMonthDay(eventKey, year);
-    if (!md) return null;
-    return new Date(Date.UTC(year, md.month, md.day));
-}
-
-// Next upcoming occurrence as a LOCAL date at 00:00, for the live countdown.
-export function getNextOccurrence(eventKey: string, from: Date = new Date()): Date | null {
-    const year = from.getFullYear();
-    const md = eventMonthDay(eventKey, year);
-    if (!md) return null;
-    let d = new Date(year, md.month, md.day, 0, 0, 0, 0);
-    if (d.getTime() <= from.getTime()) {
-        const next = eventMonthDay(eventKey, year + 1)!;
-        d = new Date(year + 1, next.month, next.day, 0, 0, 0, 0);
-    }
-    return d;
-}
+/*
+ * The Date-based helpers that used to sit here are gone.
+ *
+ * getNextOccurrence() built a local-time Date and compared it against a Date
+ * carrying a clock time, which is why a countdown read 365 days on the event
+ * day itself. It was replaced by getNextOccurrenceCivil() below and had no
+ * remaining callers.
+ *
+ * getEventDateUTC() returned a UTC Date purely so a table could be formatted;
+ * getEventCivilDate() plus the formatters in date/format.ts do that without a
+ * Date at all.
+ */
 
 // ---------------------------------------------------------------------------
 // Civil-date API — what server-rendered answers and metadata must use.
