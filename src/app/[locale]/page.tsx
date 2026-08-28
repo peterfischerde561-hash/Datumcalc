@@ -2,6 +2,7 @@ import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { SmartInputBar } from '@/components/SmartInputBar';
 import { HomepageSEO } from '@/components/seo/HomepageSEO';
+import { WebApplicationSchema } from '@/components/seo/WebApplicationSchema';
 import { locales, Link } from '@/i18n/routing';
 import { SITE_URL } from "@/lib/constants";
 import { ROUTES } from '@/lib/routes';
@@ -46,6 +47,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
     return (
         <div className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24 lg:pt-32 lg:pb-32">
+            {/* The homepage is the calculator, so it declares the application. */}
+            <WebApplicationSchema locale={locale} />
             {/*
               Page order follows Solve -> Continue -> Understand -> Explore.
               Previously the calculator was the fifth thing on the page, below a

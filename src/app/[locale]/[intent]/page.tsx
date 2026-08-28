@@ -4,7 +4,8 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { locales } from '@/i18n/routing';
 import { setRequestLocale } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
-import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { WebApplicationSchema } from '@/components/seo/WebApplicationSchema';
 
 // The titles carry the current year, computed from the Berlin date, so these
 // pages are date-dependent and must not be frozen for a day at the year
@@ -232,9 +233,10 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     return (
         <main className="flex-1 w-full bg-white text-slate-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-            <BreadcrumbSchema items={breadcrumbItems} />
-            {/* See the note in [...slug]/page.tsx: the site-level
-                WebApplication lives in the layout, not once per URL. */}
+            <Breadcrumbs items={breadcrumbItems} className="mb-8" />
+            {/* The calculator routes declare the WebApplication; it carries a
+                locale-scoped @id, so every one of them names the same entity. */}
+            <WebApplicationSchema locale={locale} />
             <div className="mb-12 space-y-4">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                     {localizedText.h1}

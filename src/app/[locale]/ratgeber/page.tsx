@@ -7,6 +7,8 @@ export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata } from '@/lib/seo/metadata';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { ItemListSchema } from '@/components/seo/ItemListSchema';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -38,9 +40,22 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
     const articles = getArticles(locale);
     const isDe = locale === 'de';
 
+    const breadcrumbItems = [
+        { name: isDe ? 'Startseite' : 'Home', item: locale === 'de' ? '/' : `/${locale}` },
+        { name: isDe ? 'Ratgeber' : 'Guides', item: getCanonicalPath(locale, 'ratgeber') }
+    ];
+
     return (
         <main className="flex-1 w-full bg-white text-slate-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <Breadcrumbs items={breadcrumbItems} className="mb-8" />
+            <ItemListSchema
+                name={isDe ? 'Ratgeber zu Datum und Zeit' : 'Guides to Dates and Time'}
+                items={articles.map((article) => ({
+                    name: article.title,
+                    url: getCanonicalPath(locale, 'ratgeber', article.slug)
+                }))}
+            />
             <div className="mb-12 space-y-4">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                     {/* Was "Ratgeber & Guides" — half German, half English, on the German page. */}

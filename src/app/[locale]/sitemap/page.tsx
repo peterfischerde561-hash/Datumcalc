@@ -3,6 +3,7 @@ import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata } from '@/lib/seo/metadata';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { PlusSquare, SplitSquareHorizontal, Briefcase, User } from 'lucide-react';
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { getArticles } from '@/lib/articles';
@@ -56,6 +57,20 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
 
     return (
         <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+            <Breadcrumbs
+
+                className="mb-8"
+
+                items={[
+
+                    { name: locale === 'de' ? 'Startseite' : 'Home', item: locale === 'de' ? '/' : `/${locale}` },
+
+                    { name: t('sitemap'), item: getCanonicalPath(locale, 'sitemap') }
+
+                ]}
+
+            />
             <header className="text-center mb-16">
                 <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-slate-900">
                     {t('sitemap')}

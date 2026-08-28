@@ -1,12 +1,17 @@
 import { Link } from '@/i18n/routing';
 import { ROUTES } from '@/lib/routes';
-import { CheckCircle2, CalendarCheck2, Clock4, Users, ShieldCheck } from 'lucide-react';
-import { SITE_URL } from '@/lib/constants';
+import { CheckCircle2, CalendarCheck2, Clock4, ShieldCheck } from 'lucide-react';
 import { translateSlug } from '@/lib/seo/translations';
 import { routeLabel } from '@/lib/seo/routeLabels';
 
-const siteUrl = SITE_URL;
-const dateModified = new Date().toISOString().split('T')[0];
+/*
+ * `siteUrl` and a module-scope `dateModified` stood here, left over from the
+ * homepage Article JSON-LD that was removed with the fabricated byline. Nothing
+ * read either one. The date was the worse of the two: `new Date()` at module
+ * scope is evaluated once when the module is first loaded and then frozen into
+ * every prerendered page, so it advertised the build date as the last
+ * modification for as long as the page stayed cached.
+ */
 
 const CONTENT: Record<string, any> = {
     de: {

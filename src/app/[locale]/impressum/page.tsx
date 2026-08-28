@@ -6,6 +6,7 @@ export const revalidate = 86400; // 24 hours
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata } from '@/lib/seo/metadata';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -32,6 +33,13 @@ export default async function ImprintPage({ params }: { params: Promise<{ locale
 
     return (
         <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <Breadcrumbs
+                className="mb-8"
+                items={[
+                    { name: locale === 'de' ? 'Startseite' : 'Home', item: locale === 'de' ? '/' : `/${locale}` },
+                    { name: t('imprint'), item: getCanonicalPath(locale, 'impressum') }
+                ]}
+            />
             <h1 className="text-4xl md:text-5xl font-extrabold mb-12 tracking-tight">
                 {t('imprint')}
             </h1>

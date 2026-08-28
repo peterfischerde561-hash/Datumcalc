@@ -12,8 +12,9 @@
     "verify:routes": "node scripts/verify-routes.mjs",
     "verify:a11y": "node scripts/verify-a11y.mjs",
     "verify:redirects": "node scripts/verify-redirects.mjs",
-    "verify": "node scripts/verify-all.mjs",
-    "verify:redirects": "node scripts/verify-redirects.mjs"
+    "verify:dates": "node scripts/article-dates.mjs --check",
+    "verify:schema": "node scripts/verify-schema.mjs",
+    "verify": "node scripts/verify-all.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

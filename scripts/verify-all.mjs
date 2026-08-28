@@ -18,7 +18,8 @@ const BASE = process.argv[2] || 'http://localhost:3000';
 const CHECKS = [
     ['routes', 'scripts/verify-routes.mjs'],
     ['accessibility', 'scripts/verify-a11y.mjs'],
-    ['redirects', 'scripts/verify-redirects.mjs']
+    ['redirects', 'scripts/verify-redirects.mjs'],
+    ['structured data', 'scripts/verify-schema.mjs']
 ];
 
 function run(script) {

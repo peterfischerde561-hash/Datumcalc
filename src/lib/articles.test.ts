@@ -3,10 +3,93 @@ import { articles, readingTimeMinutes } from './articles';
 import { CANONICAL_QUERIES, exceedsOffsetLimit } from './seo/queryModel';
 import { ROUTE_LABELS, ToolKey, routeLabel } from './seo/routeLabels';
 import { isIndexableLocale } from './seo/indexPolicy';
+import {
+    ORGANIZATION_ID,
+    organizationNode,
+    organizationRef,
+    webApplicationId,
+    webApplicationNode,
+    webSiteId,
+    webSiteNode
+} from './seo/schema';
 
 const allArticles = Object.entries(articles).flatMap(([locale, list]) =>
     list.map((article) => ({ locale, article }))
 );
+
+describe('article dates', () => {
+    it.each(allArticles)('$locale/$article.slug has ISO dates', ({ article }) => {
+        expect(article.datePublished).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        expect(article.dateModified).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    });
+
+    it.each(allArticles)('$locale/$article.slug was not modified before publication', ({ article }) => {
+        expect(article.dateModified >= article.datePublished).toBe(true);
+    });
+
+    /*
+     * The dates that were removed were 2024-03-24 — a year before the repository
+     * existed. Anything predating the first article commit is a typo or a
+     * fabrication, and both look identical in the markup.
+     */
+    it.each(allArticles)('$locale/$article.slug is not backdated before the project', ({ article }) => {
+        expect(article.datePublished >= '2026-01-01').toBe(true);
+    });
+});
+
+describe('entity graph', () => {
+    it('gives each locale its own WebApplication and WebSite id', () => {
+        expect(webApplicationId('de')).not.toBe(webApplicationId('en'));
+        expect(webSiteId('de')).not.toBe(webSiteId('en'));
+    });
+
+    /*
+     * The audited defect: one @id asserting name "Datumsrechner"/inLanguage de
+     * on 18 routes and "Date Calculator"/inLanguage en on the rest. Distinct
+     * ids are only a fix if the differing fields travel with them.
+     */
+    it('never lets one id carry two names or languages', () => {
+        const nodes = [
+            webApplicationNode('de'),
+            webApplicationNode('en'),
+            webSiteNode('de'),
+            webSiteNode('en')
+        ];
+        const byId = new Map<string, Set<string>>();
+        for (const node of nodes) {
+            const key = node['@id'];
+            if (!byId.has(key)) byId.set(key, new Set());
+            byId.get(key)!.add(`${node.name}|${node.inLanguage}`);
+        }
+        for (const [, identities] of byId) expect(identities.size).toBe(1);
+    });
+
+    it('describes the organisation once and references it thereafter', () => {
+        expect(organizationNode()['@id']).toBe(ORGANIZATION_ID);
+        expect(organizationRef).toEqual({ '@id': ORGANIZATION_ID });
+
+        for (const locale of ['de', 'en']) {
+            const app = webApplicationNode(locale);
+            // References, not inline copies — the fragmentation this fixed.
+            expect(app.creator).toEqual(organizationRef);
+            expect(app.publisher).toEqual(organizationRef);
+            expect(webSiteNode(locale).publisher).toEqual(organizationRef);
+        }
+    });
+
+    it('claims no capability the site does not have', () => {
+        // No SearchAction: there is no site-search endpoint to point one at.
+        expect(webSiteNode('de')).not.toHaveProperty('potentialAction');
+        // No empty sameAs: it occupied the slot while asserting nothing.
+        expect(organizationNode()).not.toHaveProperty('sameAs');
+    });
+
+    it('ties the application to its own locale site', () => {
+        for (const locale of ['de', 'en']) {
+            expect(webApplicationNode(locale).isPartOf).toEqual({ '@id': webSiteId(locale) });
+        }
+    });
+});
 
 describe('article takeaways', () => {
     it('covers every article', () => {

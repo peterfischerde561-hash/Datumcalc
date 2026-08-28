@@ -34,6 +34,28 @@ export interface Article {
      * that are true only of this article, the article needs work, not filler.
      */
     takeaways: string[];
+    /**
+     * Publication and last-modification dates, in ISO YYYY-MM-DD.
+     *
+     * These are claims, and the previous ones were false: every guide's Article
+     * markup declared datePublished 2024-03-24, which is the wrong year for the
+     * two oldest guides and predates the other six entirely. They were removed
+     * rather than left wrong, which left a permanent gap in a field Google
+     * lists as recommended for Article.
+     *
+     * They are back, derived from the only honest source in the repo — the
+     * commits that introduced and last changed each article's own content
+     * block. `node scripts/article-dates.mjs` prints them; `npm run
+     * verify:dates` fails when an article has been edited without its
+     * dateModified moving. A hand-maintained date is exactly the kind of fact
+     * that goes quietly false, so it is checked rather than trusted.
+     *
+     * Not part of `npm run build`: the check reads git history, and Vercel
+     * builds from a shallow clone that may not contain it. Run it where the
+     * repository is complete.
+     */
+    datePublished: string;
+    dateModified: string;
     content: string;
 }
 
@@ -41,6 +63,8 @@ export const articles: Record<string, Article[]> = {
     de: [
         {
             slug: 'schaltjahre-erklaert',
+            datePublished: '2026-03-24',
+            dateModified: '2026-08-27',
             // Was "Schaltjahre erklärt – Warum gibt es den 29. Februar?", which
             // answers *why*. Every query GSC records for this page asks *when*:
             // "wann ist das nächste schaltjahr", "nächstes schaltjahr", "wann
@@ -77,6 +101,8 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'was-ist-ein-arbeitstag',
+            datePublished: '2026-04-08',
+            dateModified: '2026-08-27',
             title: 'Was ist ein Arbeitstag? Definition & Gesetz',
             description: 'Was ist ein Arbeitstag? Definition, Unterschied zu Werktagen und was bei gesetzlichen Fristen zu beachten ist – einfach erklärt.',
             takeaways: [
@@ -97,6 +123,8 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'wochen-im-jahr',
+            datePublished: '2026-03-24',
+            dateModified: '2026-08-27',
             title: 'Wie viele Wochen hat ein Jahr?',
             description: 'Hat ein Jahr immer 52 Wochen? Erfahre alles über ISO-Kalenderwochen und warum manche Jahre 53 Wochen haben.',
             takeaways: [
@@ -121,6 +149,8 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'iso-8601-erklaert',
+            datePublished: '2026-04-08',
+            dateModified: '2026-08-27',
             title: 'ISO 8601 einfach erklärt (Datum & Zeit)',
             description: 'ISO 8601 einfach erklärt: Der internationale Standard für Datum und Zeit – Aufbau, Beispiele und warum er wichtig ist.',
             takeaways: [
@@ -143,6 +173,8 @@ export const articles: Record<string, Article[]> = {
     en: [
         {
             slug: 'leap-years-explained',
+            datePublished: '2026-04-13',
+            dateModified: '2026-08-27',
             title: 'When Is the Next Leap Year?',
             description: 'When is the next leap year, and why does February 29 exist? The full leap-year rule with examples – including which years are skipped despite being divisible by 4.',
             takeaways: [
@@ -170,6 +202,8 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'what-is-a-business-day',
+            datePublished: '2026-04-13',
+            dateModified: '2026-08-27',
             title: 'What is a Business Day? Definition & Rules',
             description: 'Learn everything about the term business day, how it differs from a working day and what to consider for deadlines.',
             takeaways: [
@@ -190,6 +224,8 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'weeks-in-a-year',
+            datePublished: '2026-04-13',
+            dateModified: '2026-08-27',
             title: 'How Many Weeks Are in a Year?',
             description: 'Does a year always have 52 weeks? Find out more about ISO weeks, leap years, and why some years have 53 weeks.',
             takeaways: [
@@ -212,6 +248,8 @@ export const articles: Record<string, Article[]> = {
         },
         {
             slug: 'iso-8601-explained',
+            datePublished: '2026-04-13',
+            dateModified: '2026-08-27',
             title: 'ISO 8601 Standard Explained: Date & Time',
             description: 'Why ISO 8601 is the most important standard for digital time measurement and how to apply it correctly.',
             takeaways: [
@@ -257,6 +295,29 @@ function assertArticlesAreComplete() {
             }
             if (new Set(article.takeaways).size !== article.takeaways.length) {
                 problems.push(`${where}: has duplicate takeaways`);
+            }
+
+            /*
+             * Dates reach Article markup, so a malformed one ships a broken
+             * claim to search engines rather than throwing anywhere visible.
+             * Shape is checked here; whether the values match git is checked by
+             * `npm run verify:dates`, which needs the repository.
+             */
+            const iso = /^\d{4}-\d{2}-\d{2}$/;
+            if (!iso.test(article.datePublished ?? '')) {
+                problems.push(`${where}: datePublished "${article.datePublished}" is not YYYY-MM-DD`);
+            }
+            if (!iso.test(article.dateModified ?? '')) {
+                problems.push(`${where}: dateModified "${article.dateModified}" is not YYYY-MM-DD`);
+            }
+            if (
+                iso.test(article.datePublished ?? '') &&
+                iso.test(article.dateModified ?? '') &&
+                article.dateModified < article.datePublished
+            ) {
+                problems.push(
+                    `${where}: dateModified ${article.dateModified} precedes datePublished ${article.datePublished}`
+                );
             }
         }
     }

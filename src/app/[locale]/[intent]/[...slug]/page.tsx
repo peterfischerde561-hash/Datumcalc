@@ -38,6 +38,7 @@ import { formatLong } from '@/lib/date/format';
 import { calculateOffsetDate, TimeUnit } from '@/lib/calculator';
 import { getNextOccurrenceCivil } from '@/lib/events';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
+import { WebApplicationSchema } from '@/components/seo/WebApplicationSchema';
 import { CountdownTimer } from '@/components/countdown/CountdownTimer';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string; slug: string[] }> }) {
@@ -285,12 +286,14 @@ export default async function ProgrammaticPage({
         <main className="flex-1 w-full relative bg-white text-slate-800">
             <BreadcrumbSchema items={breadcrumbItems} />
             {/*
-              No per-page WebApplication node. The layout already declares the
-              site-level one (@id .../#webapp); emitting a second, id-less node
-              per URL described the same calculator repeatedly rather than a
-              distinct application. Breadcrumbs carry this page's place in the
-              hierarchy, which is what is actually page-specific here.
+              One WebApplication entity, not one per URL. This used to say the
+              layout declared it — true, but the layout put it on /impressum and
+              /datenschutz as well, which are not the application. It now comes
+              from the calculator routes, and the locale-scoped @id keeps every
+              one of them referring to the same node rather than describing a
+              new calculator per page.
             */}
+            <WebApplicationSchema locale={locale} />
             <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-12">
 
             <nav aria-label="Breadcrumb" className="flex text-sm text-slate-500 items-center space-x-2">

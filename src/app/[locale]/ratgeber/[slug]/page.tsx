@@ -5,7 +5,7 @@ import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 import { ArticleSchema } from '@/components/seo/ArticleSchema';
-import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata, canonicalUrl } from '@/lib/seo/metadata';
 import { directAnswerFor } from '@/lib/seo/guideFacts';
@@ -96,12 +96,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     return (
         <main className="flex-1 w-full bg-white text-slate-800">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-            <BreadcrumbSchema items={breadcrumbItems} />
+            <Breadcrumbs items={breadcrumbItems} className="mb-8" />
             <ArticleSchema
                 title={article.title}
                 description={article.description}
                 url={fullUrl}
                 locale={locale}
+                datePublished={article.datePublished}
+                dateModified={article.dateModified}
             />
 
             <article className="w-full max-w-3xl mx-auto">

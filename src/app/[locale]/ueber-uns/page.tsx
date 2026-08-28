@@ -7,6 +7,7 @@ export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -33,6 +34,18 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
 
     return (
         <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            {/*
+              No WebApplicationSchema here. The page embeds a CalculatorCore as
+              a demonstration, but the page is about the project — the
+              calculator is an illustration on it, not what it is.
+            */}
+            <Breadcrumbs
+                className="mb-8"
+                items={[
+                    { name: locale === 'de' ? 'Startseite' : 'Home', item: locale === 'de' ? '/' : `/${locale}` },
+                    { name: locale === 'de' ? 'Über uns' : 'About us', item: getCanonicalPath(locale, 'ueber-uns') }
+                ]}
+            />
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-12 tracking-tight text-center">
                 {locale === 'de' ? (
                     <>Wir machen Zeit <span className="text-neon underline decoration-neon/20">berechenbar</span>.</>

@@ -7,6 +7,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from "@/lib/constants";
 import { isIndexableLocale, hreflangAlternates } from "@/lib/seo/indexPolicy";
+import { SiteSchema } from "@/components/seo/SiteSchema";
 import Script from 'next/script';
 import "../globals.css";
 
@@ -15,8 +16,6 @@ const inter = Inter({
     subsets: ["latin"],
     display: "swap",
 });
-
-const siteUrl = SITE_URL;
 
 type Props = {
     params: Promise<{ locale: string }>;
@@ -111,55 +110,6 @@ export default async function LocaleLayout({
     setRequestLocale(locale);
     const messages = await getMessages();
 
-    const webAppSchema = {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "@id": `${siteUrl}/#webapp`,
-        "name": locale === "de" ? "Datumsrechner" : "Date Calculator",
-        "url": siteUrl,
-        "applicationCategory": "CalculatorApplication",
-        "operatingSystem": "All",
-        "inLanguage": locale,
-        "description": locale === "de"
-            ? "Kostenloser Online-Datumsrechner für exakte Zeitspannen, Fristen und Arbeitstage – mit Kalenderwochen nach ISO 8601."
-            : "Free online date calculator for exact durations, deadlines and business days – with calendar weeks per ISO 8601.",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "EUR"
-        },
-        "creator": {
-            "@type": "Organization",
-            "name": "Datumsrechner",
-            "url": siteUrl
-        },
-        "featureList": [
-            "Date difference calculator",
-            "Add/subtract days from a date",
-            "Business days calculator",
-            "Age calculator",
-            "Countdown to events"
-        ],
-        // The stated answer on each page is server-rendered; JavaScript is only
-        // needed for the interactive calculator and the live countdown.
-        "browserRequirements": "Works in all modern browsers. JavaScript is required only for the interactive calculator."
-    };
-
-    const orgSchema = {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "@id": `${siteUrl}/#organization`,
-        "name": "Datumsrechner",
-        "url": siteUrl,
-        "logo": {
-            "@type": "ImageObject",
-            "url": `${siteUrl}/logo.png`,
-            "width": 1024,
-            "height": 1024
-        },
-        "sameAs": []
-    };
-
     return (
         <html lang={locale} className={`${inter.variable} h-full antialiased`}>
             <head>
@@ -176,14 +126,13 @@ export default async function LocaleLayout({
                       gtag('config', 'G-8WZW69GJ0K');
                     `}
                 </Script>
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
-                />
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
-                />
+                {/*
+                  Organization and WebSite only. The WebApplication node moved
+                  to the calculator routes: emitted from here it landed on
+                  /impressum, /datenschutz, /agb and the guides, none of which
+                  are the application. See components/seo/WebApplicationSchema.
+                */}
+                <SiteSchema locale={locale} />
             </head>
             <body className="min-h-full flex flex-col selection:bg-blue-200">
                 <NextIntlClientProvider messages={messages} locale={locale}>
