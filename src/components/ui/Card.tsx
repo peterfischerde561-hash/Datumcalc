@@ -4,13 +4,13 @@ import { cn } from '@/lib/ui/cn';
  * The card. Singular.
  *
  * The audit found this shape written inline fifteen different ways:
- * `bg-white border border-slate-200 rounded-xl` with p-5, p-6, p-7, p-8 and
+ * `bg-surface border border-line rounded-xl` with p-5, p-6, p-7, p-8 and
  * p-10, with and without shadow-sm, on pages that sit next to each other. Six
  * files declared the p-6 rounded-xl variant independently.
  *
  * Three tones, because three are actually used: the default surface, a sunken
  * one for secondary information, and an accent one for answers and callouts
- * (which was `bg-blue-50 border-blue-200` inline in five places).
+ * (which was `bg-accent-dim border-accent-line` inline in five places).
  *
  * Flat by default. Borders separate these cards, not shadows -- a page of
  * elevated white boxes on a near-white background reads as noise, and the
@@ -19,10 +19,16 @@ import { cn } from '@/lib/ui/cn';
 type CardTone = 'default' | 'sunken' | 'accent';
 type CardPadding = 'none' | 'compact' | 'default' | 'roomy';
 
+/*
+ * Glass, not fill. The surfaces are translucent white over the page gradient,
+ * so a card reads as a layer above the background rather than a grey box cut
+ * into it. `.glass` in globals.css carries the blur; the tones vary what sits
+ * on top of it.
+ */
 const TONES: Record<CardTone, string> = {
-    default: 'bg-white border-slate-200',
-    sunken: 'bg-slate-50 border-slate-200',
-    accent: 'bg-blue-50 border-blue-200'
+    default: 'glass',
+    sunken: 'bg-surface-2 border border-line',
+    accent: 'bg-accent-dim border border-accent-line'
 };
 
 const PADDING: Record<CardPadding, string> = {
@@ -49,7 +55,7 @@ export function Card({
 } & React.HTMLAttributes<HTMLElement>) {
     return (
         <Component
-            className={cn('rounded-xl border', TONES[tone], PADDING[padding], className)}
+            className={cn('rounded-2xl', TONES[tone], PADDING[padding], className)}
             {...rest}
         >
             {children}
@@ -71,9 +77,9 @@ export function CardLink({
     return (
         <div
             className={cn(
-                'rounded-xl border border-slate-200 bg-white transition-colors',
-                'hover:border-blue-400 focus-within:border-blue-500',
-                'focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2',
+                'glass rounded-2xl transition-colors',
+                'hover:border-accent/60 focus-within:border-accent',
+                'focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2 focus-within:ring-offset-background',
                 className
             )}
             {...rest}

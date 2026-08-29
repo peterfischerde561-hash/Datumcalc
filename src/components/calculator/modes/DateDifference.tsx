@@ -85,23 +85,23 @@ export function DateDifference() {
                 <Card tone="accent" className="mt-8 space-y-6">
                     <div className="flex justify-between items-start gap-4">
                         <div>
-                            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{t('result')}</h3>
-                            <p className="mt-2 text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight">
+                            <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-2">{t('result')}</h3>
+                            <p className="mt-2 text-4xl sm:text-5xl font-bold text-ink tracking-tight">
                                 {Math.abs(result.totalDays)} {t('days')}
                             </p>
                             {/* Was "{months} {t('months')} {t('days')} {days}", which
                                 rendered as "3 Monate tage 8" — the unit label and its
                                 number had drifted apart. */}
-                            <p className="text-sm text-slate-600 mt-1">
+                            <p className="text-sm text-ink-2 mt-1">
                                 ≈ {result.yearsMonthsDays.months} {t('months')}, {result.yearsMonthsDays.days} {t('days')}
                             </p>
                         </div>
                         <div className="flex gap-2 shrink-0">
                             <Button variant="secondary" iconOnly onClick={handleSave} aria-label={t('save')} title={t('save')}>
-                                <BookmarkPlus className="w-5 h-5 text-blue-700" aria-hidden="true" />
+                                <BookmarkPlus className="w-5 h-5 text-accent" aria-hidden="true" />
                             </Button>
                             <Button variant="secondary" iconOnly onClick={shareUrl} aria-label={t('share')} title={t('share')}>
-                                {copied ? <Check className="w-5 h-5 text-green-600" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-blue-700" aria-hidden="true" />}
+                                {copied ? <Check className="w-5 h-5 text-success" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-accent" aria-hidden="true" />}
                             </Button>
                         </div>
                     </div>
@@ -112,14 +112,14 @@ export function DateDifference() {
                         labelEnd={formatMedium(parseCivilDate(end)!, locale)}
                     />
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-blue-200">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-accent-line">
                         <div>
-                            <p className="text-sm text-slate-500">{t('weeks')}</p>
-                            <p className="font-semibold text-slate-900">{result.weeksAndDays.weeks} {t('weeksAbbr')}, {result.weeksAndDays.days} {t('daysAbbr')}</p>
+                            <p className="text-sm text-ink-3">{t('weeks')}</p>
+                            <p className="font-semibold text-ink">{result.weeksAndDays.weeks} {t('weeksAbbr')}, {result.weeksAndDays.days} {t('daysAbbr')}</p>
                         </div>
                         <div className="col-span-2">
-                            <p className="text-sm text-slate-500">{t('years')}, {t('months')}, {t('days')}</p>
-                            <p className="font-semibold text-slate-900">{result.yearsMonthsDays.years} {t('yearsAbbr')}, {result.yearsMonthsDays.months} {t('monthsAbbr')}, {result.yearsMonthsDays.days} {t('daysAbbr')}</p>
+                            <p className="text-sm text-ink-3">{t('years')}, {t('months')}, {t('days')}</p>
+                            <p className="font-semibold text-ink">{result.yearsMonthsDays.years} {t('yearsAbbr')}, {result.yearsMonthsDays.months} {t('monthsAbbr')}, {result.yearsMonthsDays.days} {t('daysAbbr')}</p>
                         </div>
                     </div>
                 </Card>

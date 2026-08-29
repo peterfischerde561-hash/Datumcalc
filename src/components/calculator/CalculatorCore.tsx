@@ -68,7 +68,7 @@ export function CalculatorCore({ initialMode = 'difference' }: CalculatorCorePro
                 role="tablist"
                 aria-label={t('dateDifference')}
                 onKeyDown={onKeyDown}
-                className="flex flex-wrap gap-1 mb-8 p-1 bg-slate-100 rounded-lg border border-slate-200"
+                className="flex flex-wrap gap-1 mb-8 p-1 bg-surface-2 rounded-lg border border-line"
             >
                 {tabs.map(tab => (
                     <button
@@ -81,9 +81,11 @@ export function CalculatorCore({ initialMode = 'difference' }: CalculatorCorePro
                         tabIndex={activeMode === tab.id ? 0 : -1}
                         ref={(node) => { tabRefs.current[tab.id] = node; }}
                         onClick={() => setActiveMode(tab.id)}
-                        className={`flex-1 min-w-[120px] min-h-11 px-4 py-2.5 text-sm font-semibold rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeMode === tab.id
-                            ? 'bg-blue-700 text-white shadow-sm'
-                            : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                        className={`flex-1 min-w-[120px] min-h-11 px-4 py-2.5 text-sm font-semibold rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${activeMode === tab.id
+                            /* text-background, not text-white: #080b14 on cyan
+                               is 11:1, white on cyan is 1.6:1. */
+                            ? 'bg-accent text-background'
+                            : 'text-ink-2 hover:text-ink hover:bg-surface'
                             }`}
                     >
                         {tab.label}
@@ -99,7 +101,7 @@ export function CalculatorCore({ initialMode = 'difference' }: CalculatorCorePro
                 tabIndex={0}
                 className="min-h-[300px] focus:outline-none"
             >
-                <Suspense fallback={<div className="animate-pulse h-64 bg-slate-100 rounded-lg"></div>}>
+                <Suspense fallback={<div className="animate-pulse h-64 bg-surface-2 rounded-lg"></div>}>
                     {activeMode === 'difference' && <DateDifference />}
                     {activeMode === 'add_subtract' && <AddSubtractTime />}
                     {activeMode === 'business_days' && <BusinessDays />}
@@ -125,26 +127,26 @@ function RecentCalculationsBlock() {
     if (!mounted || history.length === 0) return null;
 
     return (
-        <div className="mt-12 pt-8 border-t border-slate-200">
+        <div className="mt-12 pt-8 border-t border-line">
             <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold text-slate-900">{t('history') || 'Recent Calculations'}</h3>
-                <button onClick={clearHistory} className="text-sm text-slate-500 hover:text-slate-900 transition-colors">{t('clearHistory') || 'Clear History'}</button>
+                <h3 className="text-xl font-bold text-ink">{t('history') || 'Recent Calculations'}</h3>
+                <button onClick={clearHistory} className="text-sm text-ink-3 hover:text-ink transition-colors">{t('clearHistory') || 'Clear History'}</button>
             </div>
             <div className="space-y-3">
                 {history.map(item => (
-                    <div key={item.id} className="flex justify-between items-center bg-slate-50 rounded-lg p-4 border border-slate-200 hover:border-slate-300 transition-colors">
+                    <div key={item.id} className="flex justify-between items-center bg-surface rounded-lg p-4 border border-line hover:border-line-2 transition-colors">
                         <div>
-                            <p className="text-sm font-medium text-slate-500 mb-1">{item.title}</p>
-                            <p className="text-lg font-bold text-slate-900">{item.result}</p>
+                            <p className="text-sm font-medium text-ink-3 mb-1">{item.title}</p>
+                            <p className="text-lg font-bold text-ink">{item.result}</p>
                         </div>
-                        {/* Was an unlabelled &times; in text-slate-400 (2.79:1)
+                        {/* Was an unlabelled &times; in text-ink-3 (2.79:1)
                             with no accessible name -- a destructive control
                             that screen readers announced as "times". */}
                         <button
                             type="button"
                             onClick={() => removeCalculation(item.id)}
                             aria-label={`${t('removeEntry')}: ${item.title}`}
-                            className="flex items-center justify-center h-11 w-11 shrink-0 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors text-2xl leading-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                            className="flex items-center justify-center h-11 w-11 shrink-0 rounded-lg text-ink-3 hover:text-ink hover:bg-surface-2 transition-colors text-2xl leading-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>

@@ -1,63 +1,119 @@
 @import "tailwindcss";
 
 /*
- * Design tokens.
+ * Design tokens, dark.
  *
- * There were six: two of them, --color-neon and --color-neon-blue, held the
- * same hex. HomepageSEO used them as two *different* accents to tell two
- * columns apart, so a distinction the code made deliberately rendered as none.
- * Both are gone; there is one accent, named for its role rather than for a
- * palette this site abandoned.
+ * The palette, type scale, radii and spacing follow zeit-rechner.com, adopted
+ * deliberately as the visual direction for this site. Token *names* stay
+ * semantic (surface / line / ink / accent) rather than copying their --clr-*
+ * names, so the values can move again without renaming every call site.
  *
- * The tokens are semantic on purpose. `--color-accent` can be changed once;
- * `blue-700` scattered across 78 call sites cannot. Everything below is
- * referenced through the primitives in components/ui, which is what keeps the
- * set this small -- an audit of the pre-token codebase counted 42 distinct
- * padding values, 18 backgrounds and the same card written 15 different ways.
+ * Three deviations from the source, all for contrast. Measured against the
+ * page background:
+ *
+ *   their --clr-text-3   #64748b   4.13:1  -- under the 4.5:1 floor
+ *   their --clr-text-muted #475569 2.59:1  -- fails outright
+ *   their --clr-violet   #7c3aed   3.45:1  -- large text and UI only
+ *
+ * The source uses text-3 for form labels at 0.8rem, which is small text and
+ * needs 4.5:1. Labels here use --color-ink-2 (7.67:1) instead. --color-ink-3
+ * is kept for genuinely large or decorative text, and the violet is used only
+ * as a gradient partner and border, never as text.
  */
 @theme inline {
-  --color-background: #f8fafc;
-  --color-foreground: #0f172a;
-
-  /* Surfaces */
-  --color-surface: #ffffff;
-  --color-surface-sunken: #f8fafc;
-  --color-surface-accent: #eff6ff;   /* blue-50  */
-
-  /* Lines */
-  --color-line: #e2e8f0;             /* slate-200 */
-  --color-line-strong: #cbd5e1;      /* slate-300 */
-  --color-line-accent: #bfdbfe;      /* blue-200  */
-
-  /* Text */
-  --color-ink: #0f172a;              /* slate-900 */
-  --color-ink-muted: #475569;        /* slate-600, 7:1 on white */
-  --color-ink-subtle: #64748b;       /* slate-500, 4.8:1 -- the floor */
-
-  /* One accent. */
-  --color-accent: #1d4ed8;           /* blue-700, 7:1 on white */
-  --color-accent-hover: #1e40af;     /* blue-800 */
-
-  --font-sans: var(--font-inter);
+  /* Page */
+  --color-background: #080b14;
+  --color-background-2: #0d1120;
+  --color-background-3: #111827;
+  --color-foreground: #f0f4ff;
 
   /*
-   * Two radii, not six. Controls and cards were using rounded-md, -lg, -xl and
-   * -2xl interchangeably, sometimes within one component.
+   * Surfaces are translucent white over the page, not opaque fills. That is
+   * what makes the glass panels read as layers above the background gradient
+   * rather than as flat grey boxes punched into it.
    */
-  --radius-control: 0.5rem;
-  --radius-card: 0.75rem;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-surface-2: rgba(255, 255, 255, 0.07);
+  --color-surface-3: rgba(255, 255, 255, 0.10);
+
+  /* Lines */
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-line-2: rgba(255, 255, 255, 0.15);
+
+  /* Text */
+  --color-ink: #f0f4ff;              /* 17.9:1 */
+  --color-ink-2: #94a3b8;            /*  7.7:1 -- body copy */
+  --color-ink-3: #64748b;            /*  4.1:1 -- large / decorative only */
+
+  /* Accent */
+  --color-accent: #00d4ff;           /* 11.1:1 */
+  --color-accent-2: #0099cc;         /*  6.0:1 */
+  --color-accent-dim: rgba(0, 212, 255, 0.10);
+  --color-accent-glow: rgba(0, 212, 255, 0.20);
+  --color-accent-line: rgba(0, 212, 255, 0.20);
+
+  /* Supporting hues. Violet is decorative; it never carries text. */
+  --color-violet: #7c3aed;
+  --color-violet-glow: rgba(124, 58, 237, 0.25);
+  --color-amber: #f59e0b;            /* 9.2:1 */
+  --color-success: #10b981;          /* 7.8:1 */
+
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --radius-control: 0.75rem;
+  --radius-card: 1rem;
+  --radius-card-lg: 1.5rem;
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans), sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /*
+   * Two fixed radial washes -- cyan from above, violet low and right. They are
+   * what stops a near-black page reading as flat, and they are the reason the
+   * translucent surfaces above have anything to be translucent against.
+   */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(124, 58, 237, 0.06), transparent);
+  background-attachment: fixed;
 }
+
+/*
+ * Fluid type scale. Headings were sized per page with Tailwind steps, which is
+ * how the same level ended up at three different scales across routes; these
+ * clamp between a mobile and a desktop size instead of stepping at breakpoints.
+ */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
+h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
+h4 { font-size: 1.1rem; font-weight: 600; }
+
+p { line-height: 1.75; }
+
+strong, b { color: var(--color-ink); font-weight: 600; }
 
 /* ── Accessibility: Skip-to-content link ── */
 #skip-nav {
@@ -66,8 +122,8 @@ body {
   left: 0;
   z-index: 200;
   padding: 0.625rem 1.25rem;
-  background: #1d4ed8;
-  color: #fff;
+  background: var(--color-accent);
+  color: #080b14;
   font-weight: 700;
   font-size: 0.875rem;
   border-radius: 0 0 0.75rem 0;
@@ -91,6 +147,77 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     display: block;
 }
 
+/*
+ * Glass surface.
+ *
+ * A `.glass-panel` was deleted from this file earlier for being referenced by
+ * nothing. This one is the same idea rebuilt on purpose and actually used: it
+ * is what the Card primitive renders, so the blur is defined once rather than
+ * re-typed per component.
+ */
+.glass {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/*
+ * Article body.
+ *
+ * The guide bodies carried a stack of `prose-*` classes -- prose-lg,
+ * prose-headings:*, prose-a:*, prose-p:* and more. @tailwindcss/typography is
+ * not installed, is not in node_modules, and no @plugin directive loads it, so
+ * every one of those was inert: the same dead-class problem as `animate-in`.
+ *
+ * The visible consequence was links. Article HTML is injected with
+ * dangerouslySetInnerHTML, and with prose dead nothing styled its anchors --
+ * they rendered as browser-default blue, then purple once visited, on a page
+ * that had no other blue. These rules are what those classes were pretending
+ * to do.
+ */
+.article-body > * + * { margin-top: 1.25rem; }
+
+.article-body h2 {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.article-body h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.article-body p,
+.article-body li { color: var(--color-ink-2); }
+
+.article-body a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+.article-body a:hover { color: var(--color-ink); }
+
+.article-body ul,
+.article-body ol {
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.article-body ul { list-style: disc; }
+.article-body ol { list-style: decimal; }
+
+.article-body strong { color: var(--color-ink); }
+
+/*
+ * Figures are values, not prose. Tabular, monospaced digits keep a ticking
+ * countdown from reflowing as its numerals change width.
+ */
+.figure-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
 
 /* Premium micro-animations */
 @keyframes slide-up-fade {
@@ -101,13 +228,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 .animate-slide-up-fade {
     animation: slide-up-fade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-
-/*
- * .glass-panel was defined here and used by nothing -- zero references in the
- * entire codebase. Removed rather than kept "in case": an unused style is a
- * design decision nobody can see, and it invites reuse of a look this palette
- * abandoned.
- */
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {

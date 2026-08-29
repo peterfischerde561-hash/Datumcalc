@@ -61,8 +61,8 @@ export function LanguageSwitcher() {
                     onClick={() => handleLocaleChange(cur)}
                     className={`transition-all duration-300 ${
                         locale === cur
-                            ? 'text-blue-700 border-b border-blue-400 pb-0.5'
-                            : 'text-slate-500 hover:text-slate-900'
+                            ? 'text-accent border-b border-accent pb-0.5'
+                            : 'text-ink-3 hover:text-ink'
                     }`}
                 >
                     {t(cur)}

@@ -123,12 +123,12 @@ export function BusinessDays() {
                     <Card tone="accent" className="mt-8 space-y-4">
                         <div className="flex justify-between items-start gap-4">
                             <div>
-                                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{t('businessDays')}</h3>
-                                <p className="mt-2 text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight">
+                                <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-2">{t('businessDays')}</h3>
+                                <p className="mt-2 text-4xl sm:text-5xl font-bold text-ink tracking-tight">
                                     {Math.abs(result)} {t('days')}
                                 </p>
                                 {/* Says what was actually excluded, which now depends on the state. */}
-                                <p className="text-sm text-slate-600 mt-1">
+                                <p className="text-sm text-ink-2 mt-1">
                                     {withHolidays
                                         ? isDe
                                             ? `Ohne Wochenenden und die Feiertage in ${BUNDESLAENDER[state as BundeslandCode]}.`
@@ -140,10 +140,10 @@ export function BusinessDays() {
                             </div>
                             <div className="flex gap-2 shrink-0">
                                 <Button variant="secondary" iconOnly onClick={handleSave} aria-label={t('save')} title={t('save')}>
-                                    <BookmarkPlus className="w-5 h-5 text-blue-700" aria-hidden="true" />
+                                    <BookmarkPlus className="w-5 h-5 text-accent" aria-hidden="true" />
                                 </Button>
                                 <Button variant="secondary" iconOnly onClick={shareUrl} aria-label={t('share')} title={t('share')}>
-                                    {copied ? <Check className="w-5 h-5 text-green-600" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-blue-700" aria-hidden="true" />}
+                                    {copied ? <Check className="w-5 h-5 text-success" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-accent" aria-hidden="true" />}
                                 </Button>
                             </div>
                         </div>
@@ -154,17 +154,17 @@ export function BusinessDays() {
                           holidays that were removed makes it verifiable.
                         */}
                         {withHolidays && withHolidays.deducted.length > 0 && (
-                            <div className="pt-4 border-t border-blue-200">
-                                <h4 className="text-sm font-semibold text-slate-700 mb-2">
+                            <div className="pt-4 border-t border-accent-line">
+                                <h4 className="text-sm font-semibold text-ink-2 mb-2">
                                     {isDe
                                         ? `Abgezogene Feiertage (${withHolidays.deducted.length})`
                                         : `Public holidays deducted (${withHolidays.deducted.length})`}
                                 </h4>
-                                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-slate-700">
+                                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-ink-2">
                                     {withHolidays.deducted.map((h) => (
                                         <li key={`${h.name}-${formatCivilDate(h.date)}`} className="flex justify-between gap-3">
                                             <span>{h.name}</span>
-                                            <span className="tabular-nums text-slate-500">
+                                            <span className="tabular-nums text-ink-3">
                                                 {formatNumeric(h.date, locale)}
                                             </span>
                                         </li>

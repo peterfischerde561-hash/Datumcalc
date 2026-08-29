@@ -26,15 +26,15 @@ export function FAQBlock({ intent, slug, locale }: { intent: string; slug: strin
 
     return (
         <Card as="section">
-            <h2 className="text-2xl font-bold mb-8 text-slate-900">
+            <h2 className="text-2xl font-bold mb-8 text-ink">
                 {locale === 'de' ? 'Häufig gestellte Fragen (FAQ)' : 'Frequently Asked Questions (FAQ)'}
             </h2>
 
             <div className="space-y-6">
                 {faqs.map((faq, index) => (
-                    <div key={index} className="space-y-2 pb-6 border-b border-slate-100 last:border-0 last:pb-0">
-                        <h3 className="text-lg font-semibold text-slate-900">{faq.question}</h3>
-                        <p className="text-slate-700 leading-relaxed">{faq.answer}</p>
+                    <div key={index} className="space-y-2 pb-6 border-b border-line last:border-0 last:pb-0">
+                        <h3 className="text-lg font-semibold text-ink">{faq.question}</h3>
+                        <p className="text-ink-2 leading-relaxed">{faq.answer}</p>
                     </div>
                 ))}
             </div>

@@ -95,7 +95,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     ];
 
     return (
-        <div className="flex-1 w-full bg-white text-slate-800">
+        <div className="flex-1 w-full bg-surface text-ink">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <Breadcrumbs items={breadcrumbItems} className="mb-8" />
             <ArticleSchema
@@ -110,15 +110,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <article className="w-full max-w-3xl mx-auto">
 
             <header className="mb-12 space-y-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 border border-blue-200 text-xs font-bold tracking-widest uppercase text-blue-700">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent-dim border border-accent-line text-xs font-bold tracking-widest uppercase text-accent">
                     {readingTimeMinutes(article.content)} min {t('readTime')}
                 </div>
 
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900">
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-ink">
                     {article.title}
                 </h1>
 
-                <p className="text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">
+                <p className="text-xl md:text-2xl text-ink-2 font-medium leading-relaxed">
                     {article.description}
                 </p>
 
@@ -152,20 +152,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                       an H2 gave the page two identical headings in a row.
                     */}
                     {directAnswer.question !== article.title && (
-                        <h2 className="text-xl font-bold text-slate-900 mb-3">{directAnswer.question}</h2>
+                        <h2 className="text-xl font-bold text-ink mb-3">{directAnswer.question}</h2>
                     )}
-                    <p className="text-lg text-slate-700 leading-relaxed">{directAnswer.answer}</p>
+                    <p className="text-lg text-ink-2 leading-relaxed">{directAnswer.answer}</p>
                 </Card>
             )}
 
             {/* Key Takeaways */}
             <Card as="section" tone="accent" padding="roomy" className="mb-16">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-ink">
                     {/* Decorative: it was being read as part of the heading text. */}
-                    <span aria-hidden="true" className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700 text-sm">✓</span>
+                    <span aria-hidden="true" className="w-8 h-8 rounded-lg bg-accent-dim flex items-center justify-center text-accent text-sm">✓</span>
                     {t('takeaways')}
                 </h2>
-                <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-700">
+                <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 text-ink-2">
                     {article.takeaways.map((point) => (
                         <li key={point}>{point}</li>
                     ))}
@@ -174,7 +174,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
             {/* Main Article Content */}
             <div
-                className="prose prose-lg md:prose-xl max-w-none prose-headings:text-slate-900 prose-h2:text-4xl prose-h2:tracking-tight prose-h2:mb-8 prose-h2:mt-16 prose-a:text-blue-700 hover:prose-a:text-blue-800 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-900"
+                className="article-body text-lg"
                 dangerouslySetInnerHTML={{ __html: article.content }}
             />
 
@@ -185,9 +185,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <GuideFacts slug={slug} locale={locale} />
 
             {/* In-Article Calculator CTA */}
-            <section aria-label="Ausprobieren" className="mt-20 bg-white rounded-xl p-6 md:p-10 border border-slate-200 shadow-sm">
-                <h3 className="text-center text-blue-700 font-bold uppercase tracking-widest text-sm mb-4">{t('theory')}</h3>
-                <h4 className="text-3xl md:text-4xl font-extrabold text-center mb-10 tracking-tight text-slate-900">{t('practice')}</h4>
+            <section aria-label="Ausprobieren" className="mt-20 bg-surface rounded-xl p-6 md:p-10 border border-line shadow-sm">
+                <h3 className="text-center text-accent font-bold uppercase tracking-widest text-sm mb-4">{t('theory')}</h3>
+                <h4 className="text-3xl md:text-4xl font-extrabold text-center mb-10 tracking-tight text-ink">{t('practice')}</h4>
                 <div className="max-w-4xl mx-auto">
                     <CalculatorCore />
                 </div>

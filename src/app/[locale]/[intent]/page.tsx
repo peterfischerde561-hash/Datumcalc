@@ -232,21 +232,21 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     ];
 
     return (
-        <div className="flex-1 w-full bg-white text-slate-800">
+        <div className="flex-1 w-full bg-surface text-ink">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <Breadcrumbs items={breadcrumbItems} className="mb-8" />
             {/* The calculator routes declare the WebApplication; it carries a
                 locale-scoped @id, so every one of them names the same entity. */}
             <WebApplicationSchema locale={locale} />
             <div className="mb-12 space-y-4">
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-ink">
                     {localizedText.h1}
                 </h1>
-                <p className="text-lg text-slate-600 max-w-2xl">
+                <p className="text-lg text-ink-2 max-w-2xl">
                     {localizedText.sub}
                 </p>
                 {localizedText.intro && (
-                    <p className="text-md text-slate-600 max-w-3xl mt-4 leading-relaxed">
+                    <p className="text-md text-ink-2 max-w-3xl mt-4 leading-relaxed">
                         {localizedText.intro}
                     </p>
                 )}
@@ -268,7 +268,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         {/* Popular / Transactional */}
                         <Card>
-                            <h2 className="text-2xl font-bold mb-6 text-blue-700">
+                            <h2 className="text-2xl font-bold mb-6 text-accent">
                                 {locale === 'de' ? 'Häufige Berechnungen' : 'Popular Calculations'}
                             </h2>
                             <ul className="space-y-3">
@@ -285,9 +285,9 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                     const href = getCanonicalPath(locale, internalIntent!, locSlug);
                                     return (
                                         <li key={def.canonicalSlug}>
-                                            <NextLink href={href} className="text-slate-700 hover:text-blue-700 flex items-center justify-between group p-3 rounded-lg hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                                            <NextLink href={href} className="text-ink-2 hover:text-accent flex items-center justify-between group p-3 rounded-lg hover:bg-surface transition-colors border border-transparent hover:border-line">
                                                 <span>{locSlug.replace(/-/g, ' ')}</span>
-                                                <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                                 </svg>
                                             </NextLink>
@@ -300,7 +300,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                         {/* Events / Informational */}
                         {informational.length > 0 && (
                             <Card>
-                                <h2 className="text-2xl font-bold mb-6 text-blue-700">
+                                <h2 className="text-2xl font-bold mb-6 text-accent">
                                     {locale === 'de' ? 'Meilensteine & Events' : 'Milestones & Events'}
                                 </h2>
                                 <ul className="space-y-3">
@@ -309,9 +309,9 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                         const href = getCanonicalPath(locale, internalIntent!, locSlug);
                                         return (
                                             <li key={def.canonicalSlug}>
-                                                <NextLink href={href} className="text-slate-700 hover:text-blue-700 flex items-center justify-between group p-3 rounded-lg hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                                                <NextLink href={href} className="text-ink-2 hover:text-accent flex items-center justify-between group p-3 rounded-lg hover:bg-surface transition-colors border border-transparent hover:border-line">
                                                     <span className="capitalize">{locSlug.replace(/-/g, ' ')}</span>
-                                                    <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                                     </svg>
                                                 </NextLink>
@@ -330,22 +330,22 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
             {hub && (
                 <div className="max-w-5xl mx-auto space-y-12 mt-16">
                     <Card as="section" padding="roomy" aria-label={hub.explainerHeading}>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-6">{hub.explainerHeading}</h2>
-                        <div className="space-y-4 text-slate-700 leading-relaxed text-lg">
+                        <h2 className="text-2xl font-bold text-ink mb-6">{hub.explainerHeading}</h2>
+                        <div className="space-y-4 text-ink-2 leading-relaxed text-lg">
                             {hub.explainer.map((p, i) => <p key={i}>{p}</p>)}
                         </div>
                     </Card>
 
                     <Card as="section" padding="roomy" aria-label={isDe ? 'Häufige Fragen' : 'Frequently asked questions'}>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-8">{isDe ? 'Häufige Fragen' : 'Frequently asked questions'}</h2>
+                        <h2 className="text-2xl font-bold text-ink mb-8">{isDe ? 'Häufige Fragen' : 'Frequently asked questions'}</h2>
                         {hubFaqJsonLd && (
                             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubFaqJsonLd) }} />
                         )}
                         <div className="space-y-6">
                             {hub.faqs.map((f, i) => (
-                                <div key={i} className="border-b border-slate-100 pb-6 last:border-0 last:pb-0">
-                                    <h3 className="text-lg font-semibold text-slate-900 mb-2">{f.q}</h3>
-                                    <p className="text-slate-700 leading-relaxed">{f.a}</p>
+                                <div key={i} className="border-b border-line pb-6 last:border-0 last:pb-0">
+                                    <h3 className="text-lg font-semibold text-ink mb-2">{f.q}</h3>
+                                    <p className="text-ink-2 leading-relaxed">{f.a}</p>
                                 </div>
                             ))}
                         </div>

@@ -74,7 +74,7 @@ export function InternalLinksBlock({
 
     return (
         <Card as="section">
-            <h2 className="text-xl font-bold mb-6 text-slate-900">
+            <h2 className="text-xl font-bold mb-6 text-ink">
                 {isDe ? 'Verwandte Berechnungen & Themen' : 'Related Calculations'}
             </h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -82,12 +82,12 @@ export function InternalLinksBlock({
                     <li key={link.href}>
                         <NextLink
                             href={link.href}
-                            className="block p-4 rounded-lg bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 transition-all group"
+                            className="block p-4 rounded-lg bg-surface border border-line hover:border-accent hover:bg-accent-dim transition-all group"
                         >
-                            <span className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2 block">
+                            <span className="text-xs font-semibold text-accent uppercase tracking-wide mb-2 block">
                                 {link.type}
                             </span>
-                            <span className="text-slate-700 group-hover:text-slate-900 flex items-center gap-2 first-letter:uppercase">
+                            <span className="text-ink-2 group-hover:text-ink flex items-center gap-2 first-letter:uppercase">
                                 {link.label}
                                 <svg
                                     className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ml-auto shrink-0"

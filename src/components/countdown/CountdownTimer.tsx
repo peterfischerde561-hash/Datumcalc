@@ -9,11 +9,18 @@ const LABELS: Record<string, { days: string; hours: string; minutes: string; sec
 
 function Cell({ value, label }: { value: number; label: string }) {
     return (
-        <div className="flex flex-col items-center">
-            <div className="tabular-nums text-3xl sm:text-5xl font-black text-slate-900 bg-white border border-slate-200 rounded-xl px-3 sm:px-5 py-3 min-w-[3.5rem] sm:min-w-[5rem] text-center shadow-sm">
+        <div className="flex flex-col items-center bg-surface-2 border border-line rounded-2xl px-3 sm:px-5 py-4">
+            {/*
+              The seconds cell repaints every second. In a proportional face
+              the digits have different widths, so the number jitters and
+              nudges its neighbours; figure-mono pins them to one width.
+            */}
+            <span className="figure-mono text-3xl sm:text-5xl font-bold text-accent leading-none min-w-[2ch] text-center">
                 {String(value).padStart(2, '0')}
-            </div>
-            <span className="mt-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">{label}</span>
+            </span>
+            <span className="mt-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.1em] text-ink-2">
+                {label}
+            </span>
         </div>
     );
 }
@@ -64,8 +71,8 @@ export function CountdownTimer({
                 <Cell value={minutes} label={l.minutes} />
                 <Cell value={seconds} label={l.seconds} />
             </div>
-            <p className="text-center text-slate-600 text-lg">
-                {l.on} <span className="font-semibold text-slate-900">{targetLabel}</span>
+            <p className="text-center text-ink-2 text-lg">
+                {l.on} <span className="font-semibold text-ink">{targetLabel}</span>
             </p>
         </div>
     );

@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { NextIntlClientProvider } from 'next-intl';
@@ -14,6 +14,19 @@ import "../globals.css";
 const inter = Inter({
     variable: "--font-inter",
     subsets: ["latin"],
+    display: "swap",
+});
+
+/*
+ * Numbers get their own face. Every figure this site exists to produce -- a day
+ * count, a countdown, a calendar week -- is read as a value, and a proportional
+ * font sets digits at different widths so a ticking number jitters. Loaded with
+ * only the weights actually used.
+ */
+const jetbrainsMono = JetBrains_Mono({
+    variable: "--font-jetbrains-mono",
+    subsets: ["latin"],
+    weight: ["400", "700"],
     display: "swap",
 });
 
@@ -111,7 +124,7 @@ export default async function LocaleLayout({
     const messages = await getMessages();
 
     return (
-        <html lang={locale} className={`${inter.variable} h-full antialiased`}>
+        <html lang={locale} className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}>
             <head>
                 <Script
                     src="https://www.googletagmanager.com/gtag/js?id=G-8WZW69GJ0K"
@@ -134,7 +147,7 @@ export default async function LocaleLayout({
                 */}
                 <SiteSchema locale={locale} />
             </head>
-            <body className="min-h-full flex flex-col selection:bg-blue-200">
+            <body className="min-h-full flex flex-col selection:bg-accent/30">
                 <NextIntlClientProvider messages={messages} locale={locale}>
                     <Header />
                     <main id="main-content" className="flex-1 flex flex-col z-10" tabIndex={-1}>

@@ -16,10 +16,17 @@ import { cn } from '@/lib/ui/cn';
 type Variant = 'primary' | 'secondary' | 'ghost';
 type Size = 'default' | 'large';
 
+/*
+ * The primary button is a cyan gradient carrying *dark* text. On this palette
+ * that is the high-contrast direction: #080b14 on #00d4ff is 11:1, whereas
+ * white on cyan would be 1.6:1 and illegible.
+ */
 const VARIANTS: Record<Variant, string> = {
-    primary: 'bg-blue-700 text-white hover:bg-blue-800 border border-transparent',
-    secondary: 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-slate-900',
-    ghost: 'bg-transparent text-slate-600 border border-transparent hover:bg-slate-100 hover:text-slate-900'
+    primary:
+        'bg-gradient-to-br from-accent to-accent-2 text-background border border-transparent ' +
+        'shadow-[0_0_20px_rgba(0,212,255,0.30)] hover:shadow-[0_0_30px_rgba(0,212,255,0.50)]',
+    secondary: 'bg-surface-2 text-ink border border-line-2 hover:bg-surface-3 hover:border-accent hover:text-accent',
+    ghost: 'bg-transparent text-ink-2 border border-line hover:text-accent hover:border-accent'
 };
 
 const SIZES: Record<Size, string> = {
@@ -28,9 +35,9 @@ const SIZES: Record<Size, string> = {
 };
 
 const BASE = cn(
-    'inline-flex items-center justify-center gap-2 rounded-lg font-semibold',
-    'transition-colors outline-none',
-    'focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
+    'inline-flex items-center justify-center gap-2 rounded-xl font-semibold',
+    'transition-all outline-none',
+    'focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background',
     'disabled:opacity-50 disabled:pointer-events-none'
 );
 

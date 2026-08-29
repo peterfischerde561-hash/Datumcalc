@@ -125,19 +125,19 @@ export function AddSubtractTime() {
                     <Card tone="accent" className="mt-8">
                         <div className="flex justify-between items-start gap-4">
                             <div>
-                                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{t('result')}</h3>
+                                <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-2">{t('result')}</h3>
                                 {/* The answer is the reason the page exists, so
                                     it outranks the surrounding chrome. */}
-                                <p className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+                                <p className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
                                     {formatLong(result, locale)}
                                 </p>
                             </div>
                             <div className="flex gap-2 shrink-0">
                                 <Button variant="secondary" iconOnly onClick={handleSave} aria-label={t('save')} title={t('save')}>
-                                    <BookmarkPlus className="w-5 h-5 text-blue-700" aria-hidden="true" />
+                                    <BookmarkPlus className="w-5 h-5 text-accent" aria-hidden="true" />
                                 </Button>
                                 <Button variant="secondary" iconOnly onClick={shareUrl} aria-label={t('share')} title={t('share')}>
-                                    {copied ? <Check className="w-5 h-5 text-green-600" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-blue-700" aria-hidden="true" />}
+                                    {copied ? <Check className="w-5 h-5 text-success" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-accent" aria-hidden="true" />}
                                 </Button>
                             </div>
                         </div>

@@ -74,36 +74,36 @@ export function AgeCalculator() {
                 <Card tone="accent" className="mt-8 space-y-6">
                     <div className="flex justify-between items-start gap-4">
                         <div>
-                            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{t('currentAge')}</h3>
-                            <p className="mt-2 text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight">
+                            <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-2">{t('currentAge')}</h3>
+                            <p className="mt-2 text-4xl sm:text-5xl font-bold text-ink tracking-tight">
                                 {result.years} {t('years')}
                             </p>
                         </div>
                         <div className="flex gap-2 shrink-0">
                             <Button variant="secondary" iconOnly onClick={handleSave} aria-label={t('save')} title={t('save')}>
-                                <BookmarkPlus className="w-5 h-5 text-blue-700" aria-hidden="true" />
+                                <BookmarkPlus className="w-5 h-5 text-accent" aria-hidden="true" />
                             </Button>
                             <Button variant="secondary" iconOnly onClick={shareUrl} aria-label={t('share')} title={t('share')}>
-                                {copied ? <Check className="w-5 h-5 text-green-600" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-blue-700" aria-hidden="true" />}
+                                {copied ? <Check className="w-5 h-5 text-success" aria-hidden="true" /> : <Share2 className="w-5 h-5 text-accent" aria-hidden="true" />}
                             </Button>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-blue-200">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-accent-line">
                         <div>
-                            <p className="text-sm text-slate-500">{t('months')}</p>
-                            <p className="font-semibold text-slate-900">{result.months}</p>
+                            <p className="text-sm text-ink-3">{t('months')}</p>
+                            <p className="font-semibold text-ink">{result.months}</p>
                         </div>
                         <div>
-                            <p className="text-sm text-slate-500">{t('days')}</p>
-                            <p className="font-semibold text-slate-900">{result.days}</p>
+                            <p className="text-sm text-ink-3">{t('days')}</p>
+                            <p className="font-semibold text-ink">{result.days}</p>
                         </div>
                         <div className="col-span-2">
                             {/* Was the untranslated "Total Life Days" on both locales. */}
-                            <p className="text-sm text-slate-500">
+                            <p className="text-sm text-ink-3">
                                 {locale === 'de' ? 'Gelebte Tage insgesamt' : 'Total days lived'}
                             </p>
-                            <p className="font-semibold text-slate-900">{result.totalDays} {t('days')}</p>
+                            <p className="font-semibold text-ink">{result.totalDays} {t('days')}</p>
                         </div>
                     </div>
                 </Card>

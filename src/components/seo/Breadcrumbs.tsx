@@ -31,7 +31,7 @@ export function Breadcrumbs({
             <BreadcrumbSchema items={items} />
             <nav
                 aria-label="Breadcrumb"
-                className={`flex flex-wrap text-sm text-slate-500 items-center gap-x-2 gap-y-1 ${className}`}
+                className={`flex flex-wrap text-sm text-ink-3 items-center gap-x-2 gap-y-1 ${className}`}
             >
                 {items.map((entry, index) => {
                     const isLast = index === items.length - 1;
@@ -42,16 +42,16 @@ export function Breadcrumbs({
                     return (
                         <span key={entry.item} className="flex items-center gap-x-2">
                             {index > 0 && (
-                                <ChevronRight className="w-4 h-4 text-slate-400" aria-hidden="true" />
+                                <ChevronRight className="w-4 h-4 text-ink-3" aria-hidden="true" />
                             )}
                             {isLast ? (
-                                <span aria-current="page" className="text-slate-700">
+                                <span aria-current="page" className="text-ink-2">
                                     {entry.name}
                                 </span>
                             ) : (
                                 <NextLink
                                     href={href}
-                                    className="hover:text-blue-700 hover:underline transition-colors"
+                                    className="hover:text-accent hover:underline transition-colors"
                                 >
                                     {entry.name}
                                 </NextLink>

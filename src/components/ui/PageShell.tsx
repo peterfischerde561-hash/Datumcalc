@@ -17,10 +17,14 @@ import { cn } from '@/lib/ui/cn';
  */
 type Width = 'prose' | 'page' | 'wide';
 
+/*
+ * 800px reading measure and a 1200px page, matching the reference's
+ * --max-width-content and --max-width.
+ */
 const WIDTHS: Record<Width, string> = {
-    prose: 'max-w-3xl',
-    page: 'max-w-5xl',
-    wide: 'max-w-7xl'
+    prose: 'max-w-[800px]',
+    page: 'max-w-[1200px]',
+    wide: 'max-w-[1200px]'
 };
 
 export function PageShell({
@@ -65,12 +69,15 @@ export function PageHeader({
     className?: string;
     children?: React.ReactNode;
 }) {
+    /*
+     * No size classes on the h1 -- globals.css sizes headings fluidly with
+     * clamp(), which is what stopped the same level rendering at three
+     * different scales across routes.
+     */
     return (
         <header className={cn('mb-10 space-y-4', className)}>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 text-balance">
-                {title}
-            </h1>
-            {lead && <p className="text-lg text-slate-600 max-w-2xl leading-relaxed">{lead}</p>}
+            <h1>{title}</h1>
+            {lead && <p className="text-lg text-ink-2 max-w-2xl">{lead}</p>}
             {children}
         </header>
     );

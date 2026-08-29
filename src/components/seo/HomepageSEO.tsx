@@ -57,10 +57,10 @@ const CONTENT: Record<string, any> = {
         // arithmetic. It is cited only where it is load-bearing — week
         // numbering — rather than as a blanket badge.
         trustSignals: [
-            { icon: CalendarCheck2, label: 'Gregorianischer Kalender', color: 'text-green-600' },
+            { icon: CalendarCheck2, label: 'Gregorianischer Kalender', color: 'text-success' },
             { icon: CheckCircle2, label: 'Vollständige Schaltjahrregel', color: 'text-accent' },
             { icon: Clock4, label: 'Kalenderwochen nach ISO 8601', color: 'text-accent' },
-            { icon: ShieldCheck, label: 'Kostenlos, ohne Anmeldung', color: 'text-slate-700' },
+            { icon: ShieldCheck, label: 'Kostenlos, ohne Anmeldung', color: 'text-ink-2' },
         ],
         hero: {
             title: 'Entdecke den Datumsrechner',
@@ -132,10 +132,10 @@ const CONTENT: Record<string, any> = {
             },
         ],
         trustSignals: [
-            { icon: CalendarCheck2, label: 'Gregorian calendar', color: 'text-green-600' },
+            { icon: CalendarCheck2, label: 'Gregorian calendar', color: 'text-success' },
             { icon: CheckCircle2, label: 'Full leap-year rule', color: 'text-accent' },
             { icon: Clock4, label: 'ISO 8601 calendar weeks', color: 'text-accent' },
-            { icon: ShieldCheck, label: 'Free, no registration', color: 'text-slate-700' },
+            { icon: ShieldCheck, label: 'Free, no registration', color: 'text-ink-2' },
         ],
         hero: {
             title: 'Explore the Date Calculator',
@@ -255,13 +255,13 @@ export function HomepageSEO({
             <article className="w-full max-w-7xl mx-auto mt-20 mb-16 space-y-24">
 {/* ── 4. Explore: related calculations and guides ── */}
             <nav aria-label={c.hero.title} className="space-y-10 animate-slide-up-fade">
-                <header className="border-b border-slate-200 pb-6 text-center md:text-left">
+                <header className="border-b border-line pb-6 text-center md:text-left">
                     <h2 className="text-4xl font-extrabold tracking-tight">{c.hero.title}</h2>
-                    <p className="text-slate-600 mt-2 text-lg">{c.hero.subtitle}</p>
+                    <p className="text-ink-2 mt-2 text-lg">{c.hero.subtitle}</p>
                 </header>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Fristen */}
-                    <div className="bg-white p-7 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all duration-300">
+                    <div className="bg-surface p-7 rounded-2xl border border-line hover:border-accent hover:shadow-sm transition-all duration-300">
                         <h3 className="text-accent font-bold text-xl mb-5 flex items-center gap-2">
                             <CalendarCheck2 className="w-5 h-5" aria-hidden="true" />
                             {c.hero.fristen}
@@ -269,7 +269,7 @@ export function HomepageSEO({
                         <ul className="space-y-3">
                             {topQueries.map((q, i) => (
                                 <li key={i}>
-                                    <Link href={q.href as any} className="text-slate-700 hover:text-blue-700 transition-colors flex items-center gap-2 group text-sm">
+                                    <Link href={q.href as any} className="text-ink-2 hover:text-accent transition-colors flex items-center gap-2 group text-sm">
                                         <span className="text-accent/40 group-hover:text-accent text-xs" aria-hidden="true">▶</span>
                                         {q.title}
                                     </Link>
@@ -278,7 +278,7 @@ export function HomepageSEO({
                         </ul>
                     </div>
                     {/* Ereignisse */}
-                    <div className="bg-white p-7 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all duration-300">
+                    <div className="bg-surface p-7 rounded-2xl border border-line hover:border-accent hover:shadow-sm transition-all duration-300">
                         <h3 className="text-accent font-bold text-xl mb-5 flex items-center gap-2">
                             <Clock4 className="w-5 h-5" aria-hidden="true" />
                             {c.hero.ereignisse}
@@ -286,7 +286,7 @@ export function HomepageSEO({
                         <ul className="space-y-3">
                             {eventQueries.map((q, i) => (
                                 <li key={i}>
-                                    <Link href={q.href as any} className="text-slate-700 hover:text-blue-700 transition-colors flex items-center gap-2 group text-sm">
+                                    <Link href={q.href as any} className="text-ink-2 hover:text-accent transition-colors flex items-center gap-2 group text-sm">
                                         <span className="text-accent/40 group-hover:text-accent text-xs" aria-hidden="true">▶</span>
                                         {q.title}
                                     </Link>
@@ -294,9 +294,9 @@ export function HomepageSEO({
                             ))}
                         </ul>
                     </div>
-                    <div className="bg-white p-7 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all duration-300">
-                        <h3 className="text-slate-900 font-bold text-xl mb-5 flex items-center gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-green-600" aria-hidden="true" />
+                    <div className="bg-surface p-7 rounded-2xl border border-line hover:border-accent hover:shadow-sm transition-all duration-300">
+                        <h3 className="text-ink font-bold text-xl mb-5 flex items-center gap-2">
+                            <CheckCircle2 className="w-5 h-5 text-success" aria-hidden="true" />
                             {c.hero.ratgeber}
                         </h3>
                         <ul className="space-y-3">
@@ -309,8 +309,8 @@ export function HomepageSEO({
                                 const slug = loc === 'de' ? g.de : g.en;
                                 return (
                                     <li key={i}>
-                                        <Link href={ROUTES.getRatgeber(slug)} className="text-slate-700 hover:text-blue-700 transition-colors flex items-center gap-2 group text-sm">
-                                            <span className="text-green-600/40 group-hover:text-green-600 text-xs" aria-hidden="true">▶</span>
+                                        <Link href={ROUTES.getRatgeber(slug)} className="text-ink-2 hover:text-accent transition-colors flex items-center gap-2 group text-sm">
+                                            <span className="text-success/50 group-hover:text-success text-xs" aria-hidden="true">▶</span>
                                             {slug.replace(/-/g, ' ')}
                                         </Link>
                                     </li>
@@ -325,7 +325,7 @@ export function HomepageSEO({
 {/* ── 5. Trust signals ── */}
             <section aria-label={loc === 'de' ? "Vertrauenssignale" : "Trust Signals"} className="flex flex-wrap justify-center gap-4 animate-slide-up-fade">
                 {c.trustSignals.map(({ icon: Icon, label, color }: any, i: number) => (
-                    <div key={i} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-medium text-slate-700">
+                    <div key={i} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface border border-line text-sm font-medium text-ink-2">
                         <Icon className={`w-4 h-4 shrink-0 ${color}`} aria-hidden="true" />
                         {label}
                     </div>
@@ -342,38 +342,38 @@ export function HomepageSEO({
 
             {/* ── 1. Understand: what the calculator does ── */}
             <section aria-labelledby="seo-content-heading" className="animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-                <div className="prose max-w-4xl mx-auto bg-white rounded-2xl p-10 md:p-14 border border-slate-200 shadow-sm">
+                <div className="article-body max-w-4xl mx-auto glass rounded-2xl p-8 sm:p-10">
                     <header>
                         <h2 id="seo-content-heading" className="text-3xl md:text-5xl font-extrabold mb-8 leading-tight tracking-tight">
                             {c.seo.headline}
                         </h2>
                     </header>
-                    <p className="text-slate-700 text-lg leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: c.seo.u1 }} />
-                    <p className="text-slate-700 text-lg leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: c.seo.u2 }} />
+                    <p className="text-ink-2 text-lg leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: c.seo.u1 }} />
+                    <p className="text-ink-2 text-lg leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: c.seo.u2 }} />
                     
-                    <h3 className="text-slate-900 text-xl font-bold mb-4">{c.seo.tableTitle}</h3>
-                    <div className="overflow-x-auto my-6 rounded-lg border border-slate-200">
+                    <h3 className="text-ink text-xl font-bold mb-4">{c.seo.tableTitle}</h3>
+                    <div className="overflow-x-auto my-6 rounded-lg border border-line">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="border-b border-slate-200 bg-slate-50">
-                                    <th scope="col" className="py-4 px-5 font-bold text-slate-900">{c.seo.th1}</th>
-                                    <th scope="col" className="py-4 px-5 font-bold text-slate-900">{c.seo.th2}</th>
-                                    <th scope="col" className="py-4 px-5 font-bold text-slate-900 hidden md:table-cell">{c.seo.th3}</th>
+                                <tr className="border-b border-line bg-surface">
+                                    <th scope="col" className="py-4 px-5 font-bold text-ink">{c.seo.th1}</th>
+                                    <th scope="col" className="py-4 px-5 font-bold text-ink">{c.seo.th2}</th>
+                                    <th scope="col" className="py-4 px-5 font-bold text-ink hidden md:table-cell">{c.seo.th3}</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-slate-700 divide-y divide-slate-100">
+                            <tbody className="text-ink-2 divide-y divide-line">
                                 {([
-                                    { key: 'addieren', href: '/addieren', useCase: c.seo.case1, tone: 'text-blue-700' },
+                                    { key: 'addieren', href: '/addieren', useCase: c.seo.case1, tone: 'text-accent' },
                                     { key: 'arbeitstage', href: '/arbeitstage', useCase: c.seo.case2, tone: 'text-accent' },
-                                    { key: 'differenz', href: '/differenz', useCase: c.seo.case3, tone: 'text-purple-600' },
-                                    { key: 'alter', href: '/alter', useCase: c.seo.case4, tone: 'text-green-600' }
+                                    { key: 'differenz', href: '/differenz', useCase: c.seo.case3, tone: 'text-accent' },
+                                    { key: 'alter', href: '/alter', useCase: c.seo.case4, tone: 'text-success' }
                                 ] as const).map((row) => {
                                     const rl = routeLabel(row.key, loc);
                                     return (
-                                        <tr key={row.key} className="hover:bg-slate-50 transition-colors">
+                                        <tr key={row.key} className="hover:bg-surface transition-colors">
                                             <td className={`py-4 px-5 font-medium ${row.tone}`}>{row.useCase}</td>
                                             <td className="py-4 px-5">
-                                                <Link href={row.href} className="underline hover:text-blue-700">
+                                                <Link href={row.href} className="underline hover:text-accent">
                                                     {rl.label}
                                                 </Link>
                                             </td>
@@ -384,7 +384,7 @@ export function HomepageSEO({
                             </tbody>
                         </table>
                     </div>
-                    <p className="text-slate-700 text-lg leading-relaxed mt-6" dangerouslySetInnerHTML={{ __html: c.seo.footer }} />
+                    <p className="text-ink-2 text-lg leading-relaxed mt-6" dangerouslySetInnerHTML={{ __html: c.seo.footer }} />
                 </div>
             </section>
 
@@ -393,7 +393,7 @@ export function HomepageSEO({
             <section aria-labelledby="howto-heading" className="max-w-4xl mx-auto animate-slide-up-fade" style={{ animationDelay: '0.15s' }}>
                 <header className="text-center mb-10">
                     <h2 id="howto-heading" className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">{c.howto.title}</h2>
-                    <p className="text-slate-600 text-lg">{c.howto.subtitle}</p>
+                    <p className="text-ink-2 text-lg">{c.howto.subtitle}</p>
                 </header>
                 <ol className="grid md:grid-cols-3 gap-6">
                     {c.howto.steps.map((step: any, i: number) => (
@@ -401,11 +401,11 @@ export function HomepageSEO({
                             {/* The step number was rendered twice: once as a
                                 giant slate-200 watermark and once as a badge,
                                 both reading "1". The watermark is gone. */}
-                            <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl text-sm font-black text-blue-700 bg-blue-50 border border-blue-100 mb-4">
+                            <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl text-sm font-black text-accent bg-accent-dim border border-accent-line mb-4">
                                 {i + 1}
                             </span>
-                            <h3 className="text-slate-900 font-bold text-lg mb-2">{step.title}</h3>
-                            <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
+                            <h3 className="text-ink font-bold text-lg mb-2">{step.title}</h3>
+                            <p className="text-ink-2 text-sm leading-relaxed">{step.desc}</p>
                         </Card>
                     ))}
                 </ol>
@@ -416,17 +416,17 @@ export function HomepageSEO({
             <section aria-labelledby="faq-heading" className="max-w-4xl mx-auto space-y-6 animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
                 <header className="text-center mb-6">
                     <h2 id="faq-heading" className="text-4xl font-extrabold mb-3 tracking-tight">{c.faqHeading.title}</h2>
-                    <p className="text-slate-600 text-lg">{c.faqHeading.subtitle}</p>
+                    <p className="text-ink-2 text-lg">{c.faqHeading.subtitle}</p>
                 </header>
                 <dl className="space-y-3">
                     {c.faqs.map((faq: any, i: number) => (
-                        <details key={i} className="bg-white border border-slate-200 rounded-xl px-6 py-5 group hover:border-blue-300 transition-colors">
-                            <summary className="font-semibold text-lg list-none flex justify-between items-center text-slate-800 group-hover:text-blue-700 cursor-pointer min-h-11 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                        <details key={i} className="bg-surface border border-line rounded-xl px-6 py-5 group hover:border-accent transition-colors">
+                            <summary className="font-semibold text-lg list-none flex justify-between items-center text-ink group-hover:text-accent cursor-pointer min-h-11 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-accent">
                                 <dt className="inline">{faq.question}</dt>
                                 <span aria-hidden="true" className="ml-4 shrink-0 text-accent group-open:rotate-180 transition-transform">▼</span>
                             </summary>
                             <dd className="mt-4 border-l-2 border-accent/30 pl-4">
-                                <p className="text-slate-700 leading-relaxed text-base">
+                                <p className="text-ink-2 leading-relaxed text-base">
                                     {faq.answer}
                                 </p>
                             </dd>

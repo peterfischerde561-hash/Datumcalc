@@ -47,7 +47,7 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
     ];
 
     return (
-        <div className="flex-1 w-full bg-white text-slate-800">
+        <div className="flex-1 w-full bg-surface text-ink">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <Breadcrumbs items={breadcrumbItems} className="mb-8" />
             <ItemListSchema
@@ -58,11 +58,11 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
                 }))}
             />
             <div className="mb-12 space-y-4">
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-ink">
                     {/* Was "Ratgeber & Guides" — half German, half English, on the German page. */}
                 {isDe ? 'Ratgeber zu Datum und Zeit' : 'Guides to Dates and Time'}
                 </h1>
-                <p className="text-lg text-slate-600 max-w-2xl">
+                <p className="text-lg text-ink-2 max-w-2xl">
                     {isDe
                         ? 'Alles Wissenswerte rund um Datum, Zeit und Fristen – verständlich erklärt.'
                         : 'Everything you need to know about dates, time, and deadlines – explained clearly.'}
@@ -73,13 +73,13 @@ export default async function RatgeberIndexPage({ params }: { params: Promise<{ 
                 {articles.map((article) => (
                     <CardLink key={article.slug} className="group">
                         <Link href={{ pathname: '/ratgeber/[slug]', params: { slug: article.slug } }} className="block p-6 outline-none">
-                            <h2 className="text-xl font-bold mb-4 text-slate-900 group-hover:text-blue-700 transition-colors">
+                            <h2 className="text-xl font-bold mb-4 text-ink group-hover:text-accent transition-colors">
                                 {article.title}
                             </h2>
-                            <p className="text-slate-600 mb-6 line-clamp-2">
+                            <p className="text-ink-2 mb-6 line-clamp-2">
                                 {article.description}
                             </p>
-                            <span className="text-blue-700 font-semibold flex items-center gap-2">
+                            <span className="text-accent font-semibold flex items-center gap-2">
                                 {isDe ? 'Artikel lesen' : 'Read Article'}
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />

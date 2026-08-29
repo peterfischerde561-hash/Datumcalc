@@ -55,14 +55,14 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                 )}
             </h1>
 
-            <div className="prose prose-lg max-w-4xl mx-auto space-y-16 mt-16 leading-relaxed">
+            <div className="max-w-4xl mx-auto space-y-16 mt-16">
 
                 {/* Mission Section */}
                 <Card as="section" padding="roomy">
-                    <h2 className="text-3xl font-bold text-slate-900 mb-6">
+                    <h2 className="text-3xl font-bold text-ink mb-6">
                         {locale === 'de' ? 'Unsere Mission' : 'Our Mission'}
                     </h2>
-                    <p className="text-slate-700 text-xl leading-relaxed">
+                    <p className="text-ink-2 text-xl leading-relaxed">
                         {locale === 'de'
                             ? 'In einer digitalisierten Welt sind exakte Zeitspannen und Fristen oft entscheidend – sei es für berufliche Projekte, rechtliche Zeitrahmen oder persönliche Meilensteine. Unsere Mission ist es, komplexe Datumsberechnungen für jeden zugänglich, schnell und mathematisch präzise zu machen. \n\nWas als kleines Tool für den Eigenbedarf begann, hat sich zu einer umfassenden Plattform für Zeitmanagement-Tools entwickelt. Wir glauben fest daran, dass Präzision kein Privileg von Experten sein sollte, sondern ein Standard für alle Internetnutzer.'
                             : 'In a digitized world, exact time spans and deadlines are often crucial – whether for professional projects, legal timeframes, or personal milestones. Our mission is to make complex date calculations accessible to everyone, fast and mathematically precise. \n\nWhat began as a small tool for our own use has developed into a comprehensive platform for time management tools. We firmly believe that precision should not be a privilege of experts, but a standard for all internet users.'}
@@ -80,10 +80,10 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                       than inventing someone to vouch for it.
                     */}
                     <div>
-                        <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                        <h2 className="text-3xl font-bold text-ink mb-4">
                             {locale === 'de' ? 'Wie gerechnet wird' : 'How the calculation works'}
                         </h2>
-                        <p className="text-slate-700 text-lg leading-relaxed">
+                        <p className="text-ink-2 text-lg leading-relaxed">
                             {locale === 'de'
                                 ? 'Alle Berechnungen laufen über eine gemeinsame Kalender-Bibliothek: Datumsarithmetik erfolgt auf ganzen Kalendertagen, nicht auf Zeitstempeln. Dadurch kann eine Zeitumstellung kein Datum um einen Tag verschieben. Die Schaltjahrregel, die Monatslängen und die ISO-8601-Kalenderwochen sind durch automatisierte Tests abgedeckt, inklusive der Grenzfälle um den 29. Februar und den Jahreswechsel.'
                                 : 'Every calculation runs through one shared calendar library: date arithmetic works on whole calendar days rather than timestamps, so a daylight-saving change cannot shift a date by a day. The leap-year rule, month lengths and ISO 8601 calendar weeks are covered by automated tests, including the edge cases around February 29 and the turn of the year.'}
@@ -94,10 +94,10 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                 {/* Authority & Trust Section */}
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <h2 className="text-3xl font-bold text-slate-900 mb-6">
+                        <h2 className="text-3xl font-bold text-ink mb-6">
                             {locale === 'de' ? 'Präzision ohne Kompromisse' : 'Precision without Compromise'}
                         </h2>
-                        <p className="text-slate-700 mb-6">
+                        <p className="text-ink-2 mb-6">
                             {locale === 'de'
                                 ? 'Die Rechenlogik bildet den gregorianischen Kalender mit der vollständigen Schaltjahrregel ab und berücksichtigt die unterschiedlichen Monatslängen. Kalenderwochen folgen ISO 8601 – dem Standard für die Darstellung von Datumsangaben, der die Woche am Montag beginnen lässt und die erste Woche eines Jahres über den ersten Donnerstag bestimmt.\n\nGesetzliche Feiertage werden bei den Arbeitstagen derzeit nicht automatisch abgezogen; herausgefiltert werden Samstage und Sonntage.'
                                 : 'The calculation maps the Gregorian calendar with the full leap-year rule and accounts for varying month lengths. Calendar weeks follow ISO 8601 – the standard for representing dates, which starts the week on Monday and defines the first week of a year by its first Thursday.\n\nPublic holidays are not currently deducted automatically from business days; Saturdays and Sundays are filtered out.'}
@@ -106,10 +106,10 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                     {/* "100% Mathematisch exakt" was here — a claim no
                         implementation can support. States the actual basis instead. */}
                     <Card tone="accent" className="flex flex-col justify-center gap-3">
-                        <span className="text-sm font-bold uppercase tracking-widest text-slate-500">
+                        <span className="text-sm font-bold uppercase tracking-widest text-ink-3">
                             {locale === 'de' ? 'Rechengrundlage' : 'Calculation basis'}
                         </span>
-                        <ul className="text-slate-700 space-y-2 text-left">
+                        <ul className="text-ink-2 space-y-2 text-left">
                             <li>{locale === 'de' ? 'Gregorianischer Kalender' : 'Gregorian calendar'}</li>
                             <li>{locale === 'de' ? 'Vollständige Schaltjahrregel (4 / 100 / 400)' : 'Full leap-year rule (4 / 100 / 400)'}</li>
                             <li>{locale === 'de' ? 'Kalenderwochen nach ISO 8601' : 'Calendar weeks per ISO 8601'}</li>
@@ -120,10 +120,10 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
 
                 {/* Technical Vision */}
                 <section className="space-y-6">
-                    <h2 className="text-3xl font-bold text-slate-900">
+                    <h2 className="text-3xl font-bold text-ink">
                         {locale === 'de' ? 'Unsere technologische Vision' : 'Our Technological Vision'}
                     </h2>
-                    <p className="text-slate-700">
+                    <p className="text-ink-2">
                         {locale === 'de'
                             ? `${DOMAIN} läuft auf Next.js und wird als statische Seite ausgeliefert, damit die Ergebnisse ohne Wartezeit erscheinen – auch auf mobilen Endgeräten. Die datumsabhängigen Seiten werden täglich zum Berliner Datumswechsel neu erzeugt.\n\nGeplant sind weitere Spezialrechner, etwa für Kalenderwochen und Fristen.`
                             : `${DOMAIN} runs on Next.js and is served as a static site, so results appear without waiting – on mobile devices too. Date-dependent pages are regenerated daily at the Berlin date boundary.\n\nFurther specialised calculators are planned, for calendar weeks and deadlines among others.`}
@@ -132,7 +132,7 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
 
                 {/* EEAT Signals */}
                 <section className="border-l-4 border-accent pl-10 space-y-6">
-                    <h2 className="text-3xl font-bold text-slate-900">
+                    <h2 className="text-3xl font-bold text-ink">
                         {locale === 'de' ? 'Transparenz & Qualität' : 'Transparency & Quality'}
                     </h2>
                     {/*
@@ -150,15 +150,15 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                       removing elsewhere. What is stated below is only what the
                       code does, which stays true either way.
                     */}
-                    <p className="text-slate-700 leading-relaxed text-lg">
+                    <p className="text-ink-2 leading-relaxed text-lg">
                         {locale === 'de'
                             ? 'Der Datumsrechner ist ohne Anmeldung nutzbar. Die Daten, die Sie in den Rechner eingeben, werden im Browser verarbeitet und nicht an uns übertragen. Wie jede Berechnung zustande kommt, steht offen dokumentiert unter „Wie wir rechnen“ – einschließlich der Fälle, die der Rechner bewusst nicht abdeckt.'
                             : 'The date calculator works without registration. The dates you type into it are processed in your browser and are not transmitted to us. How every calculation is produced is documented openly under “How we calculate” – including the cases the calculator deliberately does not cover.'}
                     </p>
                 </section>
 
-                <section className="text-center bg-white rounded-2xl p-12 border border-slate-200 mt-16 shadow-sm">
-                    <h2 className="text-2xl font-bold mb-8 text-slate-900">Testen Sie unsere Engine</h2>
+                <section className="text-center bg-surface rounded-2xl p-12 border border-line mt-16 shadow-sm">
+                    <h2 className="text-2xl font-bold mb-8 text-ink">Testen Sie unsere Engine</h2>
                     <div className="max-w-3xl mx-auto">
                         <CalculatorCore />
                     </div>

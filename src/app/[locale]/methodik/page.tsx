@@ -190,25 +190,25 @@ export default async function MethodologyPage({ params }: { params: Promise<{ lo
           ];
 
     return (
-        <div className="flex-1 w-full bg-white text-slate-800">
+        <div className="flex-1 w-full bg-surface text-ink">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
                 <BreadcrumbSchema items={breadcrumbItems} />
 
-                <nav aria-label="Breadcrumb" className="flex text-sm text-slate-500 items-center space-x-2 mb-8">
-                    <NextLink href={locale === 'de' ? '/' : `/${locale}`} className="hover:text-blue-700 hover:underline">
+                <nav aria-label="Breadcrumb" className="flex text-sm text-ink-3 items-center space-x-2 mb-8">
+                    <NextLink href={locale === 'de' ? '/' : `/${locale}`} className="hover:text-accent hover:underline">
                         {isDe ? 'Startseite' : 'Home'}
                     </NextLink>
-                    <ChevronRight className="w-4 h-4 text-slate-400" aria-hidden="true" />
-                    <span className="text-slate-700 font-medium" aria-current="page">
+                    <ChevronRight className="w-4 h-4 text-ink-3" aria-hidden="true" />
+                    <span className="text-ink-2 font-medium" aria-current="page">
                         {isDe ? 'Wie wir rechnen' : 'How we calculate'}
                     </span>
                 </nav>
 
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6">
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-ink mb-6">
                     {isDe ? 'Wie wir rechnen' : 'How we calculate'}
                 </h1>
 
-                <p className="text-xl text-slate-600 leading-relaxed mb-12">
+                <p className="text-xl text-ink-2 leading-relaxed mb-12">
                     {isDe
                         ? 'Diese Seite beschreibt die Regeln hinter jedem Ergebnis auf datums-rechner.com – einschließlich der Fälle, die der Rechner bewusst nicht abdeckt.'
                         : 'This page describes the rules behind every result on datums-rechner.com – including the cases the calculator deliberately does not cover.'}
@@ -217,8 +217,8 @@ export default async function MethodologyPage({ params }: { params: Promise<{ lo
                 <div className="space-y-10">
                     {sections.map((section) => (
                         <section key={section.h}>
-                            <h2 className="text-2xl font-bold text-slate-900 mb-3">{section.h}</h2>
-                            <div className="space-y-3 text-lg text-slate-700 leading-relaxed">
+                            <h2 className="text-2xl font-bold text-ink mb-3">{section.h}</h2>
+                            <div className="space-y-3 text-lg text-ink-2 leading-relaxed">
                                 {section.body.map((p) => (
                                     <p key={p}>{p}</p>
                                 ))}

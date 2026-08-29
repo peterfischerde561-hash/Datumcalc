@@ -12,11 +12,11 @@ import { resolveCanonicalQuery } from '@/lib/seo/queryModel';
  * hero of a calendar-accuracy site is self-inflicted.
  */
 const SHORTCUTS: { slug: string; de: string; en: string; color: string }[] = [
-    { slug: '30-tage-ab-heute', de: '+30 Tage', en: '+30 days', color: 'hover:border-blue-400' },
-    { slug: '60-tage-ab-heute', de: '+60 Tage', en: '+60 days', color: 'hover:border-sky-400' },
-    { slug: '90-tage-ab-heute', de: '+90 Tage', en: '+90 days', color: 'hover:border-purple-400' },
-    { slug: '6-monate-ab-heute', de: '+6 Monate', en: '+6 months', color: 'hover:border-green-400' },
-    { slug: '1-jahr-ab-heute', de: '+1 Jahr', en: '+1 year', color: 'hover:border-slate-400' }
+    { slug: '30-tage-ab-heute', de: '+30 Tage', en: '+30 days', color: 'hover:border-accent' },
+    { slug: '60-tage-ab-heute', de: '+60 Tage', en: '+60 days', color: 'hover:border-accent' },
+    { slug: '90-tage-ab-heute', de: '+90 Tage', en: '+90 days', color: 'hover:border-accent' },
+    { slug: '6-monate-ab-heute', de: '+6 Monate', en: '+6 months', color: 'hover:border-success' },
+    { slug: '1-jahr-ab-heute', de: '+1 Jahr', en: '+1 year', color: 'hover:border-line-2' }
 ];
 
 export function QuickShortcuts({ locale }: { locale: string }) {
@@ -24,7 +24,7 @@ export function QuickShortcuts({ locale }: { locale: string }) {
     
     return (
         <div className="flex flex-wrap gap-2 mt-4 animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-            <span className="text-slate-500 text-xs font-bold uppercase tracking-widest mr-2 flex items-center">
+            <span className="text-ink-3 text-xs font-bold uppercase tracking-widest mr-2 flex items-center">
                 {isDe ? 'Beliebte Abfragen:' : 'Popular Queries:'}
             </span>
             {SHORTCUTS.map((s) => {
@@ -37,7 +37,7 @@ export function QuickShortcuts({ locale }: { locale: string }) {
                             pathname: '/addieren/[...slug]',
                             params: { slug: [locSlug] }
                         }}
-                        className={`px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-medium text-slate-700 hover:text-blue-700 transition-all ${s.color} hover:bg-slate-50`}
+                        className={`px-3 py-1.5 rounded-full bg-surface border border-line text-xs font-medium text-ink-2 hover:text-accent transition-all ${s.color} hover:bg-surface`}
                     >
                         {isDe ? s.de : s.en}
                     </Link>

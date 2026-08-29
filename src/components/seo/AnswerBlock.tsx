@@ -51,11 +51,17 @@ function AnswerFrame({
      * arrived at by asking exactly this.
      */
     return (
-        <Card tone="accent" padding="none" className="px-6 py-8 sm:px-8 sm:py-10">
-            <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight text-balance">
+        <Card
+            tone="accent"
+            padding="none"
+            /* The 4px accent rule down the left edge is what marks this out as
+               the answer rather than another panel on the page. */
+            className="border-l-4 border-l-accent px-6 py-8 sm:px-8 sm:py-10"
+        >
+            <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-ink leading-tight text-balance">
                 {headline}
             </p>
-            <p className="mt-4 text-base sm:text-lg text-slate-700">{detail}</p>
+            <p className="mt-4 text-base sm:text-lg text-ink-2">{detail}</p>
         </Card>
     );
 }
@@ -209,17 +215,17 @@ export function OffsetAnswer({
             : null;
 
     const detail = (
-        <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-700">
+        <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-ink-2">
             <span>
                 {amount} {unitNominative}{' '}
                 {isDe ? `ab dem ${formatNumeric(today, locale)}` : `from ${formatNumeric(today, locale)}`}
             </span>
-            <span aria-hidden="true" className="text-slate-400">·</span>
+            <span aria-hidden="true" className="text-ink-3">·</span>
             <span>
                 {isDe ? 'KW' : 'week'}{' '}
                 <ResultValue type="iso-week" value={week}>{week}</ResultValue>
             </span>
-            <span aria-hidden="true" className="text-slate-400">·</span>
+            <span aria-hidden="true" className="text-ink-3">·</span>
             <span>
                 {isDe ? 'Tag' : 'day'}{' '}
                 <ResultValue type="day-of-year" value={dayOfYear}>{dayOfYear}</ResultValue>{' '}
@@ -227,7 +233,7 @@ export function OffsetAnswer({
             </span>
             {weeksAndDays && weeksAndDays.weeks > 0 && (
                 <>
-                    <span aria-hidden="true" className="text-slate-400">·</span>
+                    <span aria-hidden="true" className="text-ink-3">·</span>
                     <span>
                         {isDe ? 'entspricht' : 'equals'} {weeksAndDays.weeks}{' '}
                         {isDe

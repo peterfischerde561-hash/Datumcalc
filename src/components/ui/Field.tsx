@@ -8,9 +8,9 @@ import { cn } from '@/lib/ui/cn';
  *
  * All four calculator modes declared the same two strings by hand:
  *
- *   const inputClass = "w-full bg-white border border-slate-300 rounded-md
+ *   const inputClass = "w-full bg-surface border border-line-2 rounded-md
  *                       px-4 py-3 ... [color-scheme:light]";
- *   const labelClass = "block text-sm font-semibold text-slate-700 mb-1.5";
+ *   const labelClass = "block text-sm font-semibold text-ink-2 mb-1.5";
  *
  * Eight copies, and they had already begun to drift. Worse, the label/control
  * pairing was the caller's job: each one had to remember to generate an id,
@@ -25,18 +25,28 @@ import { cn } from '@/lib/ui/cn';
  */
 
 const CONTROL = cn(
-    'w-full h-11 rounded-lg border border-slate-300 bg-white px-3',
-    'text-slate-900 placeholder:text-slate-500',
+    'w-full h-11 rounded-xl border border-line bg-black/30 px-3',
+    'text-ink placeholder:text-ink-3',
     'transition-colors outline-none',
-    'focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-blue-500',
-    // Date inputs render their own picker chrome; without this the browser is
-    // free to paint it dark and the calendar glyph disappears on white.
-    '[color-scheme:light]'
+    'hover:border-line-2',
+    'focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent',
+    // Date inputs render their own picker chrome. This tells the browser to
+    // paint the calendar glyph and popup for a dark field -- with the previous
+    // `light` value the glyph rendered near-black on a near-black input.
+    '[color-scheme:dark]'
 );
 
+/*
+ * Labels are uppercase and small, matching the reference. They use ink-2
+ * (7.7:1) rather than the ink-3 the reference uses (4.1:1): at 0.8rem this is
+ * small text, which needs 4.5:1.
+ */
 function Label({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) {
     return (
-        <label htmlFor={htmlFor} className="block text-sm font-semibold text-slate-700 mb-1.5">
+        <label
+            htmlFor={htmlFor}
+            className="block text-xs font-semibold uppercase tracking-[0.05em] text-ink-2 mb-2"
+        >
             {children}
         </label>
     );
@@ -44,7 +54,7 @@ function Label({ htmlFor, children }: { htmlFor: string; children: React.ReactNo
 
 function Hint({ id, children }: { id: string; children: React.ReactNode }) {
     return (
-        <p id={id} className="mt-1.5 text-sm text-slate-600">
+        <p id={id} className="mt-1.5 text-sm text-ink-2">
             {children}
         </p>
     );

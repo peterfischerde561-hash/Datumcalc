@@ -29,15 +29,15 @@ export function LiveDatePreview({ locale }: { locale: string }) {
     const progress = Math.round((dayOfYear / totalDays) * 100);
 
     const cell = 'flex flex-col gap-0.5';
-    const key = 'text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500';
-    const val = 'text-sm font-bold text-slate-900 tabular-nums';
+    const key = 'text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-3';
+    const val = 'text-sm font-bold text-ink tabular-nums';
 
     return (
         <Card padding="none" className="px-5 py-4">
             <div className="flex flex-wrap items-baseline gap-x-8 gap-y-3">
                 <div className={cell}>
                     <span className={key}>{isDe ? 'Heute' : 'Today'}</span>
-                    <span className="text-base font-bold text-slate-900">
+                    <span className="text-base font-bold text-ink">
                         <ResultValue type="today" value={formatCivilDate(today)}>
                             {formatLong(today, locale)}
                         </ResultValue>
@@ -50,7 +50,7 @@ export function LiveDatePreview({ locale }: { locale: string }) {
                         <ResultValue type="day-of-year" value={dayOfYear}>
                             {dayOfYear}
                         </ResultValue>
-                        <span className="font-normal text-slate-400"> / {totalDays}</span>
+                        <span className="font-normal text-ink-3"> / {totalDays}</span>
                     </span>
                 </div>
 
@@ -67,9 +67,9 @@ export function LiveDatePreview({ locale }: { locale: string }) {
                 <div className={`${cell} min-w-[7.5rem] flex-1`}>
                     <span className={key}>{isDe ? 'Jahresfortschritt' : 'Year progress'}</span>
                     <span className="flex items-center gap-2">
-                        <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200">
+                        <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-3">
                             <span
-                                className="block h-full rounded-full bg-blue-600"
+                                className="block h-full rounded-full bg-accent"
                                 style={{ width: `${progress}%` }}
                             />
                         </span>

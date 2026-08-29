@@ -284,7 +284,7 @@ export default async function ProgrammaticPage({
     }
 
     return (
-        <div className="flex-1 w-full relative bg-white text-slate-800">
+        <div className="flex-1 w-full relative bg-surface text-ink">
             <BreadcrumbSchema items={breadcrumbItems} />
             {/*
               One WebApplication entity, not one per URL. This used to say the
@@ -297,23 +297,23 @@ export default async function ProgrammaticPage({
             <WebApplicationSchema locale={locale} />
             <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-12">
 
-            <nav aria-label="Breadcrumb" className="flex text-sm text-slate-500 items-center space-x-2">
-                <NextLink href={`${locale === 'de' ? '/' : `/${locale}`}`} className="hover:text-blue-700 hover:underline transition-colors">
+            <nav aria-label="Breadcrumb" className="flex text-sm text-ink-3 items-center space-x-2">
+                <NextLink href={`${locale === 'de' ? '/' : `/${locale}`}`} className="hover:text-accent hover:underline transition-colors">
                     {isDe ? "Startseite" : "Home"}
                 </NextLink>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-                <NextLink href={getCanonicalPath(locale, internalIntent)} className="hover:text-blue-700 hover:underline transition-colors">
+                <ChevronRight className="w-4 h-4 text-ink-3" />
+                <NextLink href={getCanonicalPath(locale, internalIntent)} className="hover:text-accent hover:underline transition-colors">
                     {routeLabel(internalIntent as ToolKey, locale).label}
                 </NextLink>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-                <span className="text-slate-700 font-medium" aria-current="page">{correctSlug.replace(/-/g, ' ')}</span>
+                <ChevronRight className="w-4 h-4 text-ink-3" />
+                <span className="text-ink-2 font-medium" aria-current="page">{correctSlug.replace(/-/g, ' ')}</span>
             </nav>
 
             {isDiff && eventKey ? (
                 /* ── Countdown / event template ── */
                 <>
                     <header className="w-full space-y-8 text-center">
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-ink">
                             {h1Text}
                         </h1>
                         {occurrence && (
@@ -336,7 +336,7 @@ export default async function ProgrammaticPage({
                             />
                         )}
                         <div className="flex items-center justify-center gap-3 flex-wrap">
-                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-50 border border-green-200 text-xs font-semibold text-green-700 uppercase tracking-wide">
+                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-success/10 border border-success/30 text-xs font-semibold text-success uppercase tracking-wide">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
@@ -358,7 +358,7 @@ export default async function ProgrammaticPage({
                     <FAQBlock intent={intent} slug={slugStr} locale={locale} />
 
                     <Card as="section" aria-label={isDe ? 'Datumsdifferenz-Rechner' : 'Date difference calculator'}>
-                        <h2 className="text-2xl font-bold text-slate-900 mb-6">
+                        <h2 className="text-2xl font-bold text-ink mb-6">
                             {isDe ? 'Anderes Datum berechnen' : 'Calculate another date'}
                         </h2>
                         <CalculatorCore initialMode={mode as any} />
@@ -370,7 +370,7 @@ export default async function ProgrammaticPage({
                 /* ── Add / subtract value template ── */
                 <>
                     <header className="w-full space-y-6">
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-ink">
                             {h1Text}
                         </h1>
                         {offsetTarget && offsetUnit && offsetAmount !== null && (
@@ -384,7 +384,7 @@ export default async function ProgrammaticPage({
                         )}
 
                         <div className="flex items-center gap-3 flex-wrap">
-                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-50 border border-green-200 text-xs font-semibold text-green-700 uppercase tracking-wide">
+                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-success/10 border border-success/30 text-xs font-semibold text-success uppercase tracking-wide">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>

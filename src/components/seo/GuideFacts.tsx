@@ -28,18 +28,18 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
     const thisYearIsLeap = isLeapYear(today.year);
 
     return (
-        <div className="not-prose my-12 space-y-10">
+        <div className="my-12 space-y-10">
             {/* Answers "Ist 2026 ein Schaltjahr?" — the query, with the year computed. */}
             <Card as="section">
-                <h2 className="text-2xl font-bold text-slate-900 mb-3">
+                <h2 className="text-2xl font-bold text-ink mb-3">
                     {isDe
                         ? `Ist ${today.year} ein Schaltjahr?`
                         : `Is ${today.year} a leap year?`}
                 </h2>
-                <p className="text-lg text-slate-700 leading-relaxed">
+                <p className="text-lg text-ink-2 leading-relaxed">
                     {isDe ? (
                         <>
-                            <strong className="text-slate-900">
+                            <strong className="text-ink">
                                 {thisYearIsLeap
                                     ? `Ja – ${today.year} ist ein Schaltjahr und hat 366 Tage.`
                                     : `Nein – ${today.year} ist kein Schaltjahr und hat 365 Tage.`}
@@ -50,7 +50,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                         </>
                     ) : (
                         <>
-                            <strong className="text-slate-900">
+                            <strong className="text-ink">
                                 {thisYearIsLeap
                                     ? `Yes – ${today.year} is a leap year and has 366 days.`
                                     : `No – ${today.year} is not a leap year and has 365 days.`}
@@ -65,35 +65,35 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
 
             {/* The rule applied to years the reader can actually see. */}
             <section>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                <h2 className="text-2xl font-bold text-ink mb-2">
                     {isDe ? 'Die nächsten Schaltjahre' : 'The next leap years'}
                 </h2>
-                <p className="text-slate-600 mb-4">
+                <p className="text-ink-2 mb-4">
                     {isDe
                         ? `Alle Schaltjahre ab ${today.year} – und die Jahrhundertjahre, die trotz Teilbarkeit durch 4 ausfallen.`
                         : `Every leap year from ${today.year} on – plus the century years that are skipped despite being divisible by 4.`}
                 </p>
-                <div className="overflow-x-auto rounded-lg border border-slate-200">
+                <div className="overflow-x-auto rounded-lg border border-line">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="border-b border-slate-200 bg-slate-50 text-slate-700">
+                            <tr className="border-b border-line bg-surface text-ink-2">
                                 <th scope="col" className="py-3 px-4 font-semibold">{isDe ? 'Jahr' : 'Year'}</th>
                                 <th scope="col" className="py-3 px-4 font-semibold">{isDe ? 'Schaltjahr?' : 'Leap year?'}</th>
                                 <th scope="col" className="py-3 px-4 font-semibold">{isDe ? 'Tage' : 'Days'}</th>
                                 <th scope="col" className="py-3 px-4 font-semibold">{isDe ? 'Grund' : 'Reason'}</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-line">
                             {rows.map((r) => (
-                                <tr key={r.year} className={r.isLeap ? '' : 'bg-amber-50/60'}>
-                                    <td className="py-3 px-4 font-medium text-slate-900 tabular-nums">{r.year}</td>
+                                <tr key={r.year} className={r.isLeap ? '' : 'bg-amber/10'}>
+                                    <td className="py-3 px-4 font-medium text-ink tabular-nums">{r.year}</td>
                                     <td className="py-3 px-4">
-                                        <span className={r.isLeap ? 'text-green-700 font-semibold' : 'text-amber-800 font-semibold'}>
+                                        <span className={r.isLeap ? 'text-success font-semibold' : 'text-amber font-semibold'}>
                                             {r.isLeap ? (isDe ? 'Ja' : 'Yes') : (isDe ? 'Nein' : 'No')}
                                         </span>
                                     </td>
-                                    <td className="py-3 px-4 text-slate-700 tabular-nums">{r.isLeap ? 366 : 365}</td>
-                                    <td className="py-3 px-4 text-slate-600">
+                                    <td className="py-3 px-4 text-ink-2 tabular-nums">{r.isLeap ? 366 : 365}</td>
+                                    <td className="py-3 px-4 text-ink-2">
                                         {r.reason === 'divisible-by-4' && (isDe ? 'durch 4 teilbar' : 'divisible by 4')}
                                         {r.reason === 'century-kept' && (isDe ? 'durch 400 teilbar – Ausnahme von der Ausnahme' : 'divisible by 400 – exception to the exception')}
                                         {r.reason === 'century-skipped' && (isDe ? 'volles Jahrhundert, nicht durch 400 teilbar – fällt aus' : 'full century, not divisible by 400 – skipped')}
@@ -104,7 +104,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                         </tbody>
                     </table>
                 </div>
-                <p className="text-sm text-slate-600 mt-3">
+                <p className="text-sm text-ink-2 mt-3">
                     {isDe
                         ? `Die nächsten ausfallenden Jahrhundertjahre: ${skipped.join(', ')}.`
                         : `The next skipped century years: ${skipped.join(', ')}.`}
@@ -113,12 +113,12 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
 
             {/* Where the 29th actually bites, in this calculator's terms. */}
             <section>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                <h2 className="text-2xl font-bold text-ink mb-4">
                     {isDe ? 'Was der 29. Februar in der Praxis bedeutet' : 'What February 29 means in practice'}
                 </h2>
-                <div className="space-y-5 text-slate-700 leading-relaxed">
+                <div className="space-y-5 text-ink-2 leading-relaxed">
                     <div>
-                        <h3 className="font-bold text-slate-900 mb-1">
+                        <h3 className="font-bold text-ink mb-1">
                             {isDe ? 'Geburtstag am 29. Februar' : 'A birthday on February 29'}
                         </h3>
                         <p>
@@ -127,7 +127,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                                     Ein am 29. Februar geborener Mensch hat nur in Schaltjahren einen
                                     kalendarischen Geburtstag – zwischen {facts.previousLeapYear} und{' '}
                                     {facts.nextLeapYear} liegen drei Jahre ohne diesen Tag. Der{' '}
-                                    <NextLink href="/alter" className="text-blue-700 hover:underline">Altersrechner</NextLink>{' '}
+                                    <NextLink href="/alter" className="text-accent hover:underline">Altersrechner</NextLink>{' '}
                                     ordnet den Geburtstag in Nicht-Schaltjahren dem 28. Februar zu, sodass
                                     das vollendete Lebensjahr eindeutig bleibt.
                                 </>
@@ -136,7 +136,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                                     Someone born on February 29 has a calendar birthday only in leap
                                     years – there are three years without that date between{' '}
                                     {facts.previousLeapYear} and {facts.nextLeapYear}. The{' '}
-                                    <NextLink href="/en/age" className="text-blue-700 hover:underline">age calculator</NextLink>{' '}
+                                    <NextLink href="/en/age" className="text-accent hover:underline">age calculator</NextLink>{' '}
                                     assigns the birthday to February 28 in common years, so the completed
                                     year of life stays unambiguous.
                                 </>
@@ -144,7 +144,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                         </p>
                     </div>
                     <div>
-                        <h3 className="font-bold text-slate-900 mb-1">
+                        <h3 className="font-bold text-ink mb-1">
                             {isDe ? 'Monatsfristen über den Februar' : 'Month-long periods across February'}
                         </h3>
                         <p>
@@ -153,7 +153,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                                     {/* German quotation marks, and escaped: a bare " in JSX text is a lint error. */}
                                     &bdquo;Ein Monat ab dem 31. Januar&ldquo; endet nicht am 31. Februar – den
                                     gibt es nicht. Der{' '}
-                                    <NextLink href="/addieren" className="text-blue-700 hover:underline">Datumsrechner</NextLink>{' '}
+                                    <NextLink href="/addieren" className="text-accent hover:underline">Datumsrechner</NextLink>{' '}
                                     begrenzt auf den letzten Tag des Zielmonats: auf den 28. Februar, in
                                     einem Schaltjahr auf den 29.
                                 </>
@@ -161,7 +161,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                                 <>
                                     &ldquo;One month from January 31&rdquo; does not end on February 31 –
                                     there is no such date. The{' '}
-                                    <NextLink href="/en/add" className="text-blue-700 hover:underline">date calculator</NextLink>{' '}
+                                    <NextLink href="/en/add" className="text-accent hover:underline">date calculator</NextLink>{' '}
                                     clamps to the last day of the target month: February 28, or the 29th
                                     in a leap year.
                                 </>
@@ -169,7 +169,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                         </p>
                     </div>
                     <div>
-                        <h3 className="font-bold text-slate-900 mb-1">
+                        <h3 className="font-bold text-ink mb-1">
                             {isDe ? 'Zeiträume, die einen 29. Februar enthalten' : 'Spans that contain a February 29'}
                         </h3>
                         <p>
@@ -179,7 +179,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                                     Jahreszahl vermuten lässt: 365 Tage ab dem 1. März{' '}
                                     {facts.nextLeapYear - 1} enden nicht am 1. März {facts.nextLeapYear},
                                     weil der 29. Februar dazwischenliegt. Die{' '}
-                                    <NextLink href="/differenz" className="text-blue-700 hover:underline">Datumsdifferenz</NextLink>{' '}
+                                    <NextLink href="/differenz" className="text-accent hover:underline">Datumsdifferenz</NextLink>{' '}
                                     zählt ihn automatisch mit.
                                 </>
                             ) : (
@@ -188,7 +188,7 @@ export function GuideFacts({ slug, locale }: { slug: string; locale: string }) {
                                     suggests: 365 days from March 1 {facts.nextLeapYear - 1} does not land
                                     on March 1 {facts.nextLeapYear}, because February 29 sits in between.
                                     The{' '}
-                                    <NextLink href="/en/difference" className="text-blue-700 hover:underline">date difference calculator</NextLink>{' '}
+                                    <NextLink href="/en/difference" className="text-accent hover:underline">date difference calculator</NextLink>{' '}
                                     counts it automatically.
                                 </>
                             )}

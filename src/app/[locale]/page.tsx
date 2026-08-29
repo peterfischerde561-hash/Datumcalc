@@ -67,20 +67,20 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
             {/* ── Solve ─────────────────────────────────────────────── */}
             <header className="space-y-6 animate-slide-up-fade">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-bold uppercase tracking-widest text-blue-700">
-                    <span className="w-2 h-2 rounded-full bg-blue-600" aria-hidden="true"></span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-dim border border-accent-line text-xs font-bold uppercase tracking-widest text-accent">
+                    <span className="w-2 h-2 rounded-full bg-accent" aria-hidden="true"></span>
                     {locale === 'de' ? 'Gregorianischer Kalender' : 'Gregorian calendar'}
                 </div>
 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.02] text-slate-900 text-balance">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.02] text-ink text-balance">
                     {locale === 'de' ? (
-                        <>Präziser <span className="text-blue-700">Datumsrechner</span> für alle Fristen.</>
+                        <>Präziser <span className="text-accent">Datumsrechner</span> für alle Fristen.</>
                     ) : (
-                        <>Precise <span className="text-blue-700">Date Calculator</span> for every deadline.</>
+                        <>Precise <span className="text-accent">Date Calculator</span> for every deadline.</>
                     )}
                 </h1>
 
-                <p className="text-lg md:text-xl text-slate-600 max-w-2xl leading-relaxed">
+                <p className="text-lg md:text-xl text-ink-2 max-w-2xl leading-relaxed">
                     {locale === 'de'
                         ? 'Tage zwischen zwei Daten zählen, Tage zu einem Datum addieren, Netto-Arbeitstage ermitteln oder ein Alter bestimmen. Jede Berechnung folgt dem gregorianischen Kalender mit vollständiger Schaltjahrregel; Kalenderwochen nach ISO 8601.'
                         : 'Count the days between two dates, add days to a date, work out net business days or determine an age. Every calculation follows the Gregorian calendar with the full leap-year rule; calendar weeks per ISO 8601.'}
@@ -95,10 +95,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 aria-labelledby="calculator-heading"
                 className="mt-10 animate-slide-up-fade"
             >
-                <h2 id="calculator-heading" className="text-2xl font-bold text-slate-900 mb-1">
+                <h2 id="calculator-heading" className="text-2xl font-bold text-ink mb-1">
                     {locale === 'de' ? 'Datum berechnen' : 'Calculate a date'}
                 </h2>
-                <p className="text-slate-600 mb-6">
+                <p className="text-ink-2 mb-6">
                     {locale === 'de'
                         ? 'Rechner wählen, Daten eintragen – das Ergebnis erscheint sofort darunter.'
                         : 'Pick a calculator, enter your dates – the result appears below straight away.'}
@@ -110,10 +110,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <HomepageSEO locale={locale} part="understand" />
 
             {/* ── Explore ───────────────────────────────────────────── */}
-            <h2 id="tools-heading" className="text-2xl font-bold text-slate-900 mt-20 mb-2">
+            <h2 id="tools-heading" className="text-2xl font-bold text-ink mt-20 mb-2">
                 {locale === 'de' ? 'Alle Rechner' : 'All calculators'}
             </h2>
-            <p className="text-slate-600 mb-6 max-w-2xl">
+            <p className="text-ink-2 mb-6 max-w-2xl">
                 {locale === 'de'
                     ? 'Jeder Rechner hat eine eigene Seite mit Erklärung und Beispielen.'
                     : 'Each calculator has its own page with an explanation and examples.'}
@@ -140,14 +140,14 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     return (
                         <CardLink key={key} className="group">
                             <Link href={href} className="flex flex-col gap-3 p-5 text-left outline-none">
-                                <span className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-700 shrink-0">
+                                <span className="w-10 h-10 rounded-xl bg-accent-dim flex items-center justify-center text-accent shrink-0">
                                     <Icon className="w-5 h-5" aria-hidden="true" />
                                 </span>
                                 <span>
-                                    <h3 className="text-slate-900 font-bold text-lg mb-1 group-hover:text-blue-700 transition-colors">
+                                    <h3 className="text-ink font-bold text-lg mb-1 group-hover:text-accent transition-colors">
                                         {label.label}
                                     </h3>
-                                    <span className="block text-slate-600 text-sm leading-snug">
+                                    <span className="block text-ink-2 text-sm leading-snug">
                                         {label.description}
                                     </span>
                                 </span>
@@ -167,10 +167,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               calculating, so it belongs beside the links and not above the tool.
             */}
             <section aria-labelledby="common-heading" className="mb-20 animate-slide-up-fade">
-                <h2 id="common-heading" className="text-2xl font-bold text-slate-900 mb-2">
+                <h2 id="common-heading" className="text-2xl font-bold text-ink mb-2">
                     {locale === 'de' ? 'Häufige Berechnungen' : 'Common calculations'}
                 </h2>
-                <p className="text-slate-600 mb-6 max-w-2xl">
+                <p className="text-ink-2 mb-6 max-w-2xl">
                     {locale === 'de'
                         ? 'Fertige Seiten mit Antwort, Wochentag und Kalenderwoche.'
                         : 'Ready-made pages with the answer, weekday and calendar week.'}

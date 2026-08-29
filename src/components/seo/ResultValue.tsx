@@ -16,6 +16,13 @@ export type ResultType =
     | 'iso-week'
     | 'weekday';
 
+/**
+ * Numeric results render in the accent colour and the mono face, so the figure
+ * a visitor came for is the thing their eye lands on inside a sentence. Dates
+ * and weekdays are words, not values, and stay in the body face.
+ */
+const NUMERIC: ResultType[] = ['days-remaining', 'day-of-year', 'iso-week'];
+
 export function ResultValue({
     type,
     value,
@@ -27,8 +34,13 @@ export function ResultValue({
     children: React.ReactNode;
     className?: string;
 }) {
+    const numeric = NUMERIC.includes(type);
     return (
-        <span data-result-type={type} data-result-value={String(value)} className={className}>
+        <span
+            data-result-type={type}
+            data-result-value={String(value)}
+            className={[numeric ? 'figure-mono text-accent' : '', className].filter(Boolean).join(' ')}
+        >
             {children}
         </span>
     );

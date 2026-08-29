@@ -22,10 +22,10 @@ export function ConversionTools({ locale = 'de' }: { locale?: string }) {
             <button
                 onClick={copyLink}
                 aria-live="polite"
-                className="flex items-center gap-2 px-4 py-1.5 rounded-md bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="flex items-center gap-2 px-4 py-1.5 rounded-md bg-surface hover:bg-surface-2 border border-line-2 text-ink-2 transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
                 {copied ? (
-                    <svg aria-hidden="true" className="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg aria-hidden="true" className="w-4 h-4 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                 ) : (
@@ -37,7 +37,7 @@ export function ConversionTools({ locale = 'de' }: { locale?: string }) {
             </button>
             <a
                 href={isDe ? '/' : `/${locale}`}
-                className="flex items-center gap-2 px-4 py-1.5 rounded-md bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="flex items-center gap-2 px-4 py-1.5 rounded-md bg-accent-dim hover:bg-accent-dim border border-accent-line text-accent transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
                 <svg aria-hidden="true" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
