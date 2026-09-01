@@ -6,6 +6,7 @@ import { AddSubtractTime } from './modes/AddSubtractTime';
 import { BusinessDays } from './modes/BusinessDays';
 import { AgeCalculator } from './modes/AgeCalculator';
 import { useRecentCalculations } from '@/hooks/useRecentCalculations';
+import { SplitSquareHorizontal, PlusSquare, Briefcase, User } from 'lucide-react';
 
 type Mode = 'difference' | 'add_subtract' | 'business_days' | 'age';
 
@@ -36,11 +37,13 @@ export function CalculatorCore({ initialMode = 'difference' }: CalculatorCorePro
     const baseId = useId();
     const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
-    const tabs: { id: Mode; label: string }[] = [
-        { id: 'difference', label: t('dateDifference') },
-        { id: 'add_subtract', label: t('addSubtract') },
-        { id: 'business_days', label: t('businessDays') },
-        { id: 'age', label: t('ageCalculator') },
+    // Icons match the ones the nav and the homepage tool cards use for the same
+    // four tools, so a mode is recognisable in whichever place it appears.
+    const tabs: { id: Mode; label: string; Icon: typeof SplitSquareHorizontal }[] = [
+        { id: 'difference', label: t('dateDifference'), Icon: SplitSquareHorizontal },
+        { id: 'add_subtract', label: t('addSubtract'), Icon: PlusSquare },
+        { id: 'business_days', label: t('businessDays'), Icon: Briefcase },
+        { id: 'age', label: t('ageCalculator'), Icon: User },
     ];
 
     const tabId = (mode: Mode) => `${baseId}-tab-${mode}`;
@@ -68,7 +71,10 @@ export function CalculatorCore({ initialMode = 'difference' }: CalculatorCorePro
                 role="tablist"
                 aria-label={t('dateDifference')}
                 onKeyDown={onKeyDown}
-                className="flex flex-wrap gap-1 mb-8 p-1 bg-surface-2 rounded-lg border border-line"
+                /* Scrolls rather than wraps, matching .mode-tabbar: four tabs
+                   wrapping onto two rows on a narrow phone pushed the fields
+                   below the fold. */
+                className="flex gap-1 mb-8 p-1 bg-surface-2 rounded-2xl border border-line overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
                 {tabs.map(tab => (
                     <button
@@ -81,13 +87,16 @@ export function CalculatorCore({ initialMode = 'difference' }: CalculatorCorePro
                         tabIndex={activeMode === tab.id ? 0 : -1}
                         ref={(node) => { tabRefs.current[tab.id] = node; }}
                         onClick={() => setActiveMode(tab.id)}
-                        className={`flex-1 min-w-[120px] min-h-11 px-4 py-2.5 text-sm font-semibold rounded-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${activeMode === tab.id
-                            /* text-background, not text-white: #080b14 on cyan
-                               is 11:1, white on cyan is 1.6:1. */
-                            ? 'bg-accent text-background'
-                            : 'text-ink-2 hover:text-ink hover:bg-surface'
+                        className={`flex-1 min-w-max flex items-center justify-center gap-2 min-h-11 px-4 py-3 text-sm font-semibold rounded-xl whitespace-nowrap transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${activeMode === tab.id
+                            /* The active tab is an accent-tinted pill, matching
+                               the reference's .mode-tab.active, rather than a
+                               solid fill -- it reads as selected without
+                               shouting over the fields below it. */
+                            ? 'bg-accent-dim text-accent border border-accent/25'
+                            : 'text-ink-2 border border-transparent hover:text-ink hover:bg-surface'
                             }`}
                     >
+                        <tab.Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
                         {tab.label}
                     </button>
                 ))}

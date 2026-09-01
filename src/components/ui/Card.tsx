@@ -20,15 +20,19 @@ type CardTone = 'default' | 'sunken' | 'accent';
 type CardPadding = 'none' | 'compact' | 'default' | 'roomy';
 
 /*
- * Glass, not fill. The surfaces are translucent white over the page gradient,
- * so a card reads as a layer above the background rather than a grey box cut
- * into it. `.glass` in globals.css carries the blur; the tones vary what sits
- * on top of it.
+ * Opaque surfaces on a tinted page, which is how the reference separates a card
+ * from its background: --surface (#FFF light / #201A2E dark) sitting on --paper
+ * (#F5F3FB / #17131F), with a hairline rule and a shadow so faint it reads as
+ * an edge rather than elevation.
+ *
+ * An earlier version of this used translucent white and a backdrop blur. That
+ * belonged to the dark cyan theme this replaced; over a light page a 4%-white
+ * fill is invisible.
  */
 const TONES: Record<CardTone, string> = {
-    default: 'glass',
+    default: 'bg-surface border border-line shadow-[var(--shadow-sm)]',
     sunken: 'bg-surface-2 border border-line',
-    accent: 'bg-accent-dim border border-accent-line'
+    accent: 'bg-accent-dim border border-accent/20'
 };
 
 const PADDING: Record<CardPadding, string> = {
@@ -77,8 +81,8 @@ export function CardLink({
     return (
         <div
             className={cn(
-                'glass rounded-2xl transition-colors',
-                'hover:border-accent/60 focus-within:border-accent',
+                'bg-surface border border-line rounded-2xl shadow-[var(--shadow-sm)] transition-colors',
+                'hover:border-accent focus-within:border-accent',
                 'focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2 focus-within:ring-offset-background',
                 className
             )}

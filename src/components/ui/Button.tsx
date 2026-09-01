@@ -17,15 +17,20 @@ type Variant = 'primary' | 'secondary' | 'ghost';
 type Size = 'default' | 'large';
 
 /*
- * The primary button is a cyan gradient carrying *dark* text. On this palette
- * that is the high-contrast direction: #080b14 on #00d4ff is 11:1, whereas
- * white on cyan would be 1.6:1 and illegible.
+ * The primary fill is a violet gradient, matching the reference's .calc-submit
+ * and .btn--primary.
+ *
+ * Its text colour is `text-on-accent`, which is a token rather than a literal
+ * because it has to flip: white on the light theme's #6D28D9 is 7.1:1, but
+ * white on the dark theme's lighter #A78BFA is 2.7:1 and illegible -- that one
+ * needs dark text, at 6.3:1. A hardcoded `text-white` would have been correct
+ * in exactly one of the two themes.
  */
 const VARIANTS: Record<Variant, string> = {
     primary:
-        'bg-gradient-to-br from-accent to-accent-2 text-background border border-transparent ' +
-        'shadow-[0_0_20px_rgba(0,212,255,0.30)] hover:shadow-[0_0_30px_rgba(0,212,255,0.50)]',
-    secondary: 'bg-surface-2 text-ink border border-line-2 hover:bg-surface-3 hover:border-accent hover:text-accent',
+        'bg-gradient-to-br from-accent to-accent-cta text-on-accent border border-transparent ' +
+        'shadow-[0_2px_14px_var(--petrol-glow)] hover:shadow-[0_5px_20px_var(--petrol-glow)]',
+    secondary: 'bg-surface text-ink border border-line-2 hover:border-accent hover:text-accent',
     ghost: 'bg-transparent text-ink-2 border border-line hover:text-accent hover:border-accent'
 };
 

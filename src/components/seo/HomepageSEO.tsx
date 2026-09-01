@@ -342,7 +342,7 @@ export function HomepageSEO({
 
             {/* ── 1. Understand: what the calculator does ── */}
             <section aria-labelledby="seo-content-heading" className="animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-                <div className="article-body max-w-4xl mx-auto glass rounded-2xl p-8 sm:p-10">
+                <div className="article-body max-w-4xl mx-auto bg-surface border border-line rounded-2xl p-8 sm:p-10 shadow-[var(--shadow-sm)]">
                     <header>
                         <h2 id="seo-content-heading" className="text-3xl md:text-5xl font-extrabold mb-8 leading-tight tracking-tight">
                             {c.seo.headline}

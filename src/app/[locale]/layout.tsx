@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { NextIntlClientProvider } from 'next-intl';
@@ -11,22 +11,37 @@ import { SiteSchema } from "@/components/seo/SiteSchema";
 import Script from 'next/script';
 import "../globals.css";
 
-const inter = Inter({
-    variable: "--font-inter",
+/*
+ * Three faces, matching the reference: a display face for headings, a text face
+ * for everything else, and a mono for figures.
+ *
+ * The pairing is the part a palette swap does not reproduce. Archivo is
+ * noticeably more condensed and higher-contrast than the body face, so headings
+ * read as headings at any size rather than as bold body text.
+ */
+const archivo = Archivo({
+    variable: "--font-archivo",
     subsets: ["latin"],
+    weight: ["600", "700", "800"],
+    display: "swap",
+});
+
+const plexSans = IBM_Plex_Sans({
+    variable: "--font-plex-sans",
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700"],
     display: "swap",
 });
 
 /*
- * Numbers get their own face. Every figure this site exists to produce -- a day
- * count, a countdown, a calendar week -- is read as a value, and a proportional
- * font sets digits at different widths so a ticking number jitters. Loaded with
- * only the weights actually used.
+ * Every figure this site exists to produce -- a day count, a countdown, a
+ * calendar week -- is read as a value. A proportional font sets digits at
+ * different widths, so a ticking number jitters and nudges its neighbours.
  */
-const jetbrainsMono = JetBrains_Mono({
-    variable: "--font-jetbrains-mono",
+const plexMono = IBM_Plex_Mono({
+    variable: "--font-plex-mono",
     subsets: ["latin"],
-    weight: ["400", "700"],
+    weight: ["400", "600", "700"],
     display: "swap",
 });
 
@@ -124,8 +139,27 @@ export default async function LocaleLayout({
     const messages = await getMessages();
 
     return (
-        <html lang={locale} className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}>
+        <html
+            lang={locale}
+            className={`${archivo.variable} ${plexSans.variable} ${plexMono.variable} h-full antialiased`}
+            suppressHydrationWarning
+        >
             <head>
+                {/*
+                  Applies the saved theme before first paint.
+                  Without it the page renders light, then flips to dark once
+                  React hydrates -- a white flash on every navigation for anyone
+                  who chose dark. It has to be inline and synchronous in <head>
+                  for that reason; a component cannot run early enough.
+
+                  No preference stored means no attribute, which leaves the
+                  prefers-color-scheme media query in charge.
+                */}
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t)}}catch(e){}`
+                    }}
+                />
                 <Script
                     src="https://www.googletagmanager.com/gtag/js?id=G-8WZW69GJ0K"
                     strategy="afterInteractive"

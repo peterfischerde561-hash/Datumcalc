@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { ButtonLink } from '@/components/ui/Button';
+import { ThemeSwitch } from './ThemeSwitch';
 
 export function Header() {
     const t = useTranslations('Header');
@@ -139,10 +140,12 @@ export function Header() {
             {/* ── Main Header ── */}
             <header
                 role="banner"
-                className="sticky top-0 z-50 w-full bg-background/85 backdrop-blur border-b border-line py-3"
+                className="sticky top-0 z-50 w-full bg-background/90 backdrop-blur-xl border-b border-line"
             >
-                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between gap-4">
+                {/* 64px, matching .navbar. The container is 1200px, matching
+                    their --max-width, rather than Tailwind's 7xl (1280px). */}
+                <div className="container mx-auto max-w-[1200px] px-4 sm:px-6">
+                    <div className="flex items-center justify-between gap-4 h-16">
 
                         {/* ── Logo / Brand Entity ── */}
                         <Link
@@ -156,11 +159,16 @@ export function Header() {
                                 alt={locale === 'de' ? 'Datumsrechner Logo' : 'Date Calculator Logo'}
                                 width={40}
                                 height={40}
-                                className="w-10 h-10 rounded-xl border border-line shadow-sm group-hover:scale-105 transition-all duration-300 object-cover"
+                                className="w-8 h-8 rounded-lg border border-line object-cover"
                             />
-                            <strong
-                                className="font-black text-lg sm:text-xl tracking-tighter text-ink leading-none select-none"
-                            >
+                            {/*
+                              Display face, -0.04em, with the accent carried by
+                              the second half of the word -- the reference's
+                              .navbar__logo does the same with a gradient span.
+                              A wordmark that changes colour mid-word is the
+                              cheapest brand signal a text logo has.
+                            */}
+                            <strong className="font-[family-name:var(--font-archivo)] font-extrabold text-xl tracking-[-0.04em] text-ink leading-none select-none">
                                 {t('title')}
                             </strong>
                         </Link>
@@ -214,7 +222,9 @@ export function Header() {
                         </nav>
 
                         {/* ── Desktop Right Controls ── */}
-                        <div className="hidden lg:flex items-center gap-3 shrink-0">
+                        <div className="hidden lg:flex items-center gap-2 shrink-0">
+
+                            <ThemeSwitch />
 
                             {/* Language Dropdown */}
                             <div ref={langRef} className="relative">
@@ -367,6 +377,15 @@ export function Header() {
                         {t('Nav.cta')}
                         <ArrowRight className="w-5 h-5" aria-hidden="true" />
                     </ButtonLink>
+
+                    {/* Theme, before language: it is the control people reach
+                        for on a phone at night. */}
+                    <div className="border-t border-line pt-6 pb-6 flex items-center justify-between gap-4">
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-ink-2">
+                            {locale === 'de' ? 'Farbschema' : 'Colour scheme'}
+                        </p>
+                        <ThemeSwitch />
+                    </div>
 
                     {/* Mobile Language Switcher */}
                     <div className="border-t border-line pt-6">

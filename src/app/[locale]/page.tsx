@@ -12,6 +12,7 @@ import { buildPageMetadata } from '@/lib/seo/metadata';
 import { QuickShortcuts } from '@/components/hero/QuickShortcuts';
 import { routeLabel } from '@/lib/seo/routeLabels';
 import { Card, CardLink } from '@/components/ui/Card';
+import { Badge, Chip } from '@/components/ui/Badge';
 
 // The hero states today's date, ordinal day and ISO week, so this page is
 // date-dependent. Hourly ISR bounds staleness; the daily cron refreshes it at
@@ -47,8 +48,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Header' });
 
+    // 1200px, matching the reference's --max-width.
     return (
-        <div className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="flex-1 w-full max-w-[1200px] mx-auto px-4 sm:px-6 py-16 lg:py-20">
             {/* pt-28 lg:pt-32 stood here to clear a fixed header. The header is
                 sticky now and occupies its own space, so this is ordinary page
                 padding rather than a manual offset the other ten routes
@@ -65,14 +67,27 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               routes come after it.
             */}
 
-            {/* ── Solve ─────────────────────────────────────────────── */}
-            <header className="space-y-6 animate-slide-up-fade">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-dim border border-accent-line text-xs font-bold uppercase tracking-widest text-accent">
-                    <span className="w-2 h-2 rounded-full bg-accent" aria-hidden="true"></span>
-                    {locale === 'de' ? 'Gregorianischer Kalender' : 'Gregorian calendar'}
+            {/*
+              ── Solve ─────────────────────────────────────────────────
+              Centred hero, matching .hero-centered: a row of badges stating
+              what the tool is, then the h1 saying what it does, then a single
+              lead paragraph, then the calculator. The badges come first
+              because they answer "is this the right kind of page" in less time
+              than a heading does.
+            */}
+            <header className="max-w-[780px] mx-auto text-center animate-slide-up-fade">
+                <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
+                    <Badge tone="accent">
+                        {locale === 'de' ? 'Gregorianischer Kalender' : 'Gregorian calendar'}
+                    </Badge>
+                    <Badge tone="neutral">ISO 8601</Badge>
+                    <Badge tone="success">
+                        {locale === 'de' ? 'Ohne Anmeldung' : 'No sign-up'}
+                    </Badge>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.02] text-ink text-balance">
+                {/* No size classes: globals.css sizes h1 fluidly with clamp(). */}
+                <h1 className="mb-4">
                     {locale === 'de' ? (
                         <>Präziser <span className="text-accent">Datumsrechner</span> für alle Fristen.</>
                     ) : (
@@ -80,31 +95,56 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     )}
                 </h1>
 
-                <p className="text-lg md:text-xl text-ink-2 max-w-2xl leading-relaxed">
+                <p className="text-[1.1rem] text-ink-2 max-w-[640px] mx-auto leading-[1.7]">
                     {locale === 'de'
-                        ? 'Tage zwischen zwei Daten zählen, Tage zu einem Datum addieren, Netto-Arbeitstage ermitteln oder ein Alter bestimmen. Jede Berechnung folgt dem gregorianischen Kalender mit vollständiger Schaltjahrregel; Kalenderwochen nach ISO 8601.'
-                        : 'Count the days between two dates, add days to a date, work out net business days or determine an age. Every calculation follows the Gregorian calendar with the full leap-year rule; calendar weeks per ISO 8601.'}
+                        ? 'Tage zwischen zwei Daten zählen, Tage zu einem Datum addieren, Netto-Arbeitstage ermitteln oder ein Alter bestimmen. Vollständige Schaltjahrregel, Kalenderwochen nach ISO 8601.'
+                        : 'Count the days between two dates, add days to a date, work out net business days or determine an age. Full leap-year rule, calendar weeks per ISO 8601.'}
                 </p>
-
-                <LiveDatePreview locale={locale} />
             </header>
 
             {/* The tool itself — first interactive element on the page. */}
             <Card
                 as="section"
                 aria-labelledby="calculator-heading"
+                padding="roomy"
                 className="mt-10 animate-slide-up-fade"
             >
-                <h2 id="calculator-heading" className="text-2xl font-bold text-ink mb-1">
+                <h2 id="calculator-heading" className="sr-only">
                     {locale === 'de' ? 'Datum berechnen' : 'Calculate a date'}
                 </h2>
-                <p className="text-ink-2 mb-6">
-                    {locale === 'de'
-                        ? 'Rechner wählen, Daten eintragen – das Ergebnis erscheint sofort darunter.'
-                        : 'Pick a calculator, enter your dates – the result appears below straight away.'}
-                </p>
                 <CalculatorCore />
             </Card>
+
+            {/*
+              Suggestion chips, matching .suggestion-row. These are links to
+              real pages rather than controls that prefill the box: a crawlable
+              path from the homepage to the URLs that actually earn traffic.
+            */}
+            <nav
+                aria-label={locale === 'de' ? 'Häufige Berechnungen' : 'Common calculations'}
+                className="flex flex-wrap justify-center gap-2 mt-6"
+            >
+                {(locale === 'de'
+                    ? [
+                        { href: '/differenz/tage-bis-weihnachten', label: 'Tage bis Weihnachten' },
+                        { href: '/addieren/100-tage-ab-heute', label: '100 Tage ab heute' },
+                        { href: '/addieren/6-monate-ab-heute', label: '6 Monate ab heute' },
+                        { href: '/differenz/tage-bis-ostern', label: 'Tage bis Ostern' }
+                    ]
+                    : [
+                        { href: '/en/difference/days-until-christmas', label: 'Days until Christmas' },
+                        { href: '/en/add/100-days-from-today', label: '100 days from today' },
+                        { href: '/en/add/6-months-from-today', label: '6 months from today' },
+                        { href: '/en/difference/days-until-easter', label: 'Days until Easter' }
+                    ]
+                ).map((chip) => (
+                    <Chip key={chip.href} href={chip.href}>{chip.label}</Chip>
+                ))}
+            </nav>
+
+            <div className="mt-10">
+                <LiveDatePreview locale={locale} />
+            </div>
 
             {/* ── Understand: what it does, how it works, common questions ── */}
             <HomepageSEO locale={locale} part="understand" />

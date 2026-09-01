@@ -25,15 +25,14 @@ import { cn } from '@/lib/ui/cn';
  */
 
 const CONTROL = cn(
-    'w-full h-11 rounded-xl border border-line bg-black/30 px-3',
+    'w-full h-11 rounded-xl border border-line bg-surface px-3',
     'text-ink placeholder:text-ink-3',
     'transition-colors outline-none',
     'hover:border-line-2',
-    'focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent',
-    // Date inputs render their own picker chrome. This tells the browser to
-    // paint the calendar glyph and popup for a dark field -- with the previous
-    // `light` value the glyph rendered near-black on a near-black input.
-    '[color-scheme:dark]'
+    'focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent'
+    // No [color-scheme] override here. The root sets it per theme, so the
+    // browser paints the date picker's own chrome to match; pinning it to one
+    // value made the calendar glyph vanish in the other theme.
 );
 
 /*
